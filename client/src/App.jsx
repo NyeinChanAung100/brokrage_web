@@ -16,7 +16,7 @@ function App() {
     >
       <Nav />
       <Routes>
-        <Route path='/dashboard/*' element={<Dashboard />}>
+        <Route path='/Dashboard/*' element={<Dashboard />}>
           <Route path='voucher' element={<Voucher />} />
           <Route path='transactions' element={<Transactions />} />
           <Route path='*' element={<Voucher />} />

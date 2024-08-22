@@ -2,7 +2,7 @@
 header("Content-Type: application/json");
 
 // Include the database configuration
-include './../dbconnect/user_db.php';
+include './../dbconnect/config.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
@@ -17,15 +17,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     
         // Sanitize input data
-        $username = $user_db->real_escape_string($input['username']);
+        $username = $conn->real_escape_string($input['username']);
         $password = $input['password']; // Password will be hashed
-        $email = $user_db->real_escape_string($input['email']);
+        $email = $conn->real_escape_string($input['email']);
     
         // Check if the username or email already exists
         $sql = "SELECT id FROM users WHERE username = ? OR email = ?";
-        $stmt = $user_db->prepare($sql);
+        $stmt = $conn->prepare($sql);
         if (!$stmt) {
-            throw new Exception("Prepare failed: " . $user_db->error);
+            throw new Exception("Prepare failed: " . $conn->error);
         }
         $stmt->bind_param('ss', $username, $email);
         $stmt->execute();
@@ -41,9 +41,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     
         // Insert user into the database
         $sql = "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)";
-        $stmt = $user_db->prepare($sql);
+        $stmt = $conn->prepare($sql);
         if (!$stmt) {
-            throw new Exception("Prepare failed: " . $user_db->error);
+            throw new Exception("Prepare failed: " . $conn->error);
         }
         $stmt->bind_param('sss', $username, $password_hash, $email);
         if ($stmt->execute()) {
@@ -61,5 +61,5 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Close the connection
-// $user_db->close();
+// $conn->close();
 ?>

@@ -8,7 +8,12 @@ import Transactions from './components/Transactions';
 
 function App() {
   return (
-    <Container maxW={'100vw'} padding={0} className='theoneabove'>
+    <Container
+      maxW={'100vw'}
+      padding={0}
+      className='theoneabove'
+      // overflow={'visible'}
+    >
       <Nav />
       <Routes>
         <Route path='/dashboard/*' element={<Dashboard />}>

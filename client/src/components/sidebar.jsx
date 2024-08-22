@@ -19,13 +19,9 @@ import { FaBoxesStacked } from 'react-icons/fa6';
 import {
   FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiArrowRight,
-  FiSidebar,
   FiUsers,
+  FiSettings,
+  FiSidebar,
 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -38,6 +34,8 @@ const LinkItems = [
   { name: 'Customers', icon: FaBoxesStacked },
   { name: 'Shareholders', icon: FiUsers },
   { name: 'Settings', icon: FiSettings },
+
+  // Additional items can be added here
 ];
 
 export default function SimpleSidebar() {
@@ -47,8 +45,7 @@ export default function SimpleSidebar() {
       minH='100vh'
       bg={useColorModeValue('gray.100', '#101010')}
       position={'fixed'}
-      top={'70px'}
-      //   border={'5px solid red'}
+      top={'65px'}
     >
       <SidebarContent
         onClose={onClose}
@@ -71,9 +68,6 @@ export default function SimpleSidebar() {
         onOpen={onOpen}
         position={'fixed'}
       />
-      {/* <Box ml={{ base: 0, md: 60 }} p='4'> */}
-      {/* Content */}
-      {/* </Box> */}
     </Box>
   );
 }
@@ -81,8 +75,8 @@ export default function SimpleSidebar() {
 const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <Box
-      as={Link} // Use Link from react-router-dom
-      to={path} // Navigate to the correct path
+      as={Link}
+      to={path}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >
@@ -115,7 +109,6 @@ const NavItem = ({ icon, children, path, ...rest }) => {
   );
 };
 
-// SidebarContent component:
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
@@ -125,6 +118,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: 'full', md: 60 }}
       pos='fixed'
       h='full'
+      overflowY='auto' // Make the sidebar scrollable
       {...rest}
     >
       <Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
@@ -162,10 +156,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         aria-label='open menu'
         icon={<FiSidebar />}
       />
-
-      {/* <Text fontSize='2xl' ml='8' fontFamily='monospace' fontWeight='bold'>
-        Logo
-      </Text> */}
     </Flex>
   );
 };

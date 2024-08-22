@@ -112,8 +112,7 @@ export default function Nav() {
             </Menu>
           </Stack>
         </Flex>
-      </Flex>
-
+      </Flex>{' '}
       {isOpen ? (
         <Box pb={4} display={{ md: 'none' }}>
           <Stack as='nav' spacing={4}>

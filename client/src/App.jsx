@@ -8,10 +8,15 @@ import Transactions from './components/Transactions';
 
 function App() {
   return (
-    <Container maxW={'100vw'} padding={0} className='theoneabove'>
+    <Container
+      maxW={'100vw'}
+      padding={0}
+      className='theoneabove'
+      // overflow={'visible'}
+    >
       <Nav />
       <Routes>
-        <Route path='/dashboard/*' element={<Dashboard />}>
+        <Route path='/Dashboard/*' element={<Dashboard />}>
           <Route path='voucher' element={<Voucher />} />
           <Route path='transactions' element={<Transactions />} />
           <Route path='*' element={<Voucher />} />

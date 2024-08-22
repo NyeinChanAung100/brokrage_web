@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Start a transaction
         $conn->begin_transaction();
     
-        // Check if the user exists in the user_balance table
+        // Check if user exists and fetch current balance
         $sql = "SELECT balance FROM user_balance WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
@@ -38,29 +38,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows === 0) {
-            http_response_code(404);
-            echo json_encode(["error" => "User not found"]);
-            $conn->rollback();
-            exit();
+            // If user does not exist, insert a new record with the deposit amount
+            $sql = "INSERT INTO user_balance (user_id, balance) VALUES (?, ?)";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $conn->error);
+            }
+            $stmt->bind_param('id', $user_id, $amount);
+            if (!$stmt->execute()) {
+                throw new Exception("Insert failed: " . $stmt->error);
+            }
+        } else {
+            // If user exists, update the balance
+            $row = $result->fetch_assoc();
+            $current_balance = $row['balance'];
+            $new_balance = ($current_balance === null ? 0 : $current_balance) + $amount;
+
+            $sql = "UPDATE user_balance SET balance = ? WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $conn->error);
+            }
+            $stmt->bind_param('di', $new_balance, $user_id);
+            if (!$stmt->execute()) {
+                throw new Exception("Update failed: " . $stmt->error);
+            }
         }
-    
-        // Update the user's balance
-        $sql = "UPDATE user_balance SET balance = balance + ? WHERE user_id = ?";
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            throw new Exception("Prepare failed: " . $conn->error);
-        }
-        $stmt->bind_param('di', $amount, $user_id);
-        if (!$stmt->execute()) {
-            throw new Exception("Update failed: " . $stmt->error);
-        }
-    
+
         // Commit the transaction
         $conn->commit();
     
-        // Success: Return updated balance
+        // Fetch the updated balance
         $sql = "SELECT balance FROM user_balance WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
@@ -69,8 +79,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            http_response_code(404);
+            echo json_encode(["error" => "Balance information not found"]);
+            exit();
+        }
+
+        // Fetch balance data
         $balance = $result->fetch_assoc();
+        
+        // Check if balance data is retrieved successfully
+        if ($balance === null) {
+            throw new Exception("Failed to retrieve balance");
+        }
     
+        // Success: Return updated balance
         echo json_encode(["success" => "Deposit successful", "new_balance" => $balance['balance']]);
     
     } catch (Exception $e) {

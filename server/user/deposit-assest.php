@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->begin_transaction();
     
         // Insert or update deposit record
-        $sql = "INSERT INTO deposits (user_id, item_id, quantity, acquired_date)
+        $sql = "INSERT INTO user_assets (user_id, item_id, quantity, acquired_date)
                 VALUES (?, ?, ?, CURRENT_DATE)
                 ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)";
         $stmt = $conn->prepare($sql);

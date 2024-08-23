@@ -1,0 +1,38 @@
+// http://localhost/brokrage_web/server/market/listItems.php
+{
+    "name": "Sample Product",
+    "price": 29.99,
+    "supply": 100
+}
+
+// register.php 
+// http://localhost/brokrage_web/server/user/register.php
+{"username": "mg mg", "password": "abc123", "email": "mgmg@gmail.com"}
+
+// view money
+// //http://localhost/brokrage_web/server/user/view-balance.php
+{
+  "user_id": 1
+}
+
+// view assest
+//
+{
+  "user_id": 1
+}
+
+// deposit assest
+// http://localhost/brokrage_web/server/user/deposit-assest.php
+{
+  "user_id": 1,
+  "item_id": 1,
+  "quantity": 10
+}
+
+// depost money
+// http://localhost/brokrage_web/server/user/deposit-money.php
+{
+  "user_id": 1,
+  "amount": 1000
+}
+

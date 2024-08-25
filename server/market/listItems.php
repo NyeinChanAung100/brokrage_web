@@ -48,8 +48,48 @@ if ($conn->query($sql) === TRUE) {
     echo json_encode(["error" => "Error inserting item: " . $conn->error]);
 }
 
+} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $sql = "SELECT * FROM items";
+    $result = $conn->query($sql);
+    $items = [];
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $item_id = $row['id'];
+            $sql = "SELECT * FROM prices WHERE item_id = $item_id";
+            $price_result = $conn->query($sql);
+            $price = $price_result->fetch_assoc();
+
+            $sql = "SELECT * FROM total_supply WHERE item_id = $item_id";
+            $supply_result = $conn->query($sql);
+            $supply = $supply_result->fetch_assoc();
+
+            $sql = "SELECT * FROM market_cap WHERE item_id = $item_id";
+            $market_cap_result = $conn->query($sql);
+            $market_cap = $market_cap_result->fetch_assoc();
+
+            $items[] = [
+                "id" => $item_id,
+                "name" => $row['name'],
+                "price" => $price['price'],
+                "supply" => $supply['supply'],
+                "market_cap" => $market_cap['market_cap']
+            ];
+        }
+    }
+    echo json_encode($items);
+} else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $item_id = $conn->real_escape_string($input['id']);
+    $sql = "DELETE FROM items WHERE id = $item_id";
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(["success" => "Item deleted successfully"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Error deleting item: " . $conn->error]);
+    }
 } else {
-    echo "router does'nt exist";
+    http_response_code(405);
+    echo json_encode(["error" => "Method not allowed"]);
 }
 
 // Close the connection

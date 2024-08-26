@@ -5,6 +5,7 @@ import Nav from './components/navbar';
 import './app.css';
 import Voucher from './components/voucher';
 import Transactions from './components/Transactions';
+import Portfolio from './components/Portfolio';
 
 function App() {
   return (
@@ -12,14 +13,17 @@ function App() {
       maxW={'100vw'}
       padding={0}
       className='theoneabove'
+      h={'100vh'}
       // overflow={'visible'}
     >
       <Nav />
       <Routes>
-        <Route path='/Dashboard/*' element={<Dashboard />}>
-          <Route path='voucher' element={<Voucher />} />
-          <Route path='transactions' element={<Transactions />} />
-          <Route path='*' element={<Voucher />} />
+        <Route path='/test' element={<Voucher />} />
+
+        <Route path='/dashboard/*' element={<Dashboard />}>
+          <Route path='portfolio' element={<Portfolio />} />
+          <Route path='trade' element={<Transactions />} />
+          <Route path='*' element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}
       </Routes>

@@ -23,13 +23,13 @@ import { Outlet } from 'react-router-dom';
 
 function Dashboard() {
   return (
-    <Box w='100%' minH='100vh' display='flex'>
+    <Box width='100%' height='100vh' display='flex'>
       <SimpleSidebar />
       <Flex
         flex='1'
-        p={4}
+        // p={4}
         ml={{ base: '5px', md: '250px' }}
-        paddingTop={'25px'}
+        paddingTop={'20px'}
         // bg={useColorModeValue('gray.200', 'gray.700')}
       >
         <Outlet />

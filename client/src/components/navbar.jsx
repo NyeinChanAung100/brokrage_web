@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const Links = ['Home', 'Dashboard', 'Market', 'Help'];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ path, children }) => (
   <Box
     as='a'
     px={2}
@@ -33,7 +33,7 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href='#'
+    href={path}
     zIndex={1000}
   >
     {children}
@@ -47,12 +47,10 @@ export default function Nav() {
   return (
     <Box
       bg={useColorModeValue('#99bab9', '#000a0a')}
-      //   bg={useColorModeValue('gray.100', 'gray.900')}
       px={4}
       position={'sticky'}
       top={'0px'}
-      //   borderBottom={`5px solid ${useColorModeValue('white', '#1a202c')}`}
-      box-shadow={'0 4px 6px rgba(0, 0, 0, 0.1)'}
+      boxShadow={'0 4px 6px rgba(0, 0, 0, 0.1)'}
       zIndex={1000}
     >
       <Flex h={16} alignItems='center' justifyContent='space-between'>
@@ -62,13 +60,14 @@ export default function Nav() {
           aria-label='Open Menu'
           display={{ md: 'none' }}
           onClick={isOpen ? onClose : onOpen}
-          //   zIndex={500}
         />
         <HStack spacing={8} alignItems='center'>
           <Box>Logo</Box>
           <HStack as='nav' spacing={4} display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link} path={`/${link.toLowerCase()}`}>
+                {link}
+              </NavLink>
             ))}
           </HStack>
         </HStack>
@@ -112,12 +111,14 @@ export default function Nav() {
             </Menu>
           </Stack>
         </Flex>
-      </Flex>{' '}
+      </Flex>
       {isOpen ? (
         <Box pb={4} display={{ md: 'none' }}>
           <Stack as='nav' spacing={4}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link} path={`/${link.toLowerCase()}`}>
+                {link}
+              </NavLink>
             ))}
           </Stack>
         </Box>

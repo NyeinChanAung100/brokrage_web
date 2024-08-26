@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-
+session_start();
 // Include the database configuration
 include './../dbconnect/config.php';
 
@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verify password
         if (password_verify($password, $password_hash)) {
             // Success: Password is correct
+            $_SESSION['user_id'] = $user['id']; // Save user ID in session
             echo json_encode(["success" => "Login successful"]);
         } else {
             // Failure: Password is incorrect

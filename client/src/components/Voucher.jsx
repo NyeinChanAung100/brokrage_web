@@ -1,8 +1,9 @@
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 function Voucher() {
   return (
-    <div width='100%' bg='red'>
+    <Flex width='100%' bg='red' border={'10px solid black'}>
       voucher Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae,
       rem optio, expedita repellat aut iusto reiciendis corporis qui eligendi
       architecto vero in cupiditate nulla? Eveniet aut sed a vero nobis. Lorem
@@ -15,8 +16,14 @@ function Voucher() {
       Placeat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
       a, voluptate, nemo doloribus atque mollitia incidunt perspiciatis, officia
       aperiam inventore sit eius in deserunt. Neque explicabo voluptas corrupti
-      iure numquam.
-    </div>
+      iure numquam.lorem Lorem ipsum dolor sit amet consectetur adipisicing
+      elit. Quod quaerat et iste quam nemo cupiditate vel fugiat deleniti in!
+      Mollitia consectetur odio nisi suscipit inventore. Iure neque doloribus
+      laboriosam impedit. Lorem ipsum dolor sit amet consectetur adipisicing
+      elit. Similique rem eveniet hic, autem fuga, ullam nesciunt nisi natus
+      fugit tenetur quod maiores laudantium quas non dolorum eaque, veniam animi
+      neque.
+    </Flex>
   );
 }
 

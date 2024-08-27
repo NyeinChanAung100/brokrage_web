@@ -26,13 +26,10 @@ import {
 import { Link } from 'react-router-dom';
 
 const LinkItems = [
-  { name: 'voucher', icon: FiHome },
-  { name: 'transactions', icon: FiTrendingUp },
-  { name: 'Inventory', icon: FaBoxesStacked },
-  { name: 'users', icon: FiUsers },
-  { name: 'suppliers', icon: FiTrendingUp },
-  { name: 'Customers', icon: FaBoxesStacked },
-  { name: 'Shareholders', icon: FiUsers },
+  { name: 'Portfolio', icon: FiHome },
+  { name: 'Trade', icon: FiTrendingUp },
+  { name: 'Market Overview', icon: FaBoxesStacked },
+  { name: 'Watchlist', icon: FiUsers },
   { name: 'Settings', icon: FiSettings },
 
   // Additional items can be added here
@@ -46,6 +43,7 @@ export default function SimpleSidebar() {
       bg={useColorModeValue('gray.100', '#101010')}
       position={'fixed'}
       top={'65px'}
+      // overflow={'visible'}
     >
       <SidebarContent
         onClose={onClose}
@@ -116,7 +114,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       borderRight='1px'
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full', md: 60 }}
-      pos='fixed'
+      position='fixed'
       h='full'
       overflowY='auto' // Make the sidebar scrollable
       {...rest}
@@ -128,15 +126,20 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       <Stack>
-        {LinkItems.map((link) => (
-          <NavItem
-            key={link.name}
-            icon={link.icon}
-            path={`/dashboard/${link.name}`}
-          >
-            {link.name}
-          </NavItem>
-        ))}
+        {LinkItems.map((link) => {
+          // Convert the link name to lowercase and remove spaces
+          const formattedPath = link.name.toLowerCase().replace(/\s+/g, '');
+
+          return (
+            <NavItem
+              key={link.name}
+              icon={link.icon}
+              path={`/dashboard/${formattedPath}`}
+            >
+              {link.name}
+            </NavItem>
+          );
+        })}
       </Stack>
     </Box>
   );

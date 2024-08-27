@@ -1,11 +1,9 @@
--- Create the items table
 CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT
 );
 
--- Create the prices table with initial_price column
 CREATE TABLE prices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
@@ -14,7 +12,15 @@ CREATE TABLE prices (
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
--- Create the total_supply table with initial_supply column
+CREATE TABLE price_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);
+
+
 CREATE TABLE total_supply (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
@@ -23,7 +29,6 @@ CREATE TABLE total_supply (
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
--- Create the market_cap table
 CREATE TABLE market_cap (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
@@ -58,3 +63,15 @@ CREATE TABLE user_balance (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    item_id INT NOT NULL,
+    before_price DECIMAL(10, 2) NOT NULL,
+    after_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    trade_type ENUM('buy', 'sell') NOT NULL,
+    trade_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);

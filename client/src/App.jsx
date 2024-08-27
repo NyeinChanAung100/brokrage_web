@@ -7,6 +7,8 @@ import Voucher from './components/voucher';
 import Detailed from './components/Detailed';
 import Portfolio from './components/Portfolio';
 import DepositForm from './pages/Testing';
+import MarketOverview from './components/MarketOverview';
+import WatchList from './components/WatchList';
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='portfolio' element={<Portfolio />} />
           <Route path='detailedanalysis' element={<Detailed />} />
+          <Route path='marketoverview' element={<MarketOverview />} />
+          <Route path='watchlist' element={<WatchList />} />
+
           <Route path='*' element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}

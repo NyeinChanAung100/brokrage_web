@@ -18,7 +18,7 @@ function DepositForm() {
 
     try {
       const res = await fetch(
-        'http://localhost/brokrage_web/server/market/listItems.php',
+        'http://localhost/brokrage_web/server/user/deposit-assest.php',
         {
           method: 'POST',
           headers: {
@@ -73,7 +73,7 @@ function DepositForm() {
       {response && (
         <div>
           <h2>Response:</h2>
-          <pre>{JSON.stringify(response, null, 2)}</pre>
+          <pre>{JSON.stringify(response.error, null, 2)}</pre>
         </div>
       )}
     </div>

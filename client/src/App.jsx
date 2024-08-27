@@ -4,8 +4,9 @@ import Dashboard from './pages/Dashboard';
 import Nav from './components/navbar';
 import './app.css';
 import Voucher from './components/voucher';
-import Transactions from './components/Transactions';
+import Detailed from './components/Detailed';
 import Portfolio from './components/Portfolio';
+import DepositForm from './pages/Testing';
 
 function App() {
   return (
@@ -19,10 +20,11 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/test' element={<Voucher />} />
+        <Route path='/testing' element={<DepositForm />} />
 
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='portfolio' element={<Portfolio />} />
-          <Route path='trade' element={<Transactions />} />
+          <Route path='detailedanalysis' element={<Detailed />} />
           <Route path='*' element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}

@@ -28,6 +28,8 @@ import { Link } from 'react-router-dom';
 const LinkItems = [
   { name: 'Portfolio', icon: FiHome },
   { name: 'Trade', icon: FiTrendingUp },
+  { name: 'Detailed Analysis', icon: FiTrendingUp },
+
   { name: 'Market Overview', icon: FaBoxesStacked },
   { name: 'Watchlist', icon: FiUsers },
   { name: 'Settings', icon: FiSettings },

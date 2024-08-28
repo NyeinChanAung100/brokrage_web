@@ -4,6 +4,10 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
+
+// Include the database connection
+include 'db_connect.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -14,11 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $item_id = intval($data['item_id']);
     $quantity = intval($data['quantity']);
-    $status = $data['status']; // "buy" or "sell"
+    $trade_type = $data['trade_type']; // "buy" or "sell"
     $user_id = intval($data['user_id']);
-
-    // Include the database connection
-    include 'db_connect.php';
 
     // Fetch the item price and supply
     $item_sql = "SELECT p.price, ts.supply, mc.market_cap FROM prices p 
@@ -51,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    if ($status === "buy") {
+    if ($trade_type === "buy") {
         $total_cost = $price * $quantity;
 
         if ($user_balance < $total_cost) {
@@ -92,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
 
         echo json_encode(["success" => true, "message" => "Item purchased successfully."]);
-    } elseif ($status === "sell") {
+    } elseif ($trade_type === "sell") {
         // Check user's assets
         $asset_sql = "SELECT quantity FROM user_assets WHERE user_id = ? AND item_id = ?";
         $stmt = $conn->prepare($asset_sql);

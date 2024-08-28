@@ -1,14 +1,68 @@
 [
-  { "name": "Jan", "price": 56700, "tran": "up" },
-  { "name": "Feb", "price": 48900, "tran": "down" },
-  { "name": "Mar", "price": 63400, "tran": "up" },
-  { "name": "Apr", "price": 71000, "tran": "up" },
-  { "name": "May", "price": 82000, "tran": "down" },
-  { "name": "Jun", "price": 75500, "tran": "down" },
-  { "name": "Jul", "price": 83500, "tran": "up" },
-  { "name": "Aug", "price": 69000, "tran": "down" },
-  { "name": "Sep", "price": 67000, "tran": "up" },
-  { "name": "Oct", "price": 71500, "tran": "up" },
-  { "name": "Nov", "price": 68500, "tran": "down" },
-  { "name": "Dec", "price": 79000, "tran": "up" }
+  { "name": "Jan", "price": 56700, "tran": "up", "mark": false, "unit": " kg" },
+  {
+    "name": "Feb",
+    "price": 48900,
+    "tran": "down",
+    "mark": false,
+    "unit": " viss"
+  },
+  { "name": "Mar", "price": 63400, "tran": "up", "mark": true, "unit": " kg" },
+  { "name": "Apr", "price": 71000, "tran": "up", "mark": true, "unit": " kg" },
+  {
+    "name": "May",
+    "price": 82000,
+    "tran": "down",
+    "mark": false,
+    "unit": " tin"
+  },
+  {
+    "name": "Jun",
+    "price": 75500,
+    "tran": "down",
+    "mark": false,
+    "unit": " viss"
+  },
+  {
+    "name": "Jul",
+    "price": 83500,
+    "tran": "up",
+    "mark": true,
+    "unit": " viss"
+  },
+  {
+    "name": "Aug",
+    "price": 69000,
+    "tran": "down",
+    "mark": false,
+    "unit": " tin"
+  },
+  {
+    "name": "Sep",
+    "price": 67000,
+    "tran": "up",
+    "mark": false,
+    "unit": " tin"
+  },
+  {
+    "name": "Oct",
+    "price": 71500,
+    "tran": "up",
+    "mark": true,
+    "unit": " liter"
+  },
+  {
+    "name": "Nov",
+    "price": 68500,
+    "tran": "down",
+    "mark": false,
+    "unit": " gallon"
+  },
+  {
+    "name": "Dec",
+    "price": 79000,
+    "tran": "up",
+    "mark": false,
+    "unit": " gallon"
+  }
 ]

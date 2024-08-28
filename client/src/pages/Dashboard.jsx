@@ -30,6 +30,7 @@ function Dashboard() {
         // p={4}
         ml={{ base: '5px', md: '250px' }}
         paddingTop={'20px'}
+        // border={'5px solid yellow'}
         // bg={useColorModeValue('gray.200', 'gray.700')}
       >
         <Outlet />

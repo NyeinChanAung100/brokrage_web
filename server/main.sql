@@ -75,3 +75,11 @@ CREATE TABLE transactions (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
+
+CREATE TABLE watchlist (
+    user_id INT NOT NULL,
+    item_id INT NOT NULL,
+    PRIMARY KEY (user_id, item_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);

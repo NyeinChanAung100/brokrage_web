@@ -27,18 +27,31 @@
 // }
 
 // export default Propertylist;
-import { Flex, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Stat,
+  StatArrow,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
+
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function Propertylist(props) {
   const { colorMode } = useColorMode(); // Access the current color mode
   const textColor = props.tran === 'up' ? 'green' : 'red'; // Conditionally set text color
-  const Icon = props.tran === 'up' ? FaArrowUp : FaArrowDown; // Conditionally choose icon
+  // const Icon = props.tran === 'up' ? FaArrowUp : FaArrowDown;
+  const upordown = props.tran === 'up' ? 'increase' : 'decrease';
 
   return (
     <Flex
       width='100%'
-      height='100px'
+      height='80px'
       alignItems='center'
       // borderRadius='8px'
       paddingLeft='15px'
@@ -48,8 +61,8 @@ function Propertylist(props) {
       borderBottom={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
     >
       <Flex alignItems='center'>
-        <Icon color={textColor} />
-        <Text
+        {/* <Icon color={textColor} /> */}
+        {/* <Text
           marginLeft='8px'
           width='200px'
           paddingTop={'10px'}
@@ -57,11 +70,26 @@ function Propertylist(props) {
           color={textColor}
         >
           {props.item}
-        </Text>
+        </Text> */}
+        <Stat>
+          <StatLabel>{props.item}</StatLabel>
+          <StatNumber fontSize={'20px'} color={textColor}>
+            {props.price}
+          </StatNumber>
+          <StatHelpText>
+            <StatArrow type={upordown} />
+            23.36%
+          </StatHelpText>
+        </Stat>
       </Flex>
-      <Text width='100px' height='50px' paddingTop={'10px'} color={textColor}>
-        {props.price}
-      </Text>
+      <Box width='100px' paddingTop={'10px'} height={'100%'}>
+        <Stat mt={'-8px'}>
+          <StatLabel>Unit price</StatLabel>
+          <StatNumber fontSize={'20px'} color={textColor}>
+            {props.unitprice}
+          </StatNumber>
+        </Stat>
+      </Box>
     </Flex>
   );
 }

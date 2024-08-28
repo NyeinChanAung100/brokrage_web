@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import {
   IconButton,
   Box,
@@ -23,7 +24,10 @@ import {
   FiSettings,
   FiSidebar,
 } from 'react-icons/fi';
+// import { Link as RouterLink } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
+import DetailedAccordion from './DetailedAccordion';
 
 const LinkItems = [
   { name: 'Portfolio', icon: FiHome },
@@ -128,6 +132,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       <Stack>
+        <Flex marginLeft={'18px'}>
+          {/* <Link to={'/dashboard/detailedanalysis/citra'}> */}
+          <DetailedAccordion />
+          {/* </Link> */}
+        </Flex>
+
         {LinkItems.map((link) => {
           // Convert the link name to lowercase and remove spaces
           const formattedPath = link.name.toLowerCase().replace(/\s+/g, '');
@@ -154,10 +164,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
       px={{ base: 4, md: 24 }}
       justifyContent='flex-start'
       {...rest}
+      onClick={onOpen}
+      zIndex={1000}
     >
       <IconButton
         variant='outline'
-        onClick={onOpen}
         aria-label='open menu'
         icon={<FiSidebar />}
       />

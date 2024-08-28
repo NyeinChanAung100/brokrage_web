@@ -9,6 +9,7 @@ import Portfolio from './components/Portfolio';
 import DepositForm from './pages/Testing';
 import MarketOverview from './components/MarketOverview';
 import WatchList from './components/WatchList';
+import DetailedAccordion from './components/DetailedAccordion';
 
 function App() {
   return (
@@ -21,12 +22,12 @@ function App() {
     >
       <Nav />
       <Routes>
-        <Route path='/test' element={<Voucher />} />
+        <Route path='/test' element={<DetailedAccordion />} />
         <Route path='/testing' element={<DepositForm />} />
 
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='portfolio' element={<Portfolio />} />
-          <Route path='detailedanalysis' element={<Detailed />} />
+          <Route path='detailedanalysis/:id' element={<Detailed />} />
           <Route path='marketoverview' element={<MarketOverview />} />
           <Route path='watchlist' element={<WatchList />} />
 

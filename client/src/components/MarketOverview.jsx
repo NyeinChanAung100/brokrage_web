@@ -17,9 +17,9 @@ function EachItem({ name, price, tran }) {
 function MarketOverview() {
   return (
     <VStack
-      divider={<StackDivider borderColor='gray.200' />}
+      divider={<StackDivider borderColor="gray.200" />}
       spacing={4}
-      align='stretch'
+      align="stretch"
       w={'100%'}
       ml={'10px'}
       p={'10px'}

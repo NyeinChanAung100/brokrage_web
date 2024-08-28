@@ -4,6 +4,7 @@ import revenuedata from '../data/revenuedata.json';
 import { Chart as ChartJs, defaults } from 'chart.js/auto';
 import Propertylist from './propertylist';
 import TotalAsset from './TotalAsset';
+import assetList from '../data/assetList.json';
 
 import './lich.css';
 
@@ -43,28 +44,15 @@ function LineChartCompo() {
           'scrollbar-width': 'none', // Firefox
         }}
       >
-        <Propertylist item={'Bitcoin'} price={'$64950'} tran={'up'} />
-        <Propertylist item={'Ton'} price={'$3600'} tran={'up'} />
-        <Propertylist item={'Citra'} price={'$930'} tran={'down'} />
-        <Propertylist item={'Ocean'} price={'$467'} tran={'up'} />
-        <Propertylist item={'Hamster'} price={'$10000'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'up'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
-        <Propertylist item={'Not'} price={'$5950'} tran={'down'} />
+        {assetList?.map((data) => (
+          <Propertylist
+            key={data.item}
+            item={data.item}
+            price={data.price}
+            tran={data.tran}
+            unitprice={data.unitPrice}
+          />
+        ))}
       </Flex>
 
       {/* w={{ base: '100%', md: '69%' }} */}

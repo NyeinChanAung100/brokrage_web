@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CanvasJSReact from '@canvasjs/react-stockcharts';
 import { position, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 

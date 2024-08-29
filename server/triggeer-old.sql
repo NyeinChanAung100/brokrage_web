@@ -218,8 +218,12 @@ BEGIN
     DECLARE i INT;
 
     -- Initialize the current market cap and total supply
-    SELECT market_cap, supply INTO new_market_cap, new_supply
+    SELECT market_cap INTO new_market_cap
     FROM market_cap
+    WHERE item_id = NEW.item_id;
+
+    SELECT supply INTO new_supply
+    FROM total_supply
     WHERE item_id = NEW.item_id;
 
     -- Loop to adjust price for each unit
@@ -228,12 +232,12 @@ BEGIN
         -- Update market cap based on transaction
         IF NEW.trade_type = 'buy' THEN
             -- Increase market cap by the price of one unit
-            SET new_market_cap = new_market_cap + NEW.before_price;
+            SET new_market_cap = new_market_cap + NEW.after_price;
             -- Decrease total supply
             SET new_supply = new_supply - 1;
         ELSEIF NEW.trade_type = 'sell' THEN
             -- Decrease market cap by the price of one unit
-            SET new_market_cap = new_market_cap - NEW.before_price;
+            SET new_market_cap = new_market_cap - NEW.after_price;
             -- Increase total supply
             SET new_supply = new_supply + 1;
         END IF;
@@ -242,7 +246,8 @@ BEGIN
         IF new_supply > 0 THEN
             SET new_price = new_market_cap / new_supply;
         ELSE
-            SET new_price = NULL; -- Handle case when supply is zero
+            -- raise exception or set price to 0
+            SET new_price = 0; -- Handle case when supply is zero
         END IF;
 
         -- Optionally update the prices table

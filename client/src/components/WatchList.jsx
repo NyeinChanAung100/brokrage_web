@@ -1,35 +1,45 @@
-import { Box, Flex, StackDivider, Text, VStack } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react';
+import productData from '../data/watchList.json';
 
 function WatchList() {
   return (
-    <Flex width={'90%'} h={'100%'} justifyContent={'space-between'}>
-      <Box w={'200px'} textAlign={'start'}>
-        <Text>
-          <p>name</p>
-          <p>name</p>
-          <p>name</p>
-          <p>name</p>
-          <p>name</p>
-        </Text>
-      </Box>
-      <Box w={'150px'} textAlign={'end'}>
-        <Text>
-          <p>price</p>
-        </Text>
-      </Box>
-      <Box>
-        <Text>
-          <p>chart</p>
-        </Text>
-      </Box>
-      <Box>
-        <Text>
-          <p>change in percentage</p>
-        </Text>
-      </Box>
-      <Box></Box>
-      <Box></Box>
-    </Flex>
+    <TableContainer>
+      <Table size="lg">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Price</Th>
+
+            <Th>%Change</Th>
+            <Th>Volume</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {productData?.map((data) => {
+            return (
+              <>
+                <Tr>
+                  <Th key={data.productName}>{data.productName}</Th>
+                  <Th key={data.lastPrice}>{data.lastPrice}</Th>
+                  <Th key={data.percentChangeDay}>{data.percentChangeDay}</Th>
+                  <Th key={data.volume30DayRange}>{data.volume30DayRange}</Th>
+                </Tr>
+              </>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
 

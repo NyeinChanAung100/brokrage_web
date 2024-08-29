@@ -176,6 +176,9 @@ END $$
 DELIMITER ;
 
 -- ////////////////////////////////
+-- i want to make dynamic market. the price is depend on total supply and market cap. 
+-- example if the supply is 10 and the market cap is 10,000. the price will be 1,000 for 1 unit because price = Market cap/total supply(10,000/10). if someone bought it 1 unit at 1,000. the price will change in another unit because market cap will increase +1,000 then 11,000. the total supply will decrease -1 then 9. so the new price is (11,000/9) for 1 unit. do u understand?
+
 
 DELIMITER $$
 

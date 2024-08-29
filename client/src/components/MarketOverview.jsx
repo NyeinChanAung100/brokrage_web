@@ -40,7 +40,7 @@ function EachItem({ name, price, tran, mark, unit }) {
         </Text>
         <Box>
           {mark ? (
-            <IoCheckmarkCircle color='green' />
+            <IoCheckmarkCircle color="green" />
           ) : (
             <IoBookmarks
             //   color={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
@@ -57,9 +57,9 @@ function MarketOverview() {
     <Flex flexDirection={'column'} w={'100%'}>
       <UserAssetsValue />
       <VStack
-        divider={<StackDivider borderColor='gray.200' />}
+        divider={<StackDivider borderColor="gray.200" />}
         spacing={4}
-        align='stretch'
+        align="stretch"
         w={'95%'}
         //   ml={'5px'}
         p={'30px'}

@@ -36,7 +36,7 @@ CREATE TABLE market_cap (
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -69,12 +69,27 @@ CREATE TABLE transactions (
     item_id INT NOT NULL,
     before_price DECIMAL(10, 2) NOT NULL,
     after_price DECIMAL(10, 2) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
     quantity INT NOT NULL,
     trade_type ENUM('buy', 'sell') NOT NULL,
     trade_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
+
+-- CREATE TABLE order (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     user_id INT NOT NULL,
+--     item_id INT NOT NULL,
+--     price DECIMAL(10, 2) NOT NULL,
+--     status ENUM('pending', 'filled', 'cancelled') NOT NULL,
+--     quantity INT NOT NULL,
+--     filled_quantity INT DEFAULT 0,
+--     order_type ENUM('buy', 'sell') NOT NULL,
+--     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (user_id) REFERENCES users(id),
+--     FOREIGN KEY (item_id) REFERENCES items(id)
+-- );
 
 CREATE TABLE watchlist (
     user_id INT NOT NULL,

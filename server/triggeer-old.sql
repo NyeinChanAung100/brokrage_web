@@ -176,6 +176,9 @@ END $$
 DELIMITER ;
 
 -- ////////////////////////////////
+-- i want to make dynamic market. the price is depend on total supply and market cap. 
+-- example if the supply is 10 and the market cap is 10,000. the price will be 1,000 for 1 unit because price = Market cap/total supply(10,000/10). if someone bought it 1 unit at 1,000. the price will change in another unit because market cap will increase +1,000 then 11,000. the total supply will decrease -1 then 9. so the new price is (11,000/9) for 1 unit. do u understand?
+
 
 DELIMITER $$
 
@@ -218,8 +221,12 @@ BEGIN
     DECLARE i INT;
 
     -- Initialize the current market cap and total supply
-    SELECT market_cap, supply INTO new_market_cap, new_supply
+    SELECT market_cap INTO new_market_cap
     FROM market_cap
+    WHERE item_id = NEW.item_id;
+
+    SELECT supply INTO new_supply
+    FROM total_supply
     WHERE item_id = NEW.item_id;
 
     -- Loop to adjust price for each unit
@@ -228,12 +235,12 @@ BEGIN
         -- Update market cap based on transaction
         IF NEW.trade_type = 'buy' THEN
             -- Increase market cap by the price of one unit
-            SET new_market_cap = new_market_cap + NEW.before_price;
+            SET new_market_cap = new_market_cap + NEW.after_price;
             -- Decrease total supply
             SET new_supply = new_supply - 1;
         ELSEIF NEW.trade_type = 'sell' THEN
             -- Decrease market cap by the price of one unit
-            SET new_market_cap = new_market_cap - NEW.before_price;
+            SET new_market_cap = new_market_cap - NEW.after_price;
             -- Increase total supply
             SET new_supply = new_supply + 1;
         END IF;
@@ -242,7 +249,8 @@ BEGIN
         IF new_supply > 0 THEN
             SET new_price = new_market_cap / new_supply;
         ELSE
-            SET new_price = NULL; -- Handle case when supply is zero
+            -- raise exception or set price to 0
+            SET new_price = 0; -- Handle case when supply is zero
         END IF;
 
         -- Optionally update the prices table

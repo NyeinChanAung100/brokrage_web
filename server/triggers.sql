@@ -51,36 +51,60 @@ DELIMITER ;
 
 -- ////////////////////////////////
 
-DELIMITER $$
+DELIMITER //
+
+CREATE TRIGGER update_market_and_price
 AFTER INSERT ON transactions
 FOR EACH ROW
 BEGIN
-    DECLARE new_market_cap DECIMAL(20, 2);
-    DECLARE new_price DECIMAL(10, 2);
-    DECLARE remaining_supply INT;
+    DECLARE new_market_cap DECIMAL(10, 2);
+    DECLARE new_supply DECIMAL(10, 2);
+    DECLARE total_price DECIMAL(10, 2);
+    DECLARE i INT;
 
-    -- Decrease market cap by the value of the transaction
-    SET new_market_cap = (SELECT market_cap FROM market_cap WHERE item_id = NEW.item_id) - (NEW.quantity * NEW.price);
-
-    -- Increase total supply by the quantity sold
-    SET remaining_supply = (SELECT supply FROM total_supply WHERE item_id = NEW.item_id) + NEW.quantity;
-
-    -- Update the market cap
-    UPDATE market_cap
-    SET market_cap = new_market_cap
+    -- Initialize the current market cap and total supply
+    SELECT market_cap INTO new_market_cap
+    FROM market_cap
     WHERE item_id = NEW.item_id;
 
-    -- Update the total supply
-    UPDATE total_supply
-    SET supply = remaining_supply
+    SELECT supply INTO new_supply
+    FROM total_supply
     WHERE item_id = NEW.item_id;
 
-    -- Recalculate and update the price
-    SET new_price = new_market_cap / remaining_supply;
-    UPDATE prices
-    SET price = new_price
-    WHERE item_id = NEW.item_id;
-END $$
+    -- set before price
+    SET NEW.before_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
 
-i want to make dynamic market. the price is depend on total supply and market cap. 
-example if the supply is 10 and the market cap is 10,000. the price will be 1,000 for 1 unit because price = Market cap/total supply(10,000/10). if someone bought it 1 unit at 1,000. the price will change in another unit because market cap will increase +1,000 then 11,000. the total supply will decrease -1 then 9. so the new price is (11,000/9) for 1 unit. do u understand?
+    -- Loop to adjust price for each unit
+    SET i = 1;
+    WHILE i <= NEW.quantity DO
+        -- Update market cap based on transaction
+        IF NEW.trade_type = 'buy' THEN
+            IF new_supply > 0 THEN
+                update supply set supply = supply - 1 where item_id = NEW.item_id;
+                update market_cap set market_cap = market_cap + NEW.after_price where item_id = NEW.item_id;
+                SET new_supply = new_supply - 1;
+                -- 
+            ELSE
+                -- supply is already 0, no need to update
+                -- you can raise an exception or handle it in some other way
+            END IF;
+            -- it will be better to use the above way and auto update the price
+        ELSEIF NEW.trade_type = 'sell' THEN
+            IF new_market_cap - NEW.after_price >= 0 THEN
+                update supply set supply = supply + 1 where item_id = NEW.item_id;
+                update market_cap set market_cap = market_cap - NEW.after_price where item_id = NEW.item_id;
+            ELSE
+                -- handle case when market cap is less than 0
+                -- you can raise an exception or handle it in some other way
+            END IF;
+        END IF;
+
+        SET i = i + 1;
+    END WHILE;
+
+    -- set after price
+    SET NEW.after_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
+
+END //
+
+DELIMITER ;

@@ -32,7 +32,7 @@ import DetailedAccordion from './DetailedAccordion';
 const LinkItems = [
   { name: 'Portfolio', icon: FiHome },
   { name: 'Trade', icon: FiTrendingUp },
-  { name: 'Detailed Analysis', icon: FiTrendingUp },
+  // { name: 'Detailed Analysis', icon: FiTrendingUp },
 
   { name: 'Market Overview', icon: FaBoxesStacked },
   { name: 'Watchlist', icon: FiUsers },

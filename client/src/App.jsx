@@ -10,6 +10,8 @@ import DepositForm from './pages/Testing';
 import MarketOverview from './components/MarketOverview';
 import WatchList from './components/WatchList';
 import DetailedAccordion from './components/DetailedAccordion';
+import Home from './pages/Home';
+import Trade from './components/trade';
 
 function App() {
   return (
@@ -22,14 +24,16 @@ function App() {
     >
       <Nav />
       <Routes>
-        <Route path='/test' element={<DetailedAccordion />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/testing' element={<DepositForm />} />
+        <Route path='/moretest' element={<Trade />} />
 
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='portfolio' element={<Portfolio />} />
           <Route path='detailedanalysis/:id' element={<Detailed />} />
           <Route path='marketoverview' element={<MarketOverview />} />
           <Route path='watchlist' element={<WatchList />} />
+          {/* <Route path='trade' element={<Trade />} /> */}
 
           <Route path='*' element={<Portfolio />} />
         </Route>

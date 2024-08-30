@@ -24,7 +24,7 @@ CREATE TABLE price_log (
 CREATE TABLE total_supply (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
-    supply INT NOT NULL,
+    supply DECIMAL(10,2) NOT NULL,
     initial_supply INT DEFAULT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id)
 );

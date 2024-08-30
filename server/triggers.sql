@@ -50,17 +50,16 @@ END $$
 DELIMITER ;
 
 -- ////////////////////////////////
-
 DELIMITER //
 
 CREATE TRIGGER update_market_and_price
-AFTER INSERT ON transactions
+BEFORE INSERT ON transactions
 FOR EACH ROW
 BEGIN
-    DECLARE new_market_cap DECIMAL(10, 2);
-    DECLARE new_supply DECIMAL(10, 2);
-    DECLARE total_price DECIMAL(10, 2);
-    DECLARE i INT;
+    DECLARE new_market_cap DECIMAL(20, 2);
+    DECLARE new_supply INT;
+    DECLARE total_price DECIMAL(20, 2) DEFAULT 0.00;
+    DECLARE i INT DEFAULT 1;
 
     -- Initialize the current market cap and total supply
     SELECT market_cap INTO new_market_cap
@@ -71,39 +70,43 @@ BEGIN
     FROM total_supply
     WHERE item_id = NEW.item_id;
 
-    -- set before price
+    -- Ensure that variables are initialized properly
+    IF new_market_cap IS NULL OR new_supply IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Item not found or invalid market_cap/supply';
+    END IF;
+
+    -- Set before price
     SET NEW.before_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
 
     -- Loop to adjust price for each unit
-    SET i = 1;
     WHILE i <= NEW.quantity DO
-        -- Update market cap based on transaction
         IF NEW.trade_type = 'buy' THEN
             IF new_supply > 0 THEN
-                update supply set supply = supply - 1 where item_id = NEW.item_id;
-                update market_cap set market_cap = market_cap + NEW.after_price where item_id = NEW.item_id;
+                -- Decrease supply and increase market cap
+                UPDATE total_supply SET supply = supply - 1 WHERE item_id = NEW.item_id;
+                UPDATE market_cap SET market_cap = market_cap + NEW.before_price WHERE item_id = NEW.item_id;
                 SET new_supply = new_supply - 1;
-                total_price = total_price + (select price from prices where item_id = NEW.item_id);
+                SET total_price = total_price + NEW.before_price;
             ELSE
-                -- supply is already 0, no need to update
-                -- you can raise an exception or handle it in some other way
+                -- Handle case where supply is 0
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot buy: Supply is zero';
             END IF;
-            -- it will be better to use the above way and auto update the price
         ELSEIF NEW.trade_type = 'sell' THEN
-            IF new_market_cap - NEW.after_price >= 0 THEN
-                update supply set supply = supply + 1 where item_id = NEW.item_id;
-                update market_cap set market_cap = market_cap - NEW.after_price where item_id = NEW.item_id;
-                total_price = total_price + (select price from prices where item_id = NEW.item_id);
+            IF new_market_cap >= NEW.before_price THEN
+                -- Increase supply and decrease market cap
+                UPDATE total_supply SET supply = supply + 1 WHERE item_id = NEW.item_id;
+                UPDATE market_cap SET market_cap = market_cap - NEW.before_price WHERE item_id = NEW.item_id;
+                SET total_price = total_price + NEW.before_price;
             ELSE
-                -- handle case when market cap is less than 0
-                -- you can raise an exception or handle it in some other way
+                -- Handle case where market cap is too low
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot sell: Insufficient market cap';
             END IF;
         END IF;
 
         SET i = i + 1;
     END WHILE;
 
-    -- set after price
+    -- Set after price (you might need to update the price based on your business logic here)
     SET NEW.after_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
     SET NEW.total_price = total_price;
 

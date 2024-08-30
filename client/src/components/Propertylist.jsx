@@ -29,6 +29,7 @@
 // export default Propertylist;
 import {
   Box,
+  Button,
   Flex,
   Stat,
   StatArrow,
@@ -82,12 +83,20 @@ function Propertylist(props) {
           </StatHelpText>
         </Stat>
       </Flex>
-      <Box width='100px' paddingTop={'10px'} height={'100%'}>
-        <Stat mt={'-8px'}>
+      <Box width='100px' height={'100%'}>
+        <Stat>
           <StatLabel>Unit price</StatLabel>
           <StatNumber fontSize={'20px'} color={textColor}>
             {props.unitprice}
           </StatNumber>
+
+          <Button
+            colorScheme='teal'
+            size='xs'
+            border={'2px outset rgb(252,249,250)'}
+          >
+            sell now
+          </Button>
         </Stat>
       </Box>
     </Flex>

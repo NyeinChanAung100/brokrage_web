@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   StackDivider,
   Stat,
@@ -34,19 +35,35 @@ function EachItem({ name, price, tran, mark, unit }) {
           23.36%
         </StatHelpText>
       </Stat>
-      <Flex w={'200px'} textAlign={'right'} justifyContent={'space-between'}>
-        <Text w={'150px'} color={textColor}>
-          ${price}
-        </Text>
-        <Box>
-          {mark ? (
-            <IoCheckmarkCircle color='green' />
-          ) : (
-            <IoBookmarks
-            //   color={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
-            />
-          )}
-        </Box>
+      <Flex
+        w={'100px'}
+        flexDirection={'column'}
+        // textAlign={'right'}
+        justifyContent={'space-between'}
+      >
+        <Flex>
+          <Text w={'150px'} color={textColor}>
+            ${price}
+          </Text>
+          <Box>
+            {mark ? (
+              <IoCheckmarkCircle color='green' />
+            ) : (
+              <IoBookmarks
+              //   color={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
+              />
+            )}
+          </Box>
+        </Flex>
+
+        <Button
+          colorScheme='red'
+          size='xs'
+          border={'2px outset rgb(252,249,250)'}
+          w={'70px'}
+        >
+          Buy now
+        </Button>
       </Flex>
     </Flex>
   );

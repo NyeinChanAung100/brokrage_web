@@ -18,10 +18,6 @@ function LineChartCompo() {
   return (
     <Flex
       w={'100%'}
-      // border={'5px solid blue'}
-      // wrap={'wrap'}
-      // position={'fixed'}
-      // top={'69px'}
       flexDirection={{ base: 'column', md: 'row-reverse' }}
       h={'100%'}
       overflow={'hidden'}
@@ -33,7 +29,6 @@ function LineChartCompo() {
         width={{ base: '100%', md: '35%' }}
         padding={'5px'}
         className='lichcom'
-        // border={'10px solid blue'}
         overflow={'scroll'}
         bg={useColorModeValue('white', 'gray.900')}
         css={{
@@ -55,10 +50,8 @@ function LineChartCompo() {
         ))}
       </Flex>
 
-      {/* w={{ base: '100%', md: '69%' }} */}
       <Flex
         width={{ base: '100%', md: '65%' }}
-        // border={'10px solid black'}
         flexDirection={'column'}
         overflow={'scroll'}
         marginRight={'10px'}
@@ -71,14 +64,11 @@ function LineChartCompo() {
         }}
       >
         <Flex justifyContent={'space-evenly'}>
-          {' '}
           <TotalAsset />
           <Flex
             width={'48%'}
             bg={useColorModeValue('white', '#475C6C')}
             borderRadius={'15px'}
-            // alignItems={'center'}
-            // paddingTop={'-20px'}
           >
             <Doughnut
               data={{
@@ -95,6 +85,21 @@ function LineChartCompo() {
                     data: [80, 90, 70],
                   },
                 ],
+              }}
+              options={{
+                tooltips: {
+                  mode: 'index',
+                  intersect: false,
+                },
+                hover: {
+                  mode: 'index',
+                  intersect: false,
+                },
+                plugins: {
+                  title: {
+                    text: 'Revenue Breakdown',
+                  },
+                },
               }}
             />
           </Flex>
@@ -119,25 +124,31 @@ function LineChartCompo() {
               ],
             }}
             options={{
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+              },
+              hover: {
+                mode: 'index',
+                intersect: false,
+              },
               plugins: {
                 title: {
-                  text: 'Montly revenue and cost',
+                  text: 'Monthly Revenue and Cost',
                 },
               },
             }}
           />
         </Flex>
-        {/* <Flex w={{ base: '100%', md: '29%' }} flexDirection={'column'}> */}
         <Flex>
           <Bar
             data={{
               labels: ['A', 'B', 'C', 'D', 'E', 'F'],
               datasets: [
                 {
-                  label: 'profit',
+                  label: 'Profit',
                   data: [200, 300, 400, 350, 382, 550],
-                  // backgroundColor: ['red', 'blue', 'green'],
-                  // borderRadius: 5,
+                  borderRadius: 5,
                 },
                 {
                   label: 'Loss',
@@ -147,18 +158,23 @@ function LineChartCompo() {
               ],
             }}
             options={{
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+              },
+              hover: {
+                mode: 'index',
+                intersect: false,
+              },
               plugins: {
                 title: {
-                  text: 'profit and lost',
+                  text: 'Profit and Loss',
                 },
               },
             }}
-          />{' '}
+          />
         </Flex>
-        {/* */}
       </Flex>
-
-      {/* </Flex> */}
     </Flex>
   );
 }

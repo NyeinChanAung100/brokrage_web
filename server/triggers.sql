@@ -83,7 +83,7 @@ BEGIN
                 update supply set supply = supply - 1 where item_id = NEW.item_id;
                 update market_cap set market_cap = market_cap + NEW.after_price where item_id = NEW.item_id;
                 SET new_supply = new_supply - 1;
-                -- 
+                total_price = total_price + (select price from prices where item_id = NEW.item_id);
             ELSE
                 -- supply is already 0, no need to update
                 -- you can raise an exception or handle it in some other way
@@ -93,6 +93,7 @@ BEGIN
             IF new_market_cap - NEW.after_price >= 0 THEN
                 update supply set supply = supply + 1 where item_id = NEW.item_id;
                 update market_cap set market_cap = market_cap - NEW.after_price where item_id = NEW.item_id;
+                total_price = total_price + (select price from prices where item_id = NEW.item_id);
             ELSE
                 -- handle case when market cap is less than 0
                 -- you can raise an exception or handle it in some other way
@@ -104,6 +105,7 @@ BEGIN
 
     -- set after price
     SET NEW.after_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
+    SET NEW.total_price = total_price;
 
 END //
 

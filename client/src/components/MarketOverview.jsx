@@ -35,7 +35,6 @@ function EachItem({ name, price, tran, mark, unit }) {
           23.36%
         </StatHelpText>
       </Stat>
-<<<<<<< HEAD
       <Flex
         w={'100px'}
         flexDirection={'column'}
@@ -65,21 +64,6 @@ function EachItem({ name, price, tran, mark, unit }) {
         >
           Buy now
         </Button>
-=======
-      <Flex w={'200px'} textAlign={'right'} justifyContent={'space-between'}>
-        <Text w={'150px'} color={textColor}>
-          ${price}
-        </Text>
-        <Box>
-          {mark ? (
-            <IoCheckmarkCircle color="green" />
-          ) : (
-            <IoBookmarks
-            //   color={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
-            />
-          )}
-        </Box>
->>>>>>> 40eb3e23bc8a220d4ca018dc0abbb15bac7e14a1
       </Flex>
     </Flex>
   );
@@ -90,9 +74,9 @@ function MarketOverview() {
     <Flex flexDirection={'column'} w={'100%'}>
       <UserAssetsValue />
       <VStack
-        divider={<StackDivider borderColor="gray.200" />}
+        divider={<StackDivider borderColor='gray.200' />}
         spacing={4}
-        align="stretch"
+        align='stretch'
         w={'95%'}
         //   ml={'5px'}
         p={'30px'}

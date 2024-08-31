@@ -47,17 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->get_result();
     
         if ($result->num_rows === 0) {
-            http_response_code(404);
-            echo json_encode(["error" => "Balance information not found"]);
-            exit();
+            // Balance information not found, set balance to 0
+            $balance = 0;
+        } else {
+            // Fetch balance data
+            $balance = $result->fetch_assoc()['balance'];
         }
-    
-        // Fetch balance data
-        $balance = $result->fetch_assoc();
-    
+
         // Success: Return balance
-        echo json_encode(["success" => "Balance retrieved successfully", "balance" => $balance['balance']]);
-    
+        echo json_encode(["success" => "Balance retrieved successfully", "balance" => $balance]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);

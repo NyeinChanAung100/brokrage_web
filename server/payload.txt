@@ -36,3 +36,11 @@
   "amount": 1000
 }
 
+// trade
+// http://localhost/brokrage_web/server/market/trade.php
+{
+  "user_id": 1,
+  "item_id": 1,
+  "trade_type": "buy",
+  "quantity": 1
+ }

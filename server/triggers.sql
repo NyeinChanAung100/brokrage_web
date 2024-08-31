@@ -15,9 +15,13 @@ BEGIN
     -- Calculate the new price
     SET new_price = NEW.market_cap / current_supply;
 
-    -- Update the price in the prices table
-    INSERT INTO prices (item_id, price)
-    VALUES (NEW.item_id, new_price);
+    -- insert if doesnt exist or Update the price in the prices table
+    IF (SELECT COUNT(*) FROM prices WHERE item_id = NEW.item_id) = 0 THEN
+        INSERT INTO prices (item_id, price) VALUES (NEW.item_id, new_price);
+    ELSE
+        UPDATE prices SET price = new_price WHERE item_id = NEW.item_id;
+    END IF;
+    
 
 END $$
 
@@ -41,25 +45,30 @@ BEGIN
     -- Calculate the new price
     SET new_price = current_market_cap / NEW.supply;
 
-    -- Update the price in the prices table
-    INSERT INTO prices (item_id, price)
-    VALUES (NEW.item_id, new_price);
+    -- insert if doesnt exist or Update the price in the prices table
+    IF (SELECT COUNT(*) FROM prices WHERE item_id = NEW.item_id) = 0 THEN
+        INSERT INTO prices (item_id, price) VALUES (NEW.item_id, new_price);
+    ELSE
+        UPDATE prices SET price = new_price WHERE item_id = NEW.item_id;
+    END IF;
+    
 
 END $$
 
 DELIMITER ;
 
 -- ////////////////////////////////
+
 DELIMITER //
 
 CREATE TRIGGER update_market_and_price
 BEFORE INSERT ON transactions
 FOR EACH ROW
 BEGIN
-    DECLARE new_market_cap DECIMAL(20, 2);
-    DECLARE new_supply INT;
-    DECLARE total_price DECIMAL(20, 2) DEFAULT 0.00;
-    DECLARE i INT DEFAULT 1;
+    DECLARE new_market_cap DECIMAL(10, 2);
+    DECLARE new_supply DECIMAL(10, 2);
+    DECLARE total_price DECIMAL(10, 2) DEFAULT 0;
+    DECLARE i INT;
 
     -- Initialize the current market cap and total supply
     SELECT market_cap INTO new_market_cap
@@ -70,46 +79,47 @@ BEGIN
     FROM total_supply
     WHERE item_id = NEW.item_id;
 
-    -- Ensure that variables are initialized properly
-    IF new_market_cap IS NULL OR new_supply IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Item not found or invalid market_cap/supply';
-    END IF;
-
     -- Set before price
     SET NEW.before_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
 
     -- Loop to adjust price for each unit
+    SET i = 1;
     WHILE i <= NEW.quantity DO
+        -- Update market cap and supply based on transaction type
         IF NEW.trade_type = 'buy' THEN
             IF new_supply > 0 THEN
-                -- Decrease supply and increase market cap
                 UPDATE total_supply SET supply = supply - 1 WHERE item_id = NEW.item_id;
-                UPDATE market_cap SET market_cap = market_cap + NEW.before_price WHERE item_id = NEW.item_id;
+                UPDATE market_cap SET market_cap = market_cap + NEW.after_price WHERE item_id = NEW.item_id;
                 SET new_supply = new_supply - 1;
-                SET total_price = total_price + NEW.before_price;
-            ELSE
-                -- Handle case where supply is 0
-                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot buy: Supply is zero';
+                SET total_price = total_price + (SELECT price FROM prices WHERE item_id = NEW.item_id);
             END IF;
         ELSEIF NEW.trade_type = 'sell' THEN
-            IF new_market_cap >= NEW.before_price THEN
-                -- Increase supply and decrease market cap
+            IF new_market_cap - NEW.after_price >= 0 THEN
                 UPDATE total_supply SET supply = supply + 1 WHERE item_id = NEW.item_id;
-                UPDATE market_cap SET market_cap = market_cap - NEW.before_price WHERE item_id = NEW.item_id;
-                SET total_price = total_price + NEW.before_price;
-            ELSE
-                -- Handle case where market cap is too low
-                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot sell: Insufficient market cap';
+                UPDATE market_cap SET market_cap = market_cap - NEW.after_price WHERE item_id = NEW.item_id;
+                SET total_price = total_price + (SELECT price FROM prices WHERE item_id = NEW.item_id);
             END IF;
         END IF;
 
         SET i = i + 1;
     END WHILE;
 
-    -- Set after price (you might need to update the price based on your business logic here)
+    -- add or remove from user balance and user-assests
+
+    IF NEW.trade_type = 'buy' THEN
+        UPDATE user_balance SET balance = balance - total_price WHERE user_id = NEW.user_id;
+        UPDATE user_assets SET quantity = quantity + NEW.quantity WHERE user_id = NEW.user_id AND item_id = NEW.item_id;
+    ELSEIF NEW.trade_type = 'sell' THEN
+        UPDATE user_balance SET balance = balance + total_price WHERE user_id = NEW.user_id;
+        UPDATE user_assets SET quantity = quantity - NEW.quantity WHERE user_id = NEW.user_id AND item_id = NEW.item_id;
+    END IF;
+
+    -- Set after price
     SET NEW.after_price = (SELECT price FROM prices WHERE item_id = NEW.item_id);
     SET NEW.total_price = total_price;
 
 END //
 
 DELIMITER ;
+
+-- insert into transactions (user_id, item_id, quantity, trade_type) values (1,2,2,'buy');

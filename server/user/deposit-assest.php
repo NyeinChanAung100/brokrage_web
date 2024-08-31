@@ -39,7 +39,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Start a transaction
         $conn->begin_transaction();
-    
+
+        // check if the item exists if doesnt exist return this items is not supported to deposit
+        $sql = "SELECT * FROM items WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $conn->error);
+        }
+        $stmt->bind_param('i', $item_id);
+        if (!$stmt->execute()) {
+            throw new Exception("Execute failed: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            echo json_encode(["error" => "This item is not supported to deposit"]);
+            return;
+        }
+
         // Insert or update deposit record
         $sql = "INSERT INTO user_assets (user_id, item_id, quantity, acquired_date)
                 VALUES (?, ?, ?, CURRENT_DATE)

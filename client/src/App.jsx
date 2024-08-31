@@ -12,6 +12,8 @@ import WatchList from './components/WatchList';
 import DetailedAccordion from './components/DetailedAccordion';
 import Home from './pages/Home';
 import Trade from './components/trade';
+import BuyPage from './components/BuyPage';
+import SellPage from './components/SellPage';
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
       <Routes>
         <Route path='/home' element={<Home />} />
         <Route path='/testing' element={<DepositForm />} />
-        <Route path='/moretest' element={<Trade />} />
+        <Route path='/purchase' element={<BuyPage />} />
+        <Route path='/sell' element={<SellPage />} />
 
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='portfolio' element={<Portfolio />} />

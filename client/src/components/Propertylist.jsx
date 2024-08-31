@@ -40,15 +40,25 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
+// import InitialFocus from './BuySellModal';
+import { useState } from 'react';
+// Adjust the import path as needed
 
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+// import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function Propertylist(props) {
-  const { colorMode } = useColorMode(); // Access the current color mode
-  const textColor = props.tran === 'up' ? 'green' : 'red'; // Conditionally set text color
-  // const Icon = props.tran === 'up' ? FaArrowUp : FaArrowDown;
+  const { colorMode } = useColorMode();
+  const textColor = props.tran === 'up' ? 'green' : 'red';
   const upordown = props.tran === 'up' ? 'increase' : 'decrease';
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // const handleOpenModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
   return (
     <Flex
       width='100%'
@@ -62,16 +72,6 @@ function Propertylist(props) {
       borderBottom={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
     >
       <Flex alignItems='center'>
-        {/* <Icon color={textColor} /> */}
-        {/* <Text
-          marginLeft='8px'
-          width='200px'
-          paddingTop={'10px'}
-          height='50px'
-          color={textColor}
-        >
-          {props.item}
-        </Text> */}
         <Stat>
           <StatLabel>{props.item}</StatLabel>
           <StatNumber fontSize={'20px'} color={textColor}>
@@ -91,12 +91,14 @@ function Propertylist(props) {
           </StatNumber>
 
           <Button
+            // onClick={handleOpenModal}
             colorScheme='teal'
             size='xs'
             border={'2px outset rgb(252,249,250)'}
           >
             sell now
           </Button>
+          {/* <InitialFocus isOpen={isModalOpen} onClose={handleCloseModal} /> */}
         </Stat>
       </Box>
     </Flex>

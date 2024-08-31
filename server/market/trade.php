@@ -57,20 +57,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // $stmt->execute();
     if($trade_type == "buy") {
         // Check if user has enough balance
-        $sql = "SELECT balance FROM user_balance WHERE id = ?";
+        $sql = "SELECT balance FROM user_balance WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
         // check the item price
-        $sql = "SELECT price FROM items WHERE id = ?";
+        $sql = "SELECT price FROM prices WHERE item_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $item_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $item = $result->fetch_assoc();
-        if($user['balance'] < $item['price']) {
+        $price = $result->fetch_assoc();
+        $user['balance'] = $user ? $user['balance'] : 0;
+
+        if($price['price'] == null) {
+            echo json_encode(["success" => false, "message" => "Item price not found."]);
+            exit;
+        }
+
+        if($user['balance'] < $price['price']) {
             echo json_encode(["success" => false, "message" => "Insufficient balance."]);
             exit;
         }

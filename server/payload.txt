@@ -36,6 +36,20 @@
   "amount": 1000
 }
 
+// view user's assest
+// http://localhost/brokrage_web/server/user/view-user-assests.php
+{
+  "user_id": 1
+}
+
+// view-item's price
+// http://localhost/brokrage_web/server/user/view-item-price.php
+{
+  "user_id": 1
+}
+
+
+
 // trade
 // http://localhost/brokrage_web/server/market/trade.php
 {

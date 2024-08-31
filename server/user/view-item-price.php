@@ -20,14 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $input = json_decode(file_get_contents('php://input'), true);
     
         // Check if required fields are present
-        if (!isset($input['user_id'])) {
+        if (!isset($input['item_id'])) {
             http_response_code(400);
             echo json_encode(["error" => "Missing required fields"]);
             exit();
         }
     
         // Sanitize input data
-        $user_id = intval($input['user_id']);
+        $user_id = intval($input['item_id']);
     
         // Validate user_id (basic validation to check if it's a positive integer)
         if ($user_id <= 0) {
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
         // Query to fetch user balance
-        $sql = "SELECT balance FROM user_balance WHERE user_id = ?";
+        $sql = "SELECT price FROM prices WHERE item_id = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             throw new Exception("Prepare failed: " . $conn->error);
@@ -47,15 +47,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->get_result();
     
         if ($result->num_rows === 0) {
-            // Balance information not found, set balance to 0
-            $balance = 0;
+            echo json_encode(["error" => "Item is not listed"]);
+            exit();
         } else {
-            // Fetch balance data
-            $balance = $result->fetch_assoc()['balance'];
+            $price = $result->fetch_assoc()['price'];
         }
 
-        // Success: Return balance
-        echo json_encode(["success" => "Balance retrieved successfully", "balance" => $balance]);
+        echo json_encode(["success" => "price is retrieved successfully", "balance" => $price]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);

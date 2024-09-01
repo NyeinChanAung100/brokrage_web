@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import Trade from './components/trade';
 import BuyPage from './components/BuyPage';
 import SellPage from './components/SellPage';
+import MyComponent from './OneMoreTest';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/home' element={<Home />} />
-        <Route path='/testing' element={<Voucher />} />
+        <Route path='/testing' element={<MyComponent />} />
         <Route path='/purchase' element={<BuyPage />} />
         <Route path='/sell' element={<SellPage />} />
 

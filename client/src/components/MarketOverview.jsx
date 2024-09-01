@@ -17,22 +17,24 @@ import { useColorModeValue } from '@chakra-ui/react';
 import UserAssetsValue from './UserAssetsValue';
 import { IoBookmarks, IoCheckmarkCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import { itemAtom } from '../atoms/itemAtom';
+
 import { useSetRecoilState } from 'recoil';
+import { allItemAtom } from '../atoms/allItemAtom';
 
 function EachItem({ name, price, tran, mark, unit, unitprice }) {
   const { colorMode } = useColorMode();
   const textColor = tran === 'up' ? 'green' : 'red';
   const upordown = tran === 'up' ? 'increase' : 'decrease';
-  const setItemInfo = useSetRecoilState(itemAtom);
+  const setAllItemInfo = useSetRecoilState(allItemAtom);
 
   const handleClick = () => {
-    setItemInfo({
+    setAllItemInfo({
       name: name,
       price: price,
       unitprice: unitprice,
       unit: unit, // Fixed this to pass the correct unit instead of tran
     });
+    // console.log('all item atom:', allItemAtom);
   };
 
   return (

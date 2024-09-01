@@ -126,8 +126,8 @@ function SellPage() {
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.800', 'white');
   const { isOpen, onOpen, onClose } = useModal();
-  console.log(itemAtom.unitprice, ' : unitprice');
-  console.log(itemAtom, ' : item');
+  // console.log(itemAtom.unitprice, ' : unitprice');
+  // console.log(itemAtom, ' : item');
   useEffect(() => {
     // When the component mounts, set the selected item to match the item in Recoil state
     setSelectedItem(itemInfo.name);

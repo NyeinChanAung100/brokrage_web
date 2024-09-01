@@ -17,8 +17,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-// Adjust the import path as needed
-
 // import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function Propertylist(props) {
@@ -37,15 +35,7 @@ function Propertylist(props) {
     });
   };
   console.log('iteminfo:', itemvalue);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const handleOpenModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setIsModalOpen(false);
-  // };
   return (
     <Flex
       width='100%'

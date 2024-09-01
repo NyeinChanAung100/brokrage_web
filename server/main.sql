@@ -12,6 +12,14 @@ CREATE TABLE prices (
     FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
+CREATE TABLE price_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);
+
 CREATE TABLE total_supply (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,

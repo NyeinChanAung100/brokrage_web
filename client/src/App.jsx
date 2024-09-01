@@ -27,7 +27,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/home' element={<Home />} />
-        <Route path='/testing' element={<DepositForm />} />
+        <Route path='/testing' element={<Voucher />} />
         <Route path='/purchase' element={<BuyPage />} />
         <Route path='/sell' element={<SellPage />} />
 

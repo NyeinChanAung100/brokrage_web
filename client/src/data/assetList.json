@@ -1,122 +1,122 @@
 [
   {
     "item": "Citra",
-    "unitPrice": "$2",
+    "unitPrice": 2,
     "tran": "up",
-    "price": "4534$"
+    "price": 4534
   },
   {
     "item": "Galaxy",
-    "unitPrice": "$3",
+    "unitPrice": 3,
     "tran": "down",
-    "price": "2380$"
+    "price": 2380
   },
   {
     "item": "Mosaic",
-    "unitPrice": "$2.5",
+    "unitPrice": 2.5,
     "tran": "up",
-    "price": "4987$"
+    "price": 4987
   },
   {
     "item": "Cascade",
-    "unitPrice": "$1.8",
+    "unitPrice": 1.8,
     "tran": "down",
-    "price": "3495$"
+    "price": 3495
   },
   {
     "item": "Simcoe",
-    "unitPrice": "$2.1",
+    "unitPrice": 2.1,
     "tran": "up",
-    "price": "2789$"
+    "price": 2789
   },
   {
     "item": "Amarillo",
-    "unitPrice": "$2.3",
+    "unitPrice": 2.3,
     "tran": "up",
-    "price": "3200$"
+    "price": 3200
   },
   {
     "item": "Chinook",
-    "unitPrice": "$1.7",
+    "unitPrice": 1.7,
     "tran": "down",
-    "price": "2150$"
+    "price": 2150
   },
   {
     "item": "Centennial",
-    "unitPrice": "$2.2",
+    "unitPrice": 2.2,
     "tran": "up",
-    "price": "4123$"
+    "price": 4123
   },
   {
     "item": "Nelson Sauvin",
-    "unitPrice": "$3.5",
+    "unitPrice": 3.5,
     "tran": "down",
-    "price": "3905$"
+    "price": 3905
   },
   {
     "item": "Hallertau",
-    "unitPrice": "$2.9",
+    "unitPrice": 2.9,
     "tran": "up",
-    "price": "2650$"
+    "price": 2650
   },
   {
     "item": "Fuggle",
-    "unitPrice": "$1.5",
+    "unitPrice": 1.5,
     "tran": "down",
-    "price": "1700$"
+    "price": 1700
   },
   {
     "item": "Saaz",
-    "unitPrice": "$2",
+    "unitPrice": 2,
     "tran": "up",
-    "price": "4450$"
+    "price": 4450
   },
   {
     "item": "Magnum",
-    "unitPrice": "$2.8",
+    "unitPrice": 2.8,
     "tran": "down",
-    "price": "3500$"
+    "price": 3500
   },
   {
     "item": "Tettnang",
-    "unitPrice": "$2.4",
+    "unitPrice": 2.4,
     "tran": "up",
-    "price": "2900$"
+    "price": 2900
   },
   {
     "item": "Perle",
-    "unitPrice": "$1.9",
+    "unitPrice": 1.9,
     "tran": "up",
-    "price": "3100$"
+    "price": 3100
   },
   {
     "item": "Ekuanot",
-    "unitPrice": "$2.7",
+    "unitPrice": 2.7,
     "tran": "down",
-    "price": "2200$"
+    "price": 2200
   },
   {
     "item": "Azacca",
-    "unitPrice": "$2.6",
+    "unitPrice": 2.6,
     "tran": "up",
-    "price": "3750$"
+    "price": 3750
   },
   {
     "item": "Comet",
-    "unitPrice": "$2.1",
+    "unitPrice": 2.1,
     "tran": "down",
-    "price": "1980$"
+    "price": 1980
   },
   {
     "item": "Sabro",
-    "unitPrice": "$2.9",
+    "unitPrice": 2.9,
     "tran": "up",
-    "price": "4230$"
+    "price": 4230
   },
   {
     "item": "El Dorado",
-    "unitPrice": "$3",
+    "unitPrice": 3,
     "tran": "down",
-    "price": "2850$"
+    "price": 2850
   }
 ]

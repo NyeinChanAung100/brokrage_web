@@ -15,18 +15,28 @@ import {
 import marketdata from '../data/testmarketdata.json';
 import { useColorModeValue } from '@chakra-ui/react';
 import UserAssetsValue from './UserAssetsValue';
-// import { CiBookmarkPlus, CiBookmarkMinus } from 'react-icons/ci';
 import { IoBookmarks, IoCheckmarkCircle } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
+import { itemAtom } from '../atoms/itemAtom';
+import { useSetRecoilState } from 'recoil';
 
-function EachItem({ name, price, tran, mark, unit }) {
+function EachItem({ name, price, tran, mark, unit, unitprice }) {
   const { colorMode } = useColorMode();
   const textColor = tran === 'up' ? 'green' : 'red';
-  const upordown = tran === 'up' ? 'increase' : 'decrease'; // Access the current color mode
+  const upordown = tran === 'up' ? 'increase' : 'decrease';
+  const setItemInfo = useSetRecoilState(itemAtom);
+
+  const handleClick = () => {
+    setItemInfo({
+      name: name,
+      price: price,
+      unitprice: unitprice,
+      unit: unit, // Fixed this to pass the correct unit instead of tran
+    });
+  };
+
   return (
     <Flex width={'100%'} h={'100%'} justifyContent={'space-between'}>
-      {/* <Box w={'200px'} textAlign={'left'}>
-        {name}
-      </Box> */}
       <Stat>
         <StatLabel>Unit-{unit}</StatLabel>
         <StatNumber>{name}</StatNumber>
@@ -38,7 +48,6 @@ function EachItem({ name, price, tran, mark, unit }) {
       <Flex
         w={'100px'}
         flexDirection={'column'}
-        // textAlign={'right'}
         justifyContent={'space-between'}
       >
         <Flex>
@@ -46,13 +55,7 @@ function EachItem({ name, price, tran, mark, unit }) {
             ${price}
           </Text>
           <Box>
-            {mark ? (
-              <IoCheckmarkCircle color='green' />
-            ) : (
-              <IoBookmarks
-              //   color={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
-              />
-            )}
+            {mark ? <IoCheckmarkCircle color='green' /> : <IoBookmarks />}
           </Box>
         </Flex>
 
@@ -61,8 +64,9 @@ function EachItem({ name, price, tran, mark, unit }) {
           size='xs'
           border={'2px outset rgb(252,249,250)'}
           w={'70px'}
+          onClick={handleClick}
         >
-          Buy now
+          <Link to={'/purchase'}>Buy</Link>
         </Button>
       </Flex>
     </Flex>
@@ -78,10 +82,7 @@ function MarketOverview() {
         spacing={4}
         align='stretch'
         w={'95%'}
-        //   ml={'5px'}
         p={'30px'}
-        // pl={'100px'}
-        // pr={'100px'}
         bg={useColorModeValue('white', 'gray.900')}
         overflow={'scroll'}
         borderRadius={'10px'}
@@ -101,6 +102,7 @@ function MarketOverview() {
             tran={data.tran}
             mark={data.mark}
             unit={data.unit}
+            unitprice={data.unitprice} // Pass the unitprice here
           />
         ))}
       </VStack>

@@ -1,68 +1,98 @@
 [
-  { "name": "Jan", "price": 56700, "tran": "up", "mark": false, "unit": " kg" },
   {
-    "name": "Feb",
+    "name": "Alpha",
+    "price": 56700,
+    "unitprice": 283.5,
+    "tran": "up",
+    "mark": false,
+    "unit": "kg"
+  },
+  {
+    "name": "Beta",
     "price": 48900,
+    "unitprice": 244.5,
     "tran": "down",
     "mark": false,
-    "unit": " viss"
+    "unit": "viss"
   },
-  { "name": "Mar", "price": 63400, "tran": "up", "mark": true, "unit": " kg" },
-  { "name": "Apr", "price": 71000, "tran": "up", "mark": true, "unit": " kg" },
   {
-    "name": "May",
+    "name": "Gamma",
+    "price": 63400,
+    "unitprice": 317.0,
+    "tran": "up",
+    "mark": true,
+    "unit": "kg"
+  },
+  {
+    "name": "Delta",
+    "price": 71000,
+    "unitprice": 355.0,
+    "tran": "up",
+    "mark": true,
+    "unit": "kg"
+  },
+  {
+    "name": "Epsilon",
     "price": 82000,
+    "unitprice": 410.0,
     "tran": "down",
     "mark": false,
-    "unit": " tin"
+    "unit": "tin"
   },
   {
-    "name": "Jun",
+    "name": "Zeta",
     "price": 75500,
+    "unitprice": 377.5,
     "tran": "down",
     "mark": false,
-    "unit": " viss"
+    "unit": "viss"
   },
   {
-    "name": "Jul",
+    "name": "Eta",
     "price": 83500,
+    "unitprice": 417.5,
     "tran": "up",
     "mark": true,
-    "unit": " viss"
+    "unit": "viss"
   },
   {
-    "name": "Aug",
+    "name": "Theta",
     "price": 69000,
+    "unitprice": 345.0,
     "tran": "down",
     "mark": false,
-    "unit": " tin"
+    "unit": "tin"
   },
   {
-    "name": "Sep",
+    "name": "Iota",
     "price": 67000,
+    "unitprice": 335.0,
     "tran": "up",
     "mark": false,
-    "unit": " tin"
+    "unit": "tin"
   },
   {
-    "name": "Oct",
+    "name": "Kappa",
     "price": 71500,
+    "unitprice": 357.5,
     "tran": "up",
     "mark": true,
-    "unit": " liter"
+    "unit": "liter"
   },
   {
-    "name": "Nov",
+    "name": "Lambda",
     "price": 68500,
+    "unitprice": 342.5,
     "tran": "down",
     "mark": false,
-    "unit": " gallon"
+    "unit": "gallon"
   },
   {
-    "name": "Dec",
+    "name": "Mu",
     "price": 79000,
+    "unitprice": 395.0,
     "tran": "up",
     "mark": false,
-    "unit": " gallon"
+    "unit": "gallon"
   }
 ]

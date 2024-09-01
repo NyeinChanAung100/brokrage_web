@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App.jsx';
 import './index.css';
-// import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from 'recoil';
 
 const styles = {
   global: (props) => ({
@@ -33,13 +33,14 @@ const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <RecoilRoot> */}
-    <BrowserRouter>
-      <ChakraProvider theme={theme}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
-      </ChakraProvider>
-    </BrowserRouter>
-    {/* </RecoilRoot> */},
+    <RecoilRoot>
+      <BrowserRouter>
+        <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App />
+        </ChakraProvider>
+      </BrowserRouter>
+    </RecoilRoot>
+    ,
   </React.StrictMode>,
 );

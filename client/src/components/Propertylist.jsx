@@ -1,32 +1,3 @@
-// import { Flex, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
-
-// function Propertylist(props) {
-//   const { colorMode } = useColorMode();
-//   const textColor = props.tran === 'up' ? 'green' : 'red';
-
-//   return (
-//     <Flex
-//       width='100%'
-//       height='50px'
-//       alignItems='center'
-//       paddingLeft='15px'
-//       pt={'20px'}
-//       bg={useColorModeValue('white', 'gray.900')}
-//       marginTop='10px'
-//       justifyContent='space-between'
-//       borderBottom={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
-//     >
-//       <Text width='200px' height='50px' fontWeight={'bold'}>
-//         {props.item}
-//       </Text>
-//       <Text width='100px' height='50px' color={textColor} fontWeight={'bold'}>
-//         {props.price}
-//       </Text>
-//     </Flex>
-//   );
-// }
-
-// export default Propertylist;
 import {
   Box,
   Button,
@@ -40,8 +11,12 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { itemAtom } from '../atoms/itemAtom';
 // import InitialFocus from './BuySellModal';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+
 // Adjust the import path as needed
 
 // import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
@@ -50,6 +25,17 @@ function Propertylist(props) {
   const { colorMode } = useColorMode();
   const textColor = props.tran === 'up' ? 'green' : 'red';
   const upordown = props.tran === 'up' ? 'increase' : 'decrease';
+  const itemInfo = useSetRecoilState(itemAtom);
+  console.log('props:', props);
+  const handleClick = () => {
+    itemInfo({
+      name: props.item,
+      price: props.price,
+      unitprice: props.unitprice,
+      unit: props.tran,
+    });
+  };
+  console.log('iteminfo:', itemInfo);
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const handleOpenModal = () => {
@@ -95,8 +81,9 @@ function Propertylist(props) {
             colorScheme='teal'
             size='xs'
             border={'2px outset rgb(252,249,250)'}
+            onClick={handleClick}
           >
-            sell now
+            <Link to={'/sell'}>sell</Link>
           </Button>
           {/* <InitialFocus isOpen={isModalOpen} onClose={handleCloseModal} /> */}
         </Stat>

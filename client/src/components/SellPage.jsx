@@ -150,11 +150,20 @@ function SellPage() {
 
   // Calculate the total value whenever quantity or unit price changes
   useEffect(() => {
-    if (quantity && itemInfo.unitprice) {
-      const totalValue =
-        parseFloat(quantity) *
-        parseFloat(itemInfo.unitprice.replace(/[$,]/g, ''));
-      setTotal(totalValue);
+    if (
+      quantity &&
+      itemInfo.unitprice !== undefined &&
+      itemInfo.unitprice !== null
+    ) {
+      const parsedQuantity = parseFloat(quantity);
+      const unitPrice = itemInfo.unitprice;
+
+      if (!isNaN(parsedQuantity) && !isNaN(unitPrice)) {
+        const totalValue = parsedQuantity * unitPrice;
+        setTotal(totalValue);
+      } else {
+        setTotal(0);
+      }
     } else {
       setTotal(0);
     }

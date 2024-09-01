@@ -15,7 +15,7 @@ import { itemAtom } from '../atoms/itemAtom';
 // import InitialFocus from './BuySellModal';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 // Adjust the import path as needed
 
@@ -26,6 +26,7 @@ function Propertylist(props) {
   const textColor = props.tran === 'up' ? 'green' : 'red';
   const upordown = props.tran === 'up' ? 'increase' : 'decrease';
   const itemInfo = useSetRecoilState(itemAtom);
+  const itemvalue = useRecoilValue(itemAtom);
   console.log('props:', props);
   const handleClick = () => {
     itemInfo({
@@ -35,7 +36,7 @@ function Propertylist(props) {
       unit: props.tran,
     });
   };
-  console.log('iteminfo:', itemInfo);
+  console.log('iteminfo:', itemvalue);
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const handleOpenModal = () => {

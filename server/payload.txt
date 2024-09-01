@@ -45,10 +45,8 @@
 // view-item's price
 // http://localhost/brokrage_web/server/user/view-item-price.php
 {
-  "user_id": 1
+  "item_id": 1
 }
-
-
 
 // trade
 // http://localhost/brokrage_web/server/market/trade.php
@@ -58,3 +56,12 @@
   "trade_type": "buy",
   "quantity": 1
  }
+
+ // view-price-log
+ // GET method
+ // http://localhost/brokrage_web/server/user/view-price-log.php?item_id=1
+
+// view-all-item
+// GET method
+// http://localhost/brokrage_web/server/user/view-assests.php?user_id=1
+// if user_id doesnt exist it wont return watchlist

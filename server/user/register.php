@@ -57,7 +57,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->bind_param('sss', $username, $password_hash, $email);
         if ($stmt->execute()) {
-            echo json_encode(["success" => "User registered successfully"]);
+            echo json_encode(["success" => "User registered successfully",
+                "id" => $stmt->insert_id,
+                "username" => $username,
+                "email" => $email
+        ]);
         } else {
             throw new Exception("Error inserting user: " . $stmt->error);
         }

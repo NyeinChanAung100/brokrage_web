@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $input['password'];
     
         // Query to fetch user data
-        $sql = "SELECT id, password_hash FROM users WHERE username = ?";
+        $sql = "SELECT id, email, password_hash FROM users WHERE username = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             throw new Exception("Prepare failed: " . $conn->error);
@@ -49,12 +49,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Fetch user data
         $user = $result->fetch_assoc();
         $password_hash = $user['password_hash'];
+        $email = $user['email'];
     
         // Verify password
         if (password_verify($password, $password_hash)) {
             // Success: Password is correct
             $_SESSION['user_id'] = $user['id']; // Save user ID in session
-            echo json_encode(["success" => "Login successful"]);
+            echo json_encode(["success" => "Login successful",
+                "user_id" => $user['id'],
+                "username" => $username,
+                "email" => $email
+            ]);
         } else {
             // Failure: Password is incorrect
             http_response_code(401);

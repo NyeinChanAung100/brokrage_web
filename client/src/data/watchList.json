@@ -138,5 +138,145 @@
     "lastPrice": 39.99,
     "percentChangeDay": 2.85,
     "volume30DayRange": 510000
+  },
+  {
+    "productName": "Smartphone X100",
+    "company": "Tech Innovators Inc.",
+    "lastPrice": 799.99,
+    "percentChangeDay": -1.25,
+    "volume30DayRange": 1520000
+  },
+  {
+    "productName": "Laptop Pro 15",
+    "company": "Tech Innovators Inc.",
+    "lastPrice": 1199.5,
+    "percentChangeDay": 0.75,
+    "volume30DayRange": 980000
+  },
+  {
+    "productName": "Wireless Earbuds",
+    "company": "SoundWave Corp.",
+    "lastPrice": 149.99,
+    "percentChangeDay": 2.1,
+    "volume30DayRange": 580000
+  },
+  {
+    "productName": "4K Ultra HD TV",
+    "company": "Home Entertainment Ltd.",
+    "lastPrice": 1299.0,
+    "percentChangeDay": -0.5,
+    "volume30DayRange": 450000
+  },
+  {
+    "productName": "Fitness Tracker Pro",
+    "company": "FitLife Gadgets",
+    "lastPrice": 99.99,
+    "percentChangeDay": 1.45,
+    "volume30DayRange": 750000
+  },
+  {
+    "productName": "Gaming Console Z",
+    "company": "GameMasters",
+    "lastPrice": 499.99,
+    "percentChangeDay": 0.25,
+    "volume30DayRange": 1200000
+  },
+  {
+    "productName": "Smart Home Hub",
+    "company": "SmartLiving Co.",
+    "lastPrice": 199.99,
+    "percentChangeDay": -0.95,
+    "volume30DayRange": 650000
+  },
+  {
+    "productName": "Electric Scooter E200",
+    "company": "Urban Mobility",
+    "lastPrice": 349.99,
+    "percentChangeDay": 3.0,
+    "volume30DayRange": 540000
+  },
+  {
+    "productName": "Portable Charger",
+    "company": "PowerUp Inc.",
+    "lastPrice": 29.99,
+    "percentChangeDay": -2.75,
+    "volume30DayRange": 720000
+  },
+  {
+    "productName": "Bluetooth Speaker",
+    "company": "SoundWave Corp.",
+    "lastPrice": 89.99,
+    "percentChangeDay": 0.8,
+    "volume30DayRange": 590000
+  },
+  {
+    "productName": "Smartwatch X",
+    "company": "Tech Innovators Inc.",
+    "lastPrice": 249.99,
+    "percentChangeDay": 1.1,
+    "volume30DayRange": 880000
+  },
+  {
+    "productName": "Noise Cancelling Headphones",
+    "company": "SoundWave Corp.",
+    "lastPrice": 199.99,
+    "percentChangeDay": -0.6,
+    "volume30DayRange": 670000
+  },
+  {
+    "productName": "Electric Bike",
+    "company": "Urban Mobility",
+    "lastPrice": 1499.99,
+    "percentChangeDay": 2.5,
+    "volume30DayRange": 320000
+  },
+  {
+    "productName": "Robot Vacuum Cleaner",
+    "company": "Home Entertainment Ltd.",
+    "lastPrice": 399.99,
+    "percentChangeDay": -1.0,
+    "volume30DayRange": 480000
+  },
+  {
+    "productName": "Virtual Reality Headset",
+    "company": "GameMasters",
+    "lastPrice": 299.99,
+    "percentChangeDay": 3.2,
+    "volume30DayRange": 410000
+  },
+  {
+    "productName": "Drone Camera",
+    "company": "SkyTech",
+    "lastPrice": 699.99,
+    "percentChangeDay": -0.85,
+    "volume30DayRange": 340000
+  },
+  {
+    "productName": "Smart Thermostat",
+    "company": "SmartLiving Co.",
+    "lastPrice": 149.99,
+    "percentChangeDay": 1.7,
+    "volume30DayRange": 570000
+  },
+  {
+    "productName": "Electric Toothbrush",
+    "company": "FitLife Gadgets",
+    "lastPrice": 49.99,
+    "percentChangeDay": -2.15,
+    "volume30DayRange": 630000
+  },
+  {
+    "productName": "Portable Projector",
+    "company": "Home Entertainment Ltd.",
+    "lastPrice": 299.99,
+    "percentChangeDay": 0.5,
+    "volume30DayRange": 290000
+  },
+  {
+    "productName": "Smart Water Bottle",
+    "company": "FitLife Gadgets",
+    "lastPrice": 39.99,
+    "percentChangeDay": 2.85,
+    "volume30DayRange": 510000
   }
 ]

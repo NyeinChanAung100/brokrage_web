@@ -17,10 +17,10 @@ include './../dbconnect/config.php';
 // Define a function to fetch user assets
 function fetch_user_assets($conn, $user_id) {
     // Query to select user assets based on the user ID
-    $sql = "SELECT ua.item_id, i.name, ua.quantity, ua.acquired_date
+    $sql = "SELECT ua.item_id, i.unit, i.symbol, i.name, ua.quantity, ua.acquired_date
             FROM user_assets ua
             JOIN items i ON ua.item_id = i.id
-            WHERE ua.user_id = ?";
+            WHERE ua.user_id = ? AND ua.quantity > 0";
     
     // Prepare the statement
     $stmt = $conn->prepare($sql);

@@ -13,8 +13,10 @@ if (!isset($input['name']) || !isset($input['price']) || !isset($input['supply']
 $name = $conn->real_escape_string($input['name']);
 $price = $conn->real_escape_string($input['price']);
 $supply = $conn->real_escape_string($input['supply']);
+$unit = $conn->real_escape_string($input['unit']);
+$symbol = $conn->real_escape_string($input['symbol']);
 
-$sql = "INSERT INTO items (name, description) VALUES ('$name', 'Sample description')";
+$sql = "INSERT INTO items (name, unit, symbol) VALUES ('$name', '$unit', '$symbol')";
 if ($conn->query($sql) === TRUE) {
     $item_id = $conn->insert_id; 
     $sql = "INSERT INTO prices (item_id, price, initial_price) VALUES ($item_id, $price, $price)";

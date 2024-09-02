@@ -1,7 +1,8 @@
 CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT
+    symbol varchar(20) NOT NULL UNIQUE,
+    unit VARCHAR(50) NOT NULL,
 );
 
 CREATE TABLE prices (
@@ -224,3 +225,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- ALTER TABLE items
+-- ADD COLUMN symbol VARCHAR(20) NOT NULL,
+-- ADD COLUMN unit VARCHAR(50) NOT NULL;

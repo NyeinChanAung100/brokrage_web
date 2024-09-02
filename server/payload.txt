@@ -1,8 +1,10 @@
 // http://localhost/brokrage_web/server/market/listItems.php
 {
-    "name": "Sample Product",
+    "name": "Onions",
     "price": 29.99,
-    "supply": 100
+    "supply": 100,
+    "unit": "lb",
+    "symbol": "ONI"
 }
 
 // register.php 

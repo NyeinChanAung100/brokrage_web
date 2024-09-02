@@ -11,7 +11,7 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { itemAtom } from '../atoms/itemAtom';
+import { itemAtom } from '../atoms/itemAtom.js';
 // import InitialFocus from './BuySellModal';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

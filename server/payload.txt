@@ -16,7 +16,7 @@
 }
 
 // view assest
-//
+//http://localhost/brokrage_web/server/user/view-assets.php
 {
   "user_id": 1
 }
@@ -35,13 +35,28 @@
   "user_id": 1,
   "amount": 1000
 }
+// login
+// http://localhost/brokrage_web/server/user/login.php
+{
+  "username": "mg mg",
+  "password": "abc123"
+}
+
+// logout
+// http://localhost/brokrage_web/server/user/logout.php
+
 
 // view user's assest
 // http://localhost/brokrage_web/server/user/view-user-assests.php
 {
   "user_id": 1
 }
-
+// view user's assest
+// http://localhost/brokrage_web/server/user/watch-list-controller.php
+{
+  "user_id": 1,
+  "item_id":1
+}
 // view-item's price
 // http://localhost/brokrage_web/server/user/view-item-price.php
 {
@@ -64,4 +79,4 @@
 // view-all-item
 // GET method
 // http://localhost/brokrage_web/server/user/view-assests.php?user_id=1
-// if user_id doesnt exist it wont return watchlist
+// if user_id doesnt exist the return won't include watchlist colunm

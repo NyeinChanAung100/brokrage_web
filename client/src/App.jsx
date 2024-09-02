@@ -15,6 +15,8 @@ import Trade from './components/trade';
 import BuyPage from './components/BuyPage';
 import SellPage from './components/SellPage';
 import MyComponent from './OneMoreTest';
+import AuthPage from './pages/authPage';
+// import LoginCard from './components/LoginCard';
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/home' element={<Home />} />
-        <Route path='/testing' element={<MyComponent />} />
+        <Route path='/auth' element={<AuthPage />} />
         <Route path='/purchase' element={<BuyPage />} />
         <Route path='/sell' element={<SellPage />} />
 

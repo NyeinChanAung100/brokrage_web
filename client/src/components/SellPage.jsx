@@ -114,7 +114,7 @@ import {
 import InitialFocus from './BuySellModal';
 import useModal from '../hooks/UseModal';
 import { useRecoilState } from 'recoil';
-import { itemAtom } from '../atoms/itemAtom';
+import { itemAtom } from '../atoms/itemAtom.js';
 import assetList from '../data/assetList.json';
 
 function SellPage() {

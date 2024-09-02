@@ -33,12 +33,11 @@ const MyComponent = () => {
 
   const handleRegister = async () => {
     const userData = {
-      username: 'nilar',
-      password: 'abc456',
-      email: 'nilar@gmail.com',
+      username: 'jyQ11',
+      password: '88UIUIUI',
+      email: 'JJU11@gmail.com',
     };
     await registerUser(userData);
-    // Handle response or update state as needed
   };
 
   return (

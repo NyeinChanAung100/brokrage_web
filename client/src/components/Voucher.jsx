@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { itemAtom } from '../atoms/itemAtom';
+import { itemAtom } from '../atoms/itemAtom.js';
 
 function Voucher() {
   const itemValue = useRecoilValue(itemAtom);

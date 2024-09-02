@@ -4,6 +4,7 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
+
 // Handle OPTIONS request (preflight)
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     // Just send the headers for preflight, no further processing needed

@@ -14,7 +14,7 @@ import {
 import InitialFocus from './BuySellModal';
 import useModal from '../hooks/UseModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { allItemAtom } from '../atoms/allItemAtom';
+import { allItemAtom } from '../atoms/allItemAtom.js';
 import marketdata from '../data/testmarketdata.json';
 
 function BuyPage() {

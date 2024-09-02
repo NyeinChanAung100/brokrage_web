@@ -24,15 +24,16 @@ function WatchList() {
             <Th>Volume</Th>
           </Tr>
         </Thead>
+
         <Tbody>
           {productData?.map((data) => {
             return (
               <>
-                <Tr>
-                  <Th key={data.productName}>{data.productName}</Th>
-                  <Th key={data.lastPrice}>{data.lastPrice}</Th>
-                  <Th key={data.percentChangeDay}>{data.percentChangeDay}</Th>
-                  <Th key={data.volume30DayRange}>{data.volume30DayRange}</Th>
+                <Tr key={data.productName}>
+                  <Th>{data.productName}</Th>
+                  <Th>{data.lastPrice}</Th>
+                  <Th>{data.percentChangeDay}</Th>
+                  <Th>{data.volume30DayRange}</Th>
                 </Tr>
               </>
             );

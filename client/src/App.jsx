@@ -1,5 +1,5 @@
 import { Container } from '@chakra-ui/react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Nav from './components/navbar';
 import './app.css';
@@ -11,14 +11,20 @@ import MarketOverview from './components/MarketOverview';
 import WatchList from './components/WatchList';
 import DetailedAccordion from './components/DetailedAccordion';
 import Home from './pages/Home';
-import Trade from './components/trade';
+// import Trade from './components/trade';
 import BuyPage from './components/BuyPage';
 import SellPage from './components/SellPage';
 import MyComponent from './OneMoreTest';
 import AuthPage from './pages/authPage';
+import { useRecoilValue } from 'recoil';
+
+// import LogoutButton from './components/logoutButton';
+import userAtom from './atoms/userAtom.js';
 // import LoginCard from './components/LoginCard';
 
 function App() {
+  const user = useRecoilValue(userAtom);
+
   return (
     <Container
       maxW={'100vw'}
@@ -28,19 +34,32 @@ function App() {
       // overflow={'visible'}
     >
       <Nav />
+      {/* <LogoutButton /> */}
       <Routes>
-        <Route path='/home' element={<Home />} />
-        <Route path='/auth' element={<AuthPage />} />
+        <Route path='/' element={<Home />} />
+
+        {/* Auth Route */}
+        <Route
+          path='/auth'
+          element={user ? <Navigate to='/dashboard' /> : <AuthPage />}
+        />
+
+        {/* Test Route */}
+        <Route path='/test' element={<MyComponent />} />
+
+        {/* Purchase and Sell Routes */}
         <Route path='/purchase' element={<BuyPage />} />
         <Route path='/sell' element={<SellPage />} />
 
-        <Route path='/dashboard/*' element={<Dashboard />}>
+        {/* Dashboard Route */}
+        <Route
+          path='/dashboard/*'
+          element={user ? <Dashboard /> : <Navigate to='/auth' />}
+        >
           <Route path='portfolio' element={<Portfolio />} />
           <Route path='detailedanalysis/:id' element={<Detailed />} />
           <Route path='marketoverview' element={<MarketOverview />} />
           <Route path='watchlist' element={<WatchList />} />
-          {/* <Route path='trade' element={<Trade />} /> */}
-
           <Route path='*' element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}

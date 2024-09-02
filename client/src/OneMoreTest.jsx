@@ -6,31 +6,12 @@ import {
   depositMoney,
 } from './services/userService';
 import { Button } from '@chakra-ui/react';
+import { useRecoilValue } from 'recoil';
+import userAtom from './atoms/userAtom';
 
 const MyComponent = () => {
-  //   const [items, setItems] = useState([]);
-  //   const [balance, setBalance] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchItems = async () => {
-  //     const response = await listItems();
-  //     setItems(response.data);
-  //   };
-
-  //   fetchItems();
-  // }, []);
-
-  //   const handleTrade = async () => {
-  //     const tradeData = {
-  //       user_id: 1,
-  //       item_id: 1,
-  //       trade_type: 'buy',
-  //       quantity: 1,
-  //     };
-  //     await tradeItem(tradeData);
-
-  //   };
-
+  const value = useRecoilValue(userAtom);
+  console.log('value', value);
   const handleRegister = async () => {
     const userData = {
       username: 'jyQ11',

@@ -41,7 +41,7 @@ function App() {
         {/* Auth Route */}
         <Route
           path='/auth'
-          element={user ? <Navigate to='/dashboard' /> : <AuthPage />}
+          element={user ? <Navigate to='/' /> : <AuthPage />}
         />
 
         {/* Test Route */}

@@ -14,7 +14,6 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -24,9 +23,12 @@ import authScreenAtom from '../atoms/authAtom';
 import useShowToast from '../hooks/useShowToast.js';
 import userAtom from '../atoms/userAtom.js';
 import { registerUser } from '../services/userService.js';
+import { setCookie } from '../utils/cookieUtil.js';
+import { Link } from 'react-router-dom';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const [inputs, setInputs] = useState({
     username: '',
@@ -35,20 +37,44 @@ export default function SignupCard() {
   });
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
+  //   const handleRegister = async () => {
+  //     try {
+  //       const response = await registerUser(inputs);
+
+  //       if (!response.ok) {
+  // If the status code is not in the 200-299 range, throw an error
+  //     const errorData = await response.json();
+  //     throw new Error(errorData.error || 'Failed to register user');
+  //   }
+
+  //   const data = await response.json();
+
+  //   localStorage.setItem('user-brokerage', JSON.stringify(data.user));
+  //   setUser(data.user);
+
+  //         console.log('User registered successfully');
+  //     } catch (error) {
+  //       console.error('Error registering user:', error.message);
+  //       showToast('Error', error.message, 'error'); // Display an error message
+  //     }
+  //   };
+
   const handleRegister = async () => {
     try {
-      const response = await registerUser(inputs);
+      const data = await registerUser(inputs);
 
-      if (!response.ok) {
-        // If the status code is not in the 200-299 range, throw an error
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to register user');
+      // Check for errors in the response
+      if (data.error) {
+        throw new Error(data.error || 'Failed to register user');
       }
 
-      const data = await response.json();
+      // Store user data in cookies
+      setCookie('user_id', data.id); // Use the 'id' directly from data
+      setCookie('username', data.username); // Use the 'username' directly from data
+      setCookie('email', data.email); // Use the 'email' directly from data
 
-      localStorage.setItem('user-brokerage', JSON.stringify(data.user)); // Store user data
-      setUser(data.user); // Update state with user data
+      // Optionally, set user in state
+      setUser({ id: data.id, username: data.username, email: data.email });
 
       console.log('User registered successfully');
     } catch (error) {
@@ -86,6 +112,19 @@ export default function SignupCard() {
           <Heading fontSize={'4xl'} textAlign={'center'}>
             Sign up
           </Heading>
+          <Link
+            to={'/'}
+            style={{
+              color: isHovered ? 'darkviolet' : 'blueviolet',
+              textDecoration: isHovered ? 'underline' : 'none',
+              fontWeight: isHovered ? 700 : 600,
+              fontSize: '18px',
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            go to home
+          </Link>
         </Stack>
         <Box
           rounded={'lg'}
@@ -173,7 +212,10 @@ export default function SignupCard() {
             <Stack pt={6}>
               <Text align={'center'}>
                 Already a user?{' '}
-                <Link color={'blue.400'} onClick={() => setAuthScreen('login')}>
+                <Link
+                  style={{ color: 'blueviolet', fontWeight: 500 }}
+                  onClick={() => setAuthScreen('login')}
+                >
                   Login
                 </Link>
               </Text>

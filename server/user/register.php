@@ -57,21 +57,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->bind_param('sss', $username, $password_hash, $email);
         if ($stmt->execute()) {
-            echo json_encode(["success" => "User registered successfully",
-                "id" => $stmt->insert_id,
+            $userId = $stmt->insert_id;
+
+            // Set cookies for user data
+            setcookie("user_id", $userId, time() + (86400 * 30), "/");  // 86400 = 1 day
+            setcookie("username", $username, time() + (86400 * 30), "/"); // 30 days expiration
+            setcookie("email", $email, time() + (86400 * 30), "/");    // 30 days expiration
+
+            echo json_encode([
+                "success" => "User registered successfully",
+                "id" => $userId,
                 "username" => $username,
                 "email" => $email
-        ]);
+            ]);
         } else {
             throw new Exception("Error inserting user: " . $stmt->error);
         }
     
     } catch (Exception $e) {
         http_response_code(500);
-        echo json_encode(["error" => $e]);
+        echo json_encode(["error" => $e->getMessage()]);
     }
 } else {
-    echo "route doesnt allow";
+    echo "route doesn't allow";
 }
 
 // Close the connection

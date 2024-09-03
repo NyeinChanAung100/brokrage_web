@@ -10,7 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     http_response_code(200);
     exit();
 }
-session_start();
+
+// session_start();
 // Include the database configuration
 include './../dbconnect/config.php';
 
@@ -54,8 +55,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verify password
         if (password_verify($password, $password_hash)) {
             // Success: Password is correct
-            $_SESSION['user_id'] = $user['id']; // Save user ID in session
-            echo json_encode(["success" => "Login successful",
+            // $_SESSION['user_id'] = $user['id']; 
+            
+            // Set cookies for user data
+            setcookie("user_id", $user['id'], time() + (86400 * 30), "/"); // 86400 = 1 day
+            setcookie("username", $username, time() + (86400 * 30), "/");
+            setcookie("email", $email, time() + (86400 * 30), "/");
+
+            echo json_encode([
+                "success" => "Login successful",
                 "user_id" => $user['id'],
                 "username" => $username,
                 "email" => $email
@@ -75,6 +83,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-// Close the connection
 $conn->close();
 ?>

@@ -40,16 +40,17 @@ export default function LoginCard() {
   const handleLogin = async () => {
     try {
       const data = await loginUser(inputs);
-
+      console.log('data', data);
+      console.log('data id', data.user_id);
       // Check for errors in the response
       if (data.error) {
         throw new Error(data.error || 'Failed to login user');
       }
 
       // Store user data in cookies
-      setCookie('user_id', data.id); // Use the 'id' directly from data
-      setCookie('username', data.username); // Use the 'username' directly from data
-      setCookie('email', data.email); // Use the 'email' directly from data
+      setCookie('user_id', data.user_id);
+      setCookie('username', data.username);
+      setCookie('email', data.email);
 
       // Optionally, set user in state
       setUser({ id: data.id, username: data.username, email: data.email });

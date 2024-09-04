@@ -73,11 +73,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user['balance'] = $user ? $user['balance'] : 0;
 
         if($price['price'] == null) {
+            // http_response_code(404);
             echo json_encode(["success" => false, "message" => "Item price not found."]);
             exit;
         }
 
         if($user['balance'] < $price['price']) {
+            // http_response_code(400);
             echo json_encode(["success" => false, "message" => "Insufficient balance."]);
             exit;
         }
@@ -104,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($stmt->affected_rows === 0) {
+        // http_response_code(404);
         echo json_encode(["success" => false, "message" => "Failed to log transaction."]);
         exit;
     }

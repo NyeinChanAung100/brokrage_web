@@ -1,10 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { itemAtom } from '../atoms/itemAtom.js';
+import { userItem } from '../atoms/userItem.js';
 
 function Voucher() {
-  const itemValue = useRecoilValue(itemAtom);
+  const itemValue = useRecoilValue(userItem);
   console.log(itemValue);
   return (
     <Flex width='100%' bg='red' border={'10px solid black'}>

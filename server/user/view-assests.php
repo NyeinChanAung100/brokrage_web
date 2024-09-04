@@ -21,7 +21,6 @@ function fetch_all_items_with_details($conn, $user_id) {
             items.name,
             items.unit,
             items.symbol,
-            items.description,
             prices.price,
             total_supply.supply,
             market_cap.market_cap

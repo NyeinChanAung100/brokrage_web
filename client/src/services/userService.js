@@ -108,7 +108,7 @@ export const viewUserAssets = async (userId) => {
 
 export const viewItemPrice = async (itemId) => {
   try {
-    const response = await axiosInstance.post('/user/view-item-price.php', {
+    const response = await axiosInstance.get('/user/view-item-price.php', {
       item_id: itemId,
     });
     return response.data;
@@ -123,6 +123,15 @@ export const viewPriceLog = async (itemId) => {
     const response = await axiosInstance.get('/user/view-price-log.php', {
       params: { item_id: itemId },
     });
+    return response.data;
+  } catch (error) {
+    console.error('Error viewing price log:', error);
+    throw error;
+  }
+};
+export const viewItems = async () => {
+  try {
+    const response = await axiosInstance.get('user/view-assests.php');
     return response.data;
   } catch (error) {
     console.error('Error viewing price log:', error);

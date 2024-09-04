@@ -18,7 +18,7 @@ export const tradeItem = async (tradeData) => {
     return response.data;
   } catch (error) {
     console.error('Error trading item:', error);
-    throw error;
+    throw error.response;
   }
 };
 

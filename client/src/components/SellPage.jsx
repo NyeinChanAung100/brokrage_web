@@ -114,13 +114,13 @@ import {
 import InitialFocus from './BuySellModal';
 import useModal from '../hooks/UseModal';
 import { useRecoilState } from 'recoil';
-import { itemAtom } from '../atoms/itemAtom.js';
+import { userItem } from '../atoms/userItem.js';
 import assetList from '../data/assetList.json';
 
 function SellPage() {
   const [selectedItem, setSelectedItem] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [itemInfo, setItemInfo] = useRecoilState(itemAtom);
+  const [itemInfo, setItemInfo] = useRecoilState(userItem);
   const [total, setTotal] = useState(''); // State for total selling price
 
   const bgColor = useColorModeValue('white', 'gray.800');

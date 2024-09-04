@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare($delete_sql);
             $stmt->bind_param("ii", $user_id, $item_id);
             if ($stmt->execute()) {
-                echo json_encode(["success" => true, "message" => "Item removed from watchlist."]);
+                echo json_encode(["success" => true, "list" => false,"message" => "Item removed from watchlist."]);
             } else {
                 echo json_encode(["success" => false, "message" => "Failed to remove item from watchlist."]);
             }
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare($insert_sql);
             $stmt->bind_param("ii", $user_id, $item_id);
             if ($stmt->execute()) {
-                echo json_encode(["success" => true, "message" => "Item added to watchlist."]);
+                echo json_encode(["success" => true, "list" => true,"message" => "Item added to watchlist."]);
             } else {
                 echo json_encode(["success" => false, "message" => "Failed to add item to watchlist."]);
             }

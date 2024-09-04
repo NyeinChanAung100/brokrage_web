@@ -104,7 +104,7 @@
 //             tran={data.tran}
 //             mark={data.mark}
 //             unit={data.unit}
-//             unitprice={data.unitprice} // Pass the unitprice here
+//             unitprice={data.unitprice}
 //           />
 //         ))}
 //       </VStack>
@@ -132,39 +132,51 @@ import { useColorModeValue } from '@chakra-ui/react';
 import UserAssetsValue from './UserAssetsValue';
 import { IoBookmarks, IoCheckmarkCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { allItemAtom } from '../atoms/allItemAtom.js';
 import { viewAssets, setWatchList } from '../services/userService'; // Import the viewAssets function
+import userAtom from '../atoms/userAtom.js';
+import useShowToast from '../hooks/useShowToast.js';
 
-function EachItem({ name, price, isWatchlist, marketCap, supply }) {
-  // "id": "1",
-  //   "name": "Sample Product",
-  //   "description": "Sample description",
-  //   "price": "29.99",
-  //   "supply": "100.00",
-  //   "market_cap": "2999.00",
-  //   "isWatchlist": true
-  // , tran, mark, unit, unitprice
-
+function EachItem({
+  name,
+  price,
+  isWatchlist,
+  marketCap,
+  supply,
+  unit,
+  userId,
+  id,
+}) {
+  const showToast = useShowToast();
+  const [watchlist, setwatchlist] = useState(isWatchlist);
+  const watchListData = { user_id: userId, item_id: id };
   const { colorMode } = useColorMode();
   const tran = 'up';
   const textColor = tran === 'up' ? 'green' : 'red';
   const upordown = tran === 'up' ? 'increase' : 'decrease';
   const setAllItemInfo = useSetRecoilState(allItemAtom);
-
+  const handleButtonClick = async () => {
+    try {
+      const result = await setWatchList(watchListData);
+      setwatchlist(result.list);
+      console.log(result);
+    } catch (error) {
+      showToast('Error', error, 'error');
+    }
+  };
   const handleClick = () => {
     setAllItemInfo({
       name: name,
-      // price: price,
-      // unitprice: unitprice,
-      // unit: unit,
+      price: price,
+      unit: unit,
     });
   };
   console.log('watchlist:', isWatchlist);
   return (
     <Flex width={'100%'} h={'100%'} justifyContent={'space-between'}>
       <Stat>
-        <StatLabel>Unit-kg</StatLabel>
+        <StatLabel>Unit-{unit}</StatLabel>
         <StatNumber>{name}</StatNumber>
         <StatHelpText>
           <StatArrow type={upordown} />
@@ -180,12 +192,8 @@ function EachItem({ name, price, isWatchlist, marketCap, supply }) {
           <Text w={'150px'} color={textColor}>
             ${price}
           </Text>
-          <Box>
-            {isWatchlist ? (
-              <IoCheckmarkCircle color='green' />
-            ) : (
-              <IoBookmarks />
-            )}
+          <Box onClick={handleButtonClick}>
+            {watchlist ? <IoCheckmarkCircle color='green' /> : <IoBookmarks />}
           </Box>
         </Flex>
 
@@ -204,12 +212,14 @@ function EachItem({ name, price, isWatchlist, marketCap, supply }) {
 }
 
 function MarketOverview() {
+  const userData = useRecoilValue(userAtom);
   const [marketData, setMarketData] = useState([]);
 
+  console.log(userData);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userId = 1; // Replace with the actual user ID
+        const userId = userData.id; // Replace with the actual user ID
         const data = await viewAssets(userId);
         console.log('Fetched Assets:', data); // Log the fetched data
         setMarketData(data); // Set the fetched data to state
@@ -249,6 +259,9 @@ function MarketOverview() {
             supply={data.supply}
             isWatchlist={data.isWatchlist}
             marketCap={data.market_cap}
+            unit={data.unit}
+            id={data.id}
+            userId={userData.id}
           />
         ))}
       </VStack>

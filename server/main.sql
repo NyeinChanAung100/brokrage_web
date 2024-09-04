@@ -2,7 +2,7 @@ CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     symbol varchar(20) NOT NULL UNIQUE,
-    unit VARCHAR(50) NOT NULL,
+    unit VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE prices (

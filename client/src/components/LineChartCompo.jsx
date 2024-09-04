@@ -4,9 +4,13 @@ import revenuedata from '../data/revenuedata.json';
 import { Chart as ChartJs, defaults } from 'chart.js/auto';
 import Propertylist from './propertylist';
 import TotalAsset from './TotalAsset';
-import assetList from '../data/assetList.json';
+// import assetList from '../data/assetList.json';
 
 import './lich.css';
+import { viewUserAssets } from '../services/userService';
+import { useRecoilValue } from 'recoil';
+import userAtom from '../atoms/userAtom';
+import { useEffect, useState } from 'react';
 
 function LineChartCompo() {
   defaults.maintainAspectRatio = true;
@@ -15,6 +19,24 @@ function LineChartCompo() {
   defaults.plugins.title.align = 'start';
   defaults.plugins.title.font.size = 20;
   defaults.plugins.title.color = useColorModeValue('black', 'white');
+  const userData = useRecoilValue(userAtom);
+  const [assets, setAssets] = useState([]);
+
+  console.log(userData);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = userData.id;
+        const data = await viewUserAssets(userId);
+        console.log('Fetched Assets:', data);
+        setAssets(data);
+      } catch (error) {
+        console.error('Failed to fetch assets:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Flex
       w={'100%'}
@@ -39,13 +61,15 @@ function LineChartCompo() {
           'scrollbar-width': 'none', // Firefox
         }}
       >
-        {assetList?.map((data) => (
+        {assets?.map((data) => (
           <Propertylist
-            key={data.item}
-            item={data.item}
+            key={data.item_id}
+            name={data.name}
+            existing={data.quantity}
+            symbol={data.symbol}
+            id={data.item_id}
+            unit={data.unit}
             price={data.price}
-            tran={data.tran}
-            unitprice={data.unitPrice}
           />
         ))}
       </Flex>

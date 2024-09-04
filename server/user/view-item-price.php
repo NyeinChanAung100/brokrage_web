@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 // Include the database configuration
 include './../dbconnect/config.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     try {
         // Read the input JSON data
         $input = json_decode(file_get_contents('php://input'), true);
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $price = $result->fetch_assoc()['price'];
         }
 
-        echo json_encode(["success" => "price is retrieved successfully", "balance" => $price]);
+        echo json_encode(["success" => "price is retrieved successfully", "price" => $price]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);

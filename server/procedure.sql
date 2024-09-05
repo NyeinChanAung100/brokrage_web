@@ -31,7 +31,6 @@ END $$
 
 DELIMITER ;
 
--- Enable the event scheduler
 SET GLOBAL event_scheduler = ON;
 
 CREATE EVENT log_prices_every_second

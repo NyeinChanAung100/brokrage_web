@@ -69,7 +69,7 @@ export default function SignupCard() {
       }
 
       // Store user data in cookies
-      setCookie('user_id', data.id); // Use the 'id' directly from data
+      setCookie('user_id', data.user_id); // Use the 'id' directly from data
       setCookie('username', data.username); // Use the 'username' directly from data
       setCookie('email', data.email); // Use the 'email' directly from data
 

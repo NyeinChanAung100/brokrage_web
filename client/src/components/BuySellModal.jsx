@@ -18,41 +18,34 @@ import { tradeItem } from '../services/marketService.js';
 import useShowToast from '../hooks/useShowToast';
 import { allItemAtom } from '../atoms/allItemAtom.js';
 import { viewItemPrice } from '../services/userService.js';
-function InitialFocus({
-  isOpen,
-  onClose,
-  trade,
-  total,
-  quantity,
-  itemId,
-  name,
-  onRefresh,
-  refresh,
-}) {
+import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
+function InitialFocus({ isOpen, onClose, total, quantity, itemId, name }) {
   const [allItem, setAllItem] = useRecoilState(allItemAtom);
+  const trade = useRecoilValue(buyorsellAtom);
   const showToast = useShowToast();
   const user = useRecoilValue(userAtom);
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   let quantityFloat = parseFloat(quantity);
-
+  const head = `${trade} ${quantity} ${name} for $${total}`;
   const tradeData = {
     user_id: user.id,
     item_id: itemId,
     trade_type: trade,
     quantity: quantityFloat,
   };
-  console.log(user);
+  // console.log('trade data', tradeData);
   const handleTrade = async () => {
     try {
+      console.log('itemId in model', itemId);
       const data = await tradeItem(tradeData);
       const itemPrice = viewItemPrice(itemId);
 
       if (data.error) {
         throw new Error(data.error || `Fail to ${trade} ${name}`);
       }
-      console.log(tradeData.user_id);
-      console.log(data.message);
+      // console.log(tradeData.user_id);
+      // console.log(data.message);
       showToast(data.message);
       setAllItem((prevItem) => ({
         ...prevItem,
@@ -62,7 +55,7 @@ function InitialFocus({
       console.error(`Error in trademodal:`, error.message);
       showToast('Error', error.message, 'error');
     }
-    onRefresh(!refresh);
+    // onRefresh(!refresh);
     onClose();
   };
   return (
@@ -74,7 +67,7 @@ function InitialFocus({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Buy 300 bitcoins</ModalHeader>
+        <ModalHeader>{head}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           {`Are you sure you want to ${trade} ${name} for ${total}`}
@@ -82,7 +75,7 @@ function InitialFocus({
 
         <ModalFooter>
           <Button colorScheme='blue' mr={3} onClick={handleTrade}>
-            Purchase
+            Comfirm
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>

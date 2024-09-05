@@ -185,8 +185,11 @@ import InitialFocus from './BuySellModal';
 import useModal from '../hooks/UseModal';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { allItemAtom } from '../atoms/allItemAtom.js';
-import { viewItems } from '../services/userService.js';
+import { viewItems, viewUserAssets } from '../services/userService.js';
 import useShowToast from '../hooks/useShowToast.js';
+import Buyorsell from './buyorsell.jsx';
+import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
+import userAtom from '../atoms/userAtom.js';
 
 function BuyPage() {
   const [selectedItem, setSelectedItem] = useState('');
@@ -196,12 +199,16 @@ function BuyPage() {
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.800', 'white');
   const { isOpen, onOpen, onClose } = useModal();
-  const allitem = useRecoilValue(allItemAtom);
+  // const allitem = useRecoilValue(allItemAtom);
+  const tradeType = useRecoilValue(buyorsellAtom);
+
   const [marketData, setMarketData] = useState([]);
   const [itemId, setItemId] = useState(1);
-  const [refresh, setRefresh] = useState(false); // State to trigger re-render
+  // const [refresh, setRefresh] = useState(false);
   const [afterPrice, setAfterPrice] = useState(0);
-
+  const currentUser = useRecoilValue(userAtom);
+  // console.log('cuser', currentUser);
+  // console.log('ttype', tradeType);
   const handleMinMaxButton = (e) => {
     let value = parseInt(e.target.value, 10);
 
@@ -217,13 +224,20 @@ function BuyPage() {
   };
 
   const showToast = useShowToast();
-  const handleRefresh = () => {
-    setRefresh(!refresh); // Toggle refresh state to re-render
-  };
+  // const handleRefresh = () => {
+  //   setRefresh(!refresh);
+  // };
   // Fetch market data
   const fetchData = async () => {
     try {
-      const data = await viewItems();
+      let data;
+
+      if (tradeType === 'buy') {
+        data = await viewItems();
+      } else {
+        data = await viewUserAssets(currentUser.id);
+      }
+
       setMarketData(data);
     } catch (error) {
       showToast('Error', error, 'error');
@@ -232,12 +246,12 @@ function BuyPage() {
 
   useEffect(() => {
     fetchData();
-  }, refresh);
+  }, [marketData]);
 
   useEffect(() => {
     // When the component mounts, set the selected item to match the item in Recoil state
     setSelectedItem(itemInfo.name);
-  }, [itemInfo, refresh]);
+  }, [itemInfo]);
 
   const handleItemChange = (event) => {
     const newItem = event.target.value;
@@ -253,28 +267,28 @@ function BuyPage() {
   };
 
   useEffect(() => {
-    console.log(itemId);
-    console.log(quantity, itemInfo.price);
+    // console.log(itemId);
+    // console.log(quantity, itemInfo.price);
     if (quantity && itemInfo.price !== undefined && itemInfo.price !== null) {
-      console.log('hi');
+      // console.log('hi');
       const parsedQuantity = parseFloat(quantity);
       const unitPrice = itemInfo.price;
 
       if (!isNaN(parsedQuantity) && !isNaN(unitPrice)) {
-        console.log(itemId);
-        console.log('first', marketData);
+        // console.log(itemId);
+        // console.log('first', marketData);
         const currentItem = marketData.find((item) => item.id == itemId);
         // const price
         // const { supply, market_cap } = currentItem;
         // console.log(supply, marketData);
-        console.log(currentItem);
+        // console.log(currentItem);
         let market_cap = parseFloat(currentItem.market_cap);
         let supply = parseFloat(currentItem.supply);
         let price = parseFloat(currentItem.price);
         let totalPrice = 0;
-        console.log('mc', market_cap);
-        console.log('sp', supply);
-        console.log('p', price);
+        // console.log('mc', market_cap);
+        // console.log('sp', supply);
+        // console.log('p', price);
         for (let i = 0; i < quantity; i++) {
           market_cap += price;
           supply -= 1;
@@ -291,7 +305,7 @@ function BuyPage() {
     } else {
       setTotal(0);
     }
-  }, [quantity, itemInfo.price, refresh, itemId, itemInfo]);
+  }, [quantity, itemInfo.price, itemId, itemInfo]);
 
   // Refresh function to be passed to InitialFocus
 
@@ -307,9 +321,10 @@ function BuyPage() {
       maxW={{ base: '100%', md: '80%', lg: '60%' }}
       mx='auto'
     >
-      <Text fontSize='2xl' fontWeight='bold' mb={6} textAlign='center'>
+      <Buyorsell />
+      {/* <Text fontSize='2xl' fontWeight='bold' mb={6} textAlign='center'>
         Buy Assets
-      </Text>
+      </Text> */}
       <VStack spacing={6}>
         <FormControl id='item' isRequired>
           <FormLabel>Select Item/Asset</FormLabel>
@@ -336,16 +351,21 @@ function BuyPage() {
           <FormControl id='price' isReadOnly>
             <HStack>
               <Box>
-                <FormLabel>Before Price</FormLabel>
-                <Input type='number' value={itemInfo.price || ''} />
+                <FormLabel>Before Price:</FormLabel>
+                {/* <Input type='number' value={itemInfo.price || ''} readOnly /> */}
+                <Text> {itemInfo.price || ''}</Text>
               </Box>
               <Box>
-                <FormLabel>After Price</FormLabel>
-                <Input
+                <FormLabel>After Price:</FormLabel>
+                {/* <Input
                   type='number'
                   value={afterPrice ? afterPrice.toFixed(2) : itemInfo.price}
                   readOnly
-                />
+                /> */}
+                <Text>
+                  {' '}
+                  {afterPrice ? afterPrice.toFixed(2) : itemInfo.price}
+                </Text>
               </Box>
             </HStack>
           </FormControl>
@@ -371,19 +391,19 @@ function BuyPage() {
         </FormControl>
 
         <Button colorScheme='blue' w='100%' size='lg' onClick={onOpen}>
-          Purchase
+          {tradeType}
         </Button>
         <InitialFocus
           isOpen={isOpen}
           onClose={onClose}
-          trade='buy'
+          // trade={tradeType}
           total={total}
           quantity={quantity}
           itemId={itemId}
           name={itemInfo.name}
           bors={'Are you sure you want to buy this.'}
-          onRefresh={handleRefresh}
-          refresh={refresh}
+          // onRefresh={handleRefresh}
+          // refresh={refresh}
         />
 
         <Text mt={4} textAlign='center'>

@@ -11,8 +11,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { userItem } from '../atoms/userItem.js';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
+import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
 
 function Propertylist(props) {
   const tran = 'up';
@@ -21,6 +22,7 @@ function Propertylist(props) {
   const upordown = tran === 'up' ? 'increase' : 'decrease';
   const setItemInfo = useSetRecoilState(userItem);
   const itemvalue = useRecoilValue(userItem);
+  const setTrade = useSetRecoilState(buyorsellAtom);
 
   const handleClick = () => {
     setItemInfo({
@@ -29,6 +31,7 @@ function Propertylist(props) {
       total: props.unit * props.existing,
       unit: props.unit,
     });
+    setTrade('sell');
   };
   console.log('itemvalue', itemvalue);
   return (
@@ -67,7 +70,7 @@ function Propertylist(props) {
             border='2px outset rgb(252,249,250)'
             onClick={handleClick}
           >
-            <Link to='/sell'>sell</Link>
+            <Link to='/trade'>sell</Link>
           </Button>
         </Stat>
       </Box>

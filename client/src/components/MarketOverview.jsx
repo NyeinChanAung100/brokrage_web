@@ -137,6 +137,7 @@ import { allItemAtom } from '../atoms/allItemAtom.js';
 import { viewAssets, setWatchList } from '../services/userService'; // Import the viewAssets function
 import userAtom from '../atoms/userAtom.js';
 import useShowToast from '../hooks/useShowToast.js';
+import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
 
 function EachItem({
   name,
@@ -156,6 +157,8 @@ function EachItem({
   const textColor = tran === 'up' ? 'green' : 'red';
   const upordown = tran === 'up' ? 'increase' : 'decrease';
   const setAllItemInfo = useSetRecoilState(allItemAtom);
+  const setTrade = useSetRecoilState(buyorsellAtom);
+
   const handleButtonClick = async () => {
     try {
       const result = await setWatchList(watchListData);
@@ -171,6 +174,7 @@ function EachItem({
       price: price,
       unit: unit,
     });
+    setTrade('buy');
   };
   console.log('watchlist:', isWatchlist);
   return (
@@ -204,7 +208,7 @@ function EachItem({
           w={'70px'}
           onClick={handleClick}
         >
-          <Link to={'/purchase'}>Buy</Link>
+          <Link to={'/trade'}>Buy</Link>
         </Button>
       </Flex>
     </Flex>

@@ -48,8 +48,8 @@ function App() {
         <Route path='/test' element={<MyComponent />} />
 
         {/* Purchase and Sell Routes */}
-        <Route path='/purchase' element={<BuyPage />} />
-        <Route path='/sell' element={<SellPage />} />
+        <Route path='/trade' element={<BuyPage />} />
+        <Route path='/voucher' element={<Voucher />} />
 
         {/* Dashboard Route */}
         <Route

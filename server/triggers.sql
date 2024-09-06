@@ -97,8 +97,7 @@ BEGIN
             IF new_market_cap - NEW.after_price >= 0 THEN
                 UPDATE total_supply SET supply = supply + 1 WHERE item_id = NEW.item_id;
                 UPDATE market_cap SET market_cap = market_cap - NEW.after_price WHERE item_id = NEW.item_id;
-                SET total_price = total_price + (SELECT price FROM prices WHERE item_id = NEW.item_id);
-            END IF;
+                SET total_price = total_price + (SELECT price FROM prices WHERE item_id = NEW.item_id);            END IF;
         END IF;
 
         SET i = i + 1;
@@ -107,11 +106,28 @@ BEGIN
     -- add or remove from user balance and user-assests
 
     IF NEW.trade_type = 'buy' THEN
-        UPDATE user_balance SET balance = balance - total_price WHERE user_id = NEW.user_id;
-        UPDATE user_assets SET quantity = quantity + NEW.quantity WHERE user_id = NEW.user_id AND item_id = NEW.item_id;
+    -- Update the user balance
+    UPDATE user_balance 
+    SET balance = balance - total_price 
+    WHERE user_id = NEW.user_id;
+
+    -- Insert or update user assets
+        INSERT INTO user_assets (user_id, item_id, quantity)
+        VALUES (NEW.user_id, NEW.item_id, NEW.quantity)
+        ON DUPLICATE KEY UPDATE 
+        quantity = quantity + NEW.quantity;
+
     ELSEIF NEW.trade_type = 'sell' THEN
-        UPDATE user_balance SET balance = balance + total_price WHERE user_id = NEW.user_id;
-        UPDATE user_assets SET quantity = quantity - NEW.quantity WHERE user_id = NEW.user_id AND item_id = NEW.item_id;
+        -- Update the user balance
+        UPDATE user_balance 
+        SET balance = balance + total_price 
+        WHERE user_id = NEW.user_id;
+
+        -- Insert or update user assets
+        INSERT INTO user_assets (user_id, item_id, quantity)
+        VALUES (NEW.user_id, NEW.item_id, -NEW.quantity)
+        ON DUPLICATE KEY UPDATE 
+        quantity = quantity - NEW.quantity;
     END IF;
 
     -- Set after price

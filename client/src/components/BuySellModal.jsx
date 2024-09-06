@@ -32,25 +32,25 @@ function InitialFocus({ isOpen, onClose, total, quantity, itemId, name }) {
     user_id: user.id,
     item_id: itemId,
     trade_type: trade,
-    quantity: quantityFloat,
+    // quantity: quantityFloat,
   };
   // console.log('trade data', tradeData);
   const handleTrade = async () => {
     try {
       console.log('itemId in model', itemId);
       const data = await tradeItem(tradeData);
-      const itemPrice = viewItemPrice(itemId);
-
+      // const itemPrice = viewItemPrice(itemId);
+      console.log(first);
       if (data.error) {
         throw new Error(data.error || `Fail to ${trade} ${name}`);
       }
       // console.log(tradeData.user_id);
       // console.log(data.message);
       showToast(data.message);
-      setAllItem((prevItem) => ({
-        ...prevItem,
-        price: itemPrice.price,
-      }));
+      // setAllItem((prevItem) => ({
+      //   ...prevItem,
+      //   price: itemPrice.price,
+      // }));
     } catch (error) {
       console.error(`Error in trademodal:`, error.message);
       showToast('Error', error.message, 'error');

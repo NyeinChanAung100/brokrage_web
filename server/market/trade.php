@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        if($user['balance'] < $price['price']) {
+        if($user['balance'] < $price['price'] * $quantity) {
             // http_response_code(400);
             echo json_encode(["success" => false, "message" => "Insufficient balance."]);
             exit;

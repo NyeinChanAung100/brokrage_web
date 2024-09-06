@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 
 include './../dbconnect/config.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $input = json_decode(file_get_contents('php://input'), true);
     

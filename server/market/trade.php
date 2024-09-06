@@ -50,11 +50,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Insert transaction
-    // $log_query = "INSERT INTO transactions (user_id, item_id, quantity, trade_type) VALUES (?, ?, ?, ?)";
-    // $stmt = $conn->prepare($log_query);
-    // $stmt->bind_param("iiis", $user_id, $item_id, $quantity, $trade_type);
-    // $stmt->execute();
+    // Get market cap, supply, and price
+    $sql = "SELECT m.market_cap, s.supply, p.price 
+        FROM market_cap AS m
+        JOIN total_supply AS s ON m.item_id = s.item_id
+        JOIN prices AS p ON m.item_id = p.item_id
+        WHERE m.item_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $item_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+
+    $market_cap = floatval($data['market_cap']);
+    $supply = floatval($data['supply']);
+    $price = floatval($data['price']);
+
+    // Use the market cap, supply, and price as needed
+    // ...
+    
     if($trade_type == "buy") {
         // Check if user has enough balance
         $sql = "SELECT balance FROM user_balance WHERE user_id = ?";
@@ -63,22 +77,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-        // check the item price
-        $sql = "SELECT price FROM prices WHERE item_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $item_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $price = $result->fetch_assoc();
         $user['balance'] = $user ? $user['balance'] : 0;
-
-        if($price['price'] == null) {
+        // calaulate price 
+        
+        if($price == null || $price == 0) {
             // http_response_code(404);
             echo json_encode(["success" => false, "message" => "Item price not found."]);
             exit;
         }
 
-        if($user['balance'] < $price['price'] * $quantity) {
+        if($quantity == null || $quantity == 0) {
+            // http_response_code(404);
+            echo json_encode(["success" => false, "message" => "Invalid quantity."]);
+            exit;
+        }
+
+        if($quantity > $supply) {
+            // http_response_code(400);
+            echo json_encode(["success" => false, "message" => "Insufficient supply."]);
+            exit;
+        }
+        $total_price = 0;
+        for ($i=0; $i < $quantity ; $i++) { 
+            $supply = $supply - 1;
+            $market_cap = $market_cap + $price;
+            $price = $market_cap / $supply;
+            $total_price += $price;
+        }
+
+        if($user['balance'] < $total_price) {
             // http_response_code(400);
             echo json_encode(["success" => false, "message" => "Insufficient balance."]);
             exit;
@@ -87,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iiis", $user_id, $item_id, $quantity, $trade_type);
         $stmt->execute();
-    } else {
+    } else if ($trade_type == 'sell') {
         // Check if user has enough quantity
         $sql = "SELECT quantity FROM user_assets WHERE user_id = ? AND item_id = ?";
         $stmt = $conn->prepare($sql);
@@ -99,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(["success" => false, "message" => "Insufficient quantity."]);
             exit;
         }
+
         $sql = "INSERT INTO transactions (user_id, item_id, quantity, trade_type) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iiis", $user_id, $item_id, $quantity, $trade_type);

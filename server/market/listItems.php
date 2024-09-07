@@ -16,6 +16,12 @@ $supply = $conn->real_escape_string($input['supply']);
 $unit = $conn->real_escape_string($input['unit']);
 $symbol = $conn->real_escape_string($input['symbol']);
 
+if($price <= 0 || $supply < 0) {
+    http_response_code(400);
+    echo json_encode(["error" => "Price and supply must be greater than 0"]);
+    exit();
+}
+
 $sql = "INSERT INTO items (name, unit, symbol) VALUES ('$name', '$unit', '$symbol')";
 if ($conn->query($sql) === TRUE) {
     $item_id = $conn->insert_id; 

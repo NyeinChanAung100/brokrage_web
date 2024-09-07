@@ -114,7 +114,7 @@ function BuyPage() {
       const parsedQuantity = parseFloat(quantity);
       const unitPrice = itemInfo.price;
       if (!isNaN(parsedQuantity) && !isNaN(unitPrice)) {
-        console.log('ideee:', itemId);
+        // console.log('ideee:', itemId);
 
         const currentItem = marketData.find((item) => item.id == itemId);
         console.log('rrtttrr:', marketData);

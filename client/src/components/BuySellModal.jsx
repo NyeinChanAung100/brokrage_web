@@ -17,30 +17,47 @@ import userAtom from '../atoms/userAtom';
 import { tradeItem } from '../services/marketService.js';
 import useShowToast from '../hooks/useShowToast';
 import { allItemAtom } from '../atoms/allItemAtom.js';
-import { viewItemPrice } from '../services/userService.js';
+import { viewItemPrice, viewItems } from '../services/userService.js';
 import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
-function InitialFocus({ isOpen, onClose, total, quantity, itemId, name }) {
+function InitialFocus({
+  isOpen,
+  onClose,
+  total,
+  quantity,
+  itemId,
+  name,
+  userId,
+  fetchData,
+  refreshPage,
+}) {
   const [allItem, setAllItem] = useRecoilState(allItemAtom);
   const trade = useRecoilValue(buyorsellAtom);
   const showToast = useShowToast();
-  const user = useRecoilValue(userAtom);
+  // const user = useRecoilValue(userAtom);
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  let quantityFloat = parseFloat(quantity);
+  const uid = parseInt(userId, 10); // Output: 123
+  const iid = parseInt(itemId, 10); // Output: 123
+
+  // console.log('ququ:', quantity + 1);
   const head = `${trade} ${quantity} ${name} for $${total}`;
   const tradeData = {
-    user_id: user.id,
-    item_id: itemId,
+    user_id: uid,
+    item_id: iid,
     trade_type: trade,
-    // quantity: quantityFloat,
+    quantity: quantity,
   };
-  // console.log('trade data', tradeData);
+  // const itemIId = {
+  //   item_id: iid,
+  // };
+  console.log('trade data', tradeData);
   const handleTrade = async () => {
     try {
-      console.log('itemId in model', itemId);
+      // console.log('itemId in model', itemId);
       const data = await tradeItem(tradeData);
-      // const itemPrice = viewItemPrice(itemId);
-      console.log(first);
+      // const itemPrice = await viewItems(iid);
+      // console.log(first);
+      fetchData();
       if (data.error) {
         throw new Error(data.error || `Fail to ${trade} ${name}`);
       }
@@ -56,6 +73,7 @@ function InitialFocus({ isOpen, onClose, total, quantity, itemId, name }) {
       showToast('Error', error.message, 'error');
     }
     // onRefresh(!refresh);
+    // refreshPage();
     onClose();
   };
   return (

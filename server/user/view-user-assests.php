@@ -17,12 +17,34 @@ include './../dbconnect/config.php';
 // Define a function to fetch user assets
 function fetch_user_assets($conn, $user_id) {
     // Query to select user assets based on the user ID
-    $sql = "SELECT ua.item_id, i.unit, i.symbol, i.name, ua.quantity, ua.acquired_date,prices.price
-            FROM user_assets ua
-            JOIN items i ON ua.item_id = i.id
-            LEFT JOIN prices ON i.id = prices.item_id
-            WHERE ua.user_id = ? AND ua.quantity > 0";
-    
+    // $sql = "SELECT ua.item_id, i.unit, i.symbol, i.name, ua.quantity, ua.acquired_date,prices.price
+    //         FROM user_assets ua
+    //         JOIN items i ON ua.item_id = i.id
+    //         LEFT JOIN prices ON i.id = prices.item_id
+    //         WHERE ua.user_id = ? AND ua.quantity > 0";
+    $sql = "
+    SELECT 
+        ua.item_id, 
+        i.unit, 
+        i.symbol, 
+        i.name, 
+        ua.quantity, 
+        ua.acquired_date, 
+        prices.price,
+        mc.market_cap  -- Added market_cap from the market_cap table
+    FROM 
+        user_assets ua
+    JOIN 
+        items i ON ua.item_id = i.id
+    LEFT JOIN 
+        prices ON i.id = prices.item_id
+    LEFT JOIN 
+        market_cap mc ON i.id = mc.item_id  -- Join with market_cap table
+    WHERE 
+        ua.user_id = ? 
+        AND ua.quantity > 0
+";
+
     // Prepare the statement
     $stmt = $conn->prepare($sql);
     if (!$stmt) {

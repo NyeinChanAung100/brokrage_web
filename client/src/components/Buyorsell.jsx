@@ -13,6 +13,7 @@ import { buyorsellAtom } from '../atoms/buyorsellAtom';
 function Buyorsell() {
   const [trade, setTrade] = useRecoilState(buyorsellAtom);
   const index = trade == 'buy' ? 0 : 1;
+
   return (
     <Tabs isFitted variant='enclosed' defaultIndex={index}>
       <TabList mb='1em'>

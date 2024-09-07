@@ -12,9 +12,21 @@ export const registerUser = async (userData) => {
   }
 };
 
+// export const fetchItemPrice = async (itemData) => {
+//   try {
+//     const response = await axiosInstance.get(
+//       '/user/view-item-price.php',
+//       itemData,
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error fetching item price:', error);
+//     throw error;
+//   }
+// };
 export const viewBalance = async (userId) => {
   try {
-    const response = await axiosInstance.post('/user/view-money.php', {
+    const response = await axiosInstance.get('/user/view-money.php', {
       user_id: userId,
     });
     return response.data;
@@ -23,7 +35,17 @@ export const viewBalance = async (userId) => {
     throw error;
   }
 };
-
+export const viewItemPrice = async (itemId) => {
+  try {
+    const response = await axiosInstance.get('/user/view-item-price.php', {
+      item_id: itemId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error viewing item price:', error);
+    throw error;
+  }
+};
 export const depositMoney = async (depositData) => {
   try {
     const response = await axiosInstance.post(
@@ -102,18 +124,6 @@ export const viewUserAssets = async (userId) => {
     return response.data;
   } catch (error) {
     console.error('Error viewing user assets:', error);
-    throw error;
-  }
-};
-
-export const viewItemPrice = async (itemId) => {
-  try {
-    const response = await axiosInstance.get('/user/view-item-price.php', {
-      item_id: itemId,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error viewing item price:', error);
     throw error;
   }
 };

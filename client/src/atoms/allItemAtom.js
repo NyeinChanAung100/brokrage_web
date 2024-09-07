@@ -10,6 +10,7 @@ export const allItemAtom = atom({
     name: 'gold',
     price: 80.54,
     unit: 'g',
+    quantity: 1,
   }, // default value (aka initial value)
   effects_UNSTABLE: [persistAtom], // Add persist effect
 });

@@ -173,6 +173,7 @@ function EachItem({
       name: name,
       price: price,
       unit: unit,
+      id: id,
     });
     setTrade('buy');
   };

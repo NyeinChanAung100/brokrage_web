@@ -42,5 +42,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </BrowserRouter>
     </RecoilRoot>
     ,
-  </React.StrictMode>,
+  </React.StrictMode>
 );

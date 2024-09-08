@@ -38,7 +38,7 @@ function InitialFocus({
   const finalRef = React.useRef(null);
   const uid = parseInt(userId, 10); // Output: 123
   const iid = parseInt(itemId, 10); // Output: 123
-
+  console.log('trade:', trade);
   // console.log('ququ:', quantity + 1);
   const head = `${trade} ${quantity} ${name} for $${total}`;
   const tradeData = {

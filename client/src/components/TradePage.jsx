@@ -59,10 +59,8 @@ const TradePage = () => {
   const tradeType = useRecoilValue(buyorsellAtom);
   const parseid = parseInt(itemInfo?.id ? itemInfo.id : itemInfo.item_id, 10);
   const [itemId, setItemId] = useState(parseid);
-  console.log('itemInfo:', itemInfo);
-  console.log('item_id:', itemId);
   const currentUser = useRecoilValue(userAtom);
-  console.log(currentUser);
+  console.log('itemId', itemId);
   useEffect(() => {
     fetchData();
   }, []);
@@ -92,6 +90,13 @@ const TradePage = () => {
         console.log('supply:', supply);
         console.log('market_cap:', market_cap);
         console.log('price:', price);
+
+        if (tradeType == 'sell') {
+          const item_quantity = currentItem?.quantity;
+          if (item_quantity < quantity) {
+            throw new Error('You do not have enough quantity to sell');
+          }
+        }
 
         for (let i = 0; i < quantity; i++) {
           if (tradeType == 'buy') {
@@ -123,12 +128,14 @@ const TradePage = () => {
 
   const handleItemChange = (event) => {
     const newItem = event.target.value;
+    console.log('mgggggg', marketData);
     const newItemData = marketData.find((data) => data.name === newItem);
     setSelectedItem(newItem);
+    console.log('new', newItemData);
 
     if (newItemData) {
       setItemInfo(newItemData);
-      setItemId(newItemData.item_id);
+      setItemId(newItemData.id);
       setTotal(0);
       setQuantity('');
       setAfterPrice(0);
@@ -138,12 +145,22 @@ const TradePage = () => {
   };
 
   const handleMinMaxButton = (e) => {
-    let value = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
-    console.log('value:', value);
-    if (value === '') {
-      setQuantity('');
+    let value = e.target.value;
+    value = parseInt(value, 10);
+    console.log('itemInfo', itemInfo);
+    if (itemInfo.quantity !== undefined || itemInfo.quantity !== null) {
+      const item_quantity = parseInt(itemInfo.quantity, 10);
+      console.log(item_quantity);
+      if (isNaN(item_quantity)) {
+        setQuantity('');
+      } else if (item_quantity < 1) {
+        setQuantity(1);
+      } else if (value > item_quantity) {
+        setQuantity(parseInt(item_quantity));
+      } else {
+        setQuantity(value);
+      }
     } else {
-      value = parseInt(value, 10);
       if (isNaN(value)) {
         setQuantity('');
       } else if (value < 1) {
@@ -164,16 +181,16 @@ const TradePage = () => {
       if (tradeType.trim() == 'sell') {
         console.log('first');
         const userAssest = await viewUserAssets(currentUser.id);
-        console.log(userAssest);
         const userAssestItemsId = userAssest.map((item) => item.item_id);
-        console.log('userAssestItemsId', userAssestItemsId);
-        data = data.filter((item) => userAssestItemsId.includes(item.id));
+        data = data.filter((item) =>
+          userAssestItemsId.includes(parseInt(item.id))
+        );
+        console.log('filtered', data);
         data = data.map((item) => {
           return {
             ...item,
-            quantity: userAssest.find(
-              (userItem) => userItem.item_id == item.item_id
-            ).quantity,
+            quantity: userAssest.find((userItem) => userItem.item_id == item.id)
+              .quantity,
           };
         });
       }

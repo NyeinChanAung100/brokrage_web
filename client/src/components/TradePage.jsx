@@ -60,7 +60,7 @@ const TradePage = () => {
   const parseid = parseInt(itemInfo?.id ? itemInfo.id : itemInfo.item_id, 10);
   const [itemId, setItemId] = useState(parseid);
   const currentUser = useRecoilValue(userAtom);
-  console.log('itemId', itemId);
+  const [userQuantity, setUserQuantity] = useState(0);
   useEffect(() => {
     fetchData();
   }, []);
@@ -78,24 +78,17 @@ const TradePage = () => {
       const parsedQuantity = parseFloat(quantity);
       const unitPrice = itemInfo.price;
       if (!isNaN(parsedQuantity) && !isNaN(unitPrice)) {
-        console.log('maeketdata:', marketData);
-        console.log('ideee:', itemId);
         const currentItem = marketData.find((item) => item.id == itemId);
-        console.log('ccitemm:', currentItem);
         let market_cap = parseFloat(currentItem.market_cap);
         let supply = parseFloat(currentItem.supply);
         let price = parseFloat(currentItem.price);
         let totalPrice = 0;
-        console.log('tradeType:', tradeType);
-        console.log('supply:', supply);
-        console.log('market_cap:', market_cap);
-        console.log('price:', price);
 
         if (tradeType == 'sell') {
           const item_quantity = currentItem?.quantity;
-          if (item_quantity < quantity) {
-            throw new Error('You do not have enough quantity to sell');
-          }
+          // if (item_quantity < quantity) {
+          //   throw new Error("You don't have enough quantity to sell");
+          // }
         }
 
         for (let i = 0; i < quantity; i++) {
@@ -128,14 +121,15 @@ const TradePage = () => {
 
   const handleItemChange = (event) => {
     const newItem = event.target.value;
-    console.log('mgggggg', marketData);
     const newItemData = marketData.find((data) => data.name === newItem);
     setSelectedItem(newItem);
-    console.log('new', newItemData);
 
     if (newItemData) {
       setItemInfo(newItemData);
       setItemId(newItemData.id);
+      if (tradeType === 'sell') {
+        setUserQuantity(newItemData.quantity);
+      }
       setTotal(0);
       setQuantity('');
       setAfterPrice(0);
@@ -148,15 +142,21 @@ const TradePage = () => {
     let value = e.target.value;
     value = parseInt(value, 10);
     console.log('itemInfo', itemInfo);
-    if (itemInfo.quantity !== undefined || itemInfo.quantity !== null) {
+
+    if (
+      itemInfo.quantity !== undefined &&
+      itemInfo.quantity !== null &&
+      !isNaN(itemInfo.quantity)
+    ) {
       const item_quantity = parseInt(itemInfo.quantity, 10);
       console.log(item_quantity);
+
       if (isNaN(item_quantity)) {
         setQuantity('');
       } else if (item_quantity < 1) {
         setQuantity(1);
       } else if (value > item_quantity) {
-        setQuantity(parseInt(item_quantity));
+        setQuantity(item_quantity);
       } else {
         setQuantity(value);
       }
@@ -176,12 +176,12 @@ const TradePage = () => {
   const fetchData = async () => {
     try {
       let data;
-      console.log('tradeType:', tradeType);
       data = await viewItems();
       if (tradeType.trim() == 'sell') {
-        console.log('first');
         const userAssest = await viewUserAssets(currentUser.id);
         const userAssestItemsId = userAssest.map((item) => item.item_id);
+        console.log('userAssestItemsId', userAssestItemsId);
+        console.log('userAssest', userAssest);
         data = data.filter((item) =>
           userAssestItemsId.includes(parseInt(item.id))
         );
@@ -228,7 +228,7 @@ const TradePage = () => {
               ))}
             </Select>
           </FormControl>
-
+          {tradeType == 'sell' ? <Text>Quantity: {userQuantity}</Text> : null}
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} w='100%'>
             <FormControl id='quantity' isRequired>
               <FormLabel>Quantity</FormLabel>
@@ -282,7 +282,7 @@ const TradePage = () => {
           </FormControl>
 
           <Button colorScheme='blue' w='100%' size='lg' onClick={onOpen}>
-            {tradeType?.trade == 'buy' ? 'Buy' : 'Sell'}
+            {tradeType}
           </Button>
           <InitialFocus
             isOpen={isOpen}
@@ -294,6 +294,8 @@ const TradePage = () => {
             name={itemInfo.name}
             fetchData={fetchData}
             handleItemChange={handleItemChange}
+            setUserQuantity={setUserQuantity}
+            userQuantity={userQuantity}
             // refreshPage={refreshPage}
           />
 

@@ -91,8 +91,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(["success" => false, "message" => "Invalid quantity."]);
             exit;
         }
-
-        if($quantity > $supply) {
+        // echo json_encode(["success" => true,"quantity" => $quantity, "supply" => $supply, "price" => $price, "market_cap" => $market_cap]);
+        // exit;
+        if(intval($quantity) > intval($supply+1) || intval($quantity) < 0 || intval($supply) <= 0) {
             // http_response_code(400);
             echo json_encode(["success" => false, "message" => "Insufficient supply."]);
             exit;
@@ -100,8 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $total_price = 0;
         for ($i=0; $i < $quantity ; $i++) { 
             $supply = $supply - 1;
-            $market_cap = $market_cap + $price;
-            $price = $market_cap / $supply;
+            if ($supply > 0) {
+                $market_cap = $market_cap + $price;
+                $price = $market_cap / $supply;
+            }
             $total_price += $price;
         }
 

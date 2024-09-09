@@ -27,6 +27,8 @@ function InitialFocus({
   itemId,
   name,
   userId,
+  setUserQuantity,
+  userQuantity,
   fetchData,
   refreshPage,
 }) {
@@ -38,8 +40,8 @@ function InitialFocus({
   const finalRef = React.useRef(null);
   const uid = parseInt(userId, 10); // Output: 123
   const iid = parseInt(itemId, 10); // Output: 123
-
-  // console.log('ququ:', quantity + 1);
+  'trade:', trade;
+  //  ('ququ:', quantity + 1);
   const head = `${trade} ${quantity} ${name} for $${total}`;
   const tradeData = {
     user_id: uid,
@@ -50,19 +52,26 @@ function InitialFocus({
   // const itemIId = {
   //   item_id: iid,
   // };
-  console.log('trade data', tradeData);
+  'trade data', tradeData;
   const handleTrade = async () => {
     try {
-      // console.log('itemId in model', itemId);
+      //  ('itemId in model', itemId);
+      console.log(tradeData);
+
       const data = await tradeItem(tradeData);
       // const itemPrice = await viewItems(iid);
-      // console.log(first);
-      fetchData();
+      //  (first);
+      if (data.success) {
+        setUserQuantity(userQuantity - quantity);
+      }
+      console.log(data);
+      // fetchData();
       if (data.error) {
         throw new Error(data.error || `Fail to ${trade} ${name}`);
       }
-      // console.log(tradeData.user_id);
-      // console.log(data.message);
+      //  (tradeData.user_id);
+      //  (data.message);
+      console.log(data.message);
       showToast(data.message);
       // setAllItem((prevItem) => ({
       //   ...prevItem,
@@ -88,12 +97,12 @@ function InitialFocus({
         <ModalHeader>{head}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          {`Are you sure you want to ${trade} ${name} for ${total}`}
+          {`Are you sure you want to ${trade} ${name} for ${total}?`}
         </ModalBody>
 
         <ModalFooter>
           <Button colorScheme='blue' mr={3} onClick={handleTrade}>
-            Comfirm
+            Confirm
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>

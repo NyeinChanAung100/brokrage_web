@@ -20,6 +20,7 @@ import { useRecoilValue } from 'recoil';
 
 // import LogoutButton from './components/logoutButton';
 import userAtom from './atoms/userAtom.js';
+import TradePage from './components/TradePage.jsx';
 // import LoginCard from './components/LoginCard';
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
         <Route path='/test' element={<MyComponent />} />
 
         {/* Purchase and Sell Routes */}
-        <Route path='/trade' element={<BuyPage />} />
+        <Route path='/trade' element={<TradePage />} />
         <Route path='/voucher' element={<Voucher />} />
 
         {/* Dashboard Route */}

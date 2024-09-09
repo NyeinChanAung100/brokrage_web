@@ -152,6 +152,7 @@ function BuyPage() {
   useEffect(() => {
     console.log('quantity::', quantity);
   }, [quantity, marketData]);
+
   return (
     <Box
       w='100%'
@@ -232,7 +233,7 @@ function BuyPage() {
         </FormControl>
 
         <Button colorScheme='blue' w='100%' size='lg' onClick={onOpen}>
-          {tradeType}
+          {'asdf'}
         </Button>
         <InitialFocus
           isOpen={isOpen}

@@ -204,12 +204,24 @@ function EachItem({
 
         <Button
           colorScheme='red'
-          size='xs'
+          size='sm'
           border={'2px outset rgb(252,249,250)'}
           w={'70px'}
+          p={'0px'}
           onClick={handleClick}
         >
-          <Link to={'/trade'}>Buy</Link>
+          <Link
+            to={'/trade'}
+            style={{
+              display: 'inline',
+              width: '100%',
+              height: '100%',
+              paddingTop: '5px',
+              // border: '1px solid black',
+            }}
+          >
+            Buy
+          </Link>
         </Button>
       </Flex>
     </Flex>
@@ -224,10 +236,10 @@ function MarketOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userId = userData.id; // Replace with the actual user ID
+        const userId = userData.id;
         const data = await viewAssets(userId);
-        console.log('Fetched Assets:', data); // Log the fetched data
-        setMarketData(data); // Set the fetched data to state
+        console.log('Fetched Assets:', data);
+        setMarketData(data);
       } catch (error) {
         console.error('Failed to fetch assets:', error);
       }

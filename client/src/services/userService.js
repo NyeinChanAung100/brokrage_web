@@ -26,7 +26,7 @@ export const registerUser = async (userData) => {
 // };
 export const viewBalance = async (userId) => {
   try {
-    const response = await axiosInstance.get('/user/view-money.php', {
+    const response = await axiosInstance.post('/user/view-money.php', {
       user_id: userId,
     });
     return response.data;

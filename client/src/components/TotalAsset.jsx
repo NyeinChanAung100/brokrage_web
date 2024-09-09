@@ -2,28 +2,47 @@ import {
   Box,
   Button,
   Heading,
-  Text,
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Stat,
-  StatLabel,
-  StatNumber,
   StatHelpText,
   StatArrow,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
+import { viewBalance } from '../services/userService';
+import { useRecoilValue } from 'recoil';
+import userAtom from '../atoms/userAtom';
 
 function TotalAsset() {
+  const [balance, setBalance] = useState(0);
+  const user = useRecoilValue(userAtom);
+  const userId = parseInt(user.id, 10);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await viewBalance(userId);
+        if (data.success) {
+          setBalance(data.balance); // Accessing the balance from the object
+        } else {
+          console.error('Failed to fetch balance:', data.message);
+        }
+      } catch (error) {
+        console.error('Failed to fetch assets:', error);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
   return (
     <Card
       align='center'
       width={'48%'}
-      //   width='100%'
-      // maxW='400px'
       padding='20px'
-      //   bgGradient='linear(to-r, teal.500, green.500)'
       borderRadius='15px'
       boxShadow='lg'
     >
@@ -34,7 +53,7 @@ function TotalAsset() {
         <Box display='flex' alignItems='center'>
           <FaDollarSign size={24} style={{ marginRight: '8px' }} />
           <Heading size='lg' fontWeight='bold'>
-            $965,482
+            {balance}
           </Heading>
         </Box>
         <Stat mt={4}>

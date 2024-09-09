@@ -14,6 +14,7 @@ import { userItem } from '../atoms/userItem.js';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
 import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
+import { useState } from 'react';
 
 function Propertylist(props) {
   const tran = 'up';
@@ -23,6 +24,7 @@ function Propertylist(props) {
   const setItemInfo = useSetRecoilState(userItem);
   const itemvalue = useRecoilValue(userItem);
   const setTrade = useSetRecoilState(buyorsellAtom);
+  const [priceLogs, setPriceLogs] = useState({});
 
   const handleClick = () => {
     setItemInfo({
@@ -37,7 +39,7 @@ function Propertylist(props) {
   return (
     <Flex
       width='100%'
-      height='80px'
+      height='100px'
       alignItems='center'
       paddingLeft='15px'
       bg={useColorModeValue('white', 'gray.900')}
@@ -66,11 +68,22 @@ function Propertylist(props) {
 
           <Button
             colorScheme='teal'
-            size='xs'
+            size='sm'
             border='2px outset rgb(252,249,250)'
             onClick={handleClick}
           >
-            <Link to='/trade'>sell</Link>
+            <Link
+              to='/trade'
+              style={{
+                display: 'inline',
+                width: '100%',
+                height: '100%',
+                paddingTop: '5px',
+                // border: '1px solid black',
+              }}
+            >
+              sell
+            </Link>
           </Button>
         </Stat>
       </Box>

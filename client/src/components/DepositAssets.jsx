@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -10,8 +10,59 @@ import {
   HStack,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { allItemAtom } from '../atoms/allItemAtom.js';
+import {
+  depositAssets,
+  viewAssets,
+  viewUserAssets,
+} from '../services/userService.js';
+import { useRecoilValue } from 'recoil';
+import userAtom from '../atoms/userAtom.js';
 
 const DepositAssets = () => {
+  const [marketData, setMarketData] = useState([]);
+  const [item_id, setItem_id] = useState('');
+  const [amount, setAmount] = useState('');
+  const currentUser = useRecoilValue(userAtom);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log('first', marketData);
+  console.log('first', amount);
+
+  const fetchData = async () => {
+    try {
+      const data = await viewAssets();
+      console.log('Fetched Assets:', data);
+      setMarketData(data);
+    } catch (error) {
+      console.error('Failed to fetch assets:', error);
+    }
+  };
+
+  console.log(item_id);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (window.confirm('Are you sure you want to deposit this asset?')) {
+      if (item_id === '' || amount === '') {
+        alert('Please fill all fields');
+        return;
+      }
+
+      const data = await depositAssets({
+        item_id,
+        quantity: amount,
+        user_id: currentUser.id,
+      });
+
+      if (data.success) {
+        alert(amount + ' ' + data.message);
+      }
+    }
+  };
+
   return (
     <Box
       width='100%'
@@ -29,20 +80,33 @@ const DepositAssets = () => {
         width='100%'
         maxWidth='600px'
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <VStack spacing={4} align='stretch'>
             <FormControl id='asset' isRequired>
               <FormLabel>Select Asset</FormLabel>
-              <Select placeholder='Select Asset'>
-                <option value='asset1'>Asset 1</option>
-                <option value='asset2'>Asset 2</option>
-                <option value='asset3'>Asset 3</option>
+              <Select
+                placeholder='Select Asset'
+                onChange={(e) => {
+                  setItem_id(e.target?.value);
+                }}
+              >
+                {marketData.map((data) => (
+                  <option key={data.id} value={data.id}>
+                    {data.name}
+                  </option>
+                ))}
               </Select>
             </FormControl>
 
             <FormControl id='amount' isRequired>
               <FormLabel>Amount</FormLabel>
-              <Input type='number' placeholder='Enter amount' />
+              <Input
+                type='number'
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+                placeholder='Enter amount'
+              />
             </FormControl>
 
             <HStack justify='space-between'>

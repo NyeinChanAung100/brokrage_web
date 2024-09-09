@@ -1,215 +1,10 @@
-// import { Flex, useColorModeValue } from '@chakra-ui/react';
-// import { Bar, Doughnut, Line } from 'react-chartjs-2';
-// import revenuedata from '../data/revenuedata.json';
-// import { Chart as ChartJs, defaults } from 'chart.js/auto';
-// import Propertylist from './propertylist';
-// import TotalAsset from './TotalAsset';
-// import './lich.css';
-// import { viewUserAssets, viewPriceLog } from '../services/userService';
-// import { useRecoilValue, useSetRecoilState } from 'recoil';
-// import userAtom from '../atoms/userAtom';
-// import assetIdsAtom from '../atoms/assetIdsAtom';
-// import { useEffect, useState } from 'react';
-// import moment from 'moment';
-
-// function LineChartCompo() {
-//   defaults.maintainAspectRatio = true;
-//   defaults.responsive = true;
-//   defaults.plugins.title.display = true;
-//   defaults.plugins.title.align = 'start';
-//   defaults.plugins.title.font.size = 20;
-//   defaults.plugins.title.color = useColorModeValue('black', 'white');
-
-//   const userData = useRecoilValue(userAtom); // Get user data from Recoil
-//   const [assets, setAssets] = useState([]); // Local state for storing assets
-//   const setAssetIds = useSetRecoilState(assetIdsAtom); // Setter for asset IDs in Recoil
-//   const [priceLogs, setPriceLogs] = useState({}); // Local state for storing price logs
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const userId = userData.id;
-//         const fetchedAssets = await viewUserAssets(userId);
-//         setAssets(fetchedAssets); // Store fetched assets in local state
-
-//         const assetIds = fetchedAssets.map((asset) => asset.item_id);
-//         setAssetIds(assetIds);
-
-//         assetIds.forEach(async (id) => {
-//           const log = await viewPriceLog(id); // Fetch price log for each item
-//           setPriceLogs((prevLogs) => ({
-//             ...prevLogs,
-//             [id]: log, // Store the price log for each asset by its ID
-//           }));
-//         });
-//       } catch (error) {
-//         console.error('Failed to fetch assets or price logs:', error);
-//       }
-//     };
-//     fetchData(); // Fetch assets and price logs when component mounts
-//   }, [userData, setAssetIds]); // Dependencies: userData and setAssetIds
-
-//   const aggregatePriceLog = (priceLog) => {
-//     // Check if priceLog is an array
-//     if (!Array.isArray(priceLog)) {
-//       console.error('Invalid priceLog data, expected an array:', priceLog);
-//       return [];
-//     }
-
-//     const oneHourAgo = moment().subtract(1, 'hour'); // Get timestamp for 1 hour ago
-
-//     // Filter to get only the records from the last hour
-//     const lastHourLogs = priceLog.filter((log) =>
-//       moment(log.timestamp).isAfter(oneHourAgo),
-//     );
-
-//     // Aggregate data for every 5-minute intervals
-//     const aggregatedLogs = [];
-//     const interval = 5; // 5 minutes
-//     let currentTime = moment().startOf('minute');
-
-//     while (currentTime.isAfter(oneHourAgo)) {
-//       // Find logs within the current 5-minute interval
-//       const logsInInterval = lastHourLogs.filter((log) =>
-//         moment(log.timestamp).isBetween(
-//           currentTime.subtract(interval, 'minutes'),
-//           currentTime,
-//         ),
-//       );
-
-//       const averagePrice =
-//         logsInInterval.reduce((acc, log) => acc + log.price, 0) /
-//           logsInInterval.length || 0;
-
-//       aggregatedLogs.push({
-//         time: currentTime.format('HH:mm'),
-//         averagePrice,
-//       });
-
-//       currentTime = moment(currentTime).subtract(interval, 'minutes');
-//     }
-
-//     return aggregatedLogs.reverse();
-//   };
-
-//   const aggregatedPriceLogs = priceLogs[assets[0]?.item_id]
-//     ? aggregatePriceLog(priceLogs[assets[0].item_id])
-//     : [];
-
-//   return (
-//     <Flex
-//       w={'100%'}
-//       flexDirection={{ base: 'column', md: 'row-reverse' }}
-//       h={'100%'}
-//       overflow={'hidden'}
-//       mt={'-20px'}
-//     >
-//       <Flex
-//         flexDirection={'column'}
-//         h={'100%'}
-//         width={{ base: '100%', md: '35%' }}
-//         padding={'5px'}
-//         className='lichcom'
-//         overflow={'scroll'}
-//         bg={useColorModeValue('white', 'gray.900')}
-//         css={{
-//           '&::-webkit-scrollbar': { display: 'none' },
-//           '-ms-overflow-style': 'none', // IE and Edge
-//           'scrollbar-width': 'none', // Firefox
-//         }}
-//       >
-//         {assets?.map((asset) => (
-//           <Propertylist
-//             key={asset.item_id}
-//             name={asset.name}
-//             existing={asset.quantity}
-//             symbol={asset.symbol}
-//             id={asset.item_id}
-//             unit={asset.unit}
-//             price={asset.price}
-//           />
-//         ))}
-//       </Flex>
-
-//       <Flex
-//         width={{ base: '100%', md: '65%' }}
-//         flexDirection={'column'}
-//         overflow={'scroll'}
-//         marginRight={'10px'}
-//         css={{
-//           '&::-webkit-scrollbar': { display: 'none' },
-//           '-ms-overflow-style': 'none', // IE and Edge
-//           'scrollbar-width': 'none', // Firefox
-//         }}
-//       >
-//         <Flex>
-//           <Line
-//             data={{
-//               labels: aggregatedPriceLogs.map((log) => log.time), // 5-minute intervals
-//               datasets: [
-//                 {
-//                   label: 'Price (Last Hour)',
-//                   data: aggregatedPriceLogs.map((log) => log.averagePrice), // Aggregated price data
-//                   backgroundColor: '#ff3030',
-//                   borderColor: '#ff3030',
-//                   fill: false,
-//                 },
-//               ],
-//             }}
-//             options={{
-//               scales: {
-//                 x: { title: { display: true, text: 'Time (5 min intervals)' } },
-//                 y: { title: { display: true, text: 'Price' } },
-//               },
-//               plugins: {
-//                 title: {
-//                   text: 'Last Hour Price Logs',
-//                   display: true,
-//                 },
-//                 tooltip: { mode: 'index', intersect: false },
-//                 hover: { mode: 'index', intersect: false },
-//               },
-//             }}
-//           />
-//         </Flex>
-
-//         <Flex>
-//           <Bar
-//             data={{
-//               labels: aggregatedPriceLogs.map((log) => log.time), // 5-minute intervals
-//               datasets: [
-//                 {
-//                   label: 'Price (Last Hour)',
-//                   data: aggregatedPriceLogs.map((log) => log.averagePrice), // Aggregated price data
-//                   backgroundColor: 'rgba(75, 192, 192, 0.6)',
-//                   borderColor: 'rgba(75, 192, 192, 1)',
-//                   borderRadius: 5,
-//                 },
-//               ],
-//             }}
-//             options={{
-//               scales: {
-//                 x: { title: { display: true, text: 'Time (5 min intervals)' } },
-//                 y: { title: { display: true, text: 'Price' } },
-//               },
-//               plugins: {
-//                 title: {
-//                   text: 'Price in Last Hour (5 min Intervals)',
-//                   display: true,
-//                 },
-//                 tooltip: { mode: 'index', intersect: false },
-//                 hover: { mode: 'index', intersect: false },
-//               },
-//             }}
-//           />
-//         </Flex>
-//       </Flex>
-//     </Flex>
-//   );
-// }
-
-// export default LineChartCompo;
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Select,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import revenuedata from '../data/revenuedata.json';
 import { Chart as ChartJs, defaults } from 'chart.js/auto';
@@ -221,6 +16,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom';
 import assetIdsAtom from '../atoms/assetIdsAtom';
 import { useEffect, useState } from 'react';
+import { userItem } from '../atoms/userItem';
 
 function LineChartCompo() {
   // Setting up default chart configuration
@@ -235,35 +31,85 @@ function LineChartCompo() {
   const [assets, setAssets] = useState([]); // Local state for storing assets
   const setAssetIds = useSetRecoilState(assetIdsAtom); // Setter for asset IDs in Recoil
   const [priceLogs, setPriceLogs] = useState({}); // Local state for storing price logs
+  const [logprice, setlogprice] = useState([]); // Local state for storing price logs
+  const [logtime, setlogtime] = useState([]); // Local state for storing time logs
+  const [temp, setTemp] = useState([]); // State for storing the last 100 prices
+  const [selectedPrices, setSelectedPrices] = useState([]);
+  const [timeTemp, setTimeTemp] = useState([]); // State for storing the last 100 prices
+  const [selectedTimes, setSelectedTimes] = useState([]);
+  const idd = useRecoilValue(assetIdsAtom);
+  const [idc, setidc] = useState(idd[0]);
 
+  // const useritem = useRecoilValue(userItem);
+  // console.log('useritemId:', idc);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch assets using the userId
         const userId = userData.id;
         const fetchedAssets = await viewUserAssets(userId);
-        setAssets(fetchedAssets); // Store fetched assets in local state
+        setAssets(fetchedAssets);
+        // console.log(fetchedAssets, 'jkjk');
 
-        // Extract asset IDs and store in Recoil atom
         const assetIds = fetchedAssets.map((asset) => asset.item_id);
         setAssetIds(assetIds);
 
-        // Fetch price logs for each asset ID
-        assetIds.forEach(async (id) => {
-          const log = await viewPriceLog(id); // Fetch price log for each item
-          setPriceLogs((prevLogs) => ({
-            ...prevLogs,
-            [id]: log, // Store the price log for each asset by its ID
-          }));
+        // Fetch price logs for each asset
+        const logsPromises = assetIds.map(async (id) => {
+          const log = await viewPriceLog(id);
+          return { id, log };
         });
+
+        const fetchedLogs = await Promise.all(logsPromises);
+
+        const logsObject = fetchedLogs.reduce((acc, { id, log }) => {
+          acc[id] = log;
+          return acc;
+        }, {});
+
+        setPriceLogs(logsObject);
+
+        if (logsObject[idc]) {
+          const p = logsObject[1].data?.map((item) => item.price);
+          const t = logsObject[1].data?.map((item) => item.log_time);
+
+          setlogprice(p);
+          setlogtime(t);
+        }
       } catch (error) {
         console.error('Failed to fetch assets or price logs:', error);
       }
     };
-    console.log('id handling:');
-    fetchData(); // Fetch assets and price logs when component mounts
-  }, [userData, setAssetIds]); // Dependencies: userData and setAssetIds
-  console.log('log:', priceLogs);
+
+    fetchData();
+  }, [userData, setAssetIds, idc]); // Optionally add priceLogs here if needed
+  // console.log('aaaaa', assets[1].item_id);
+  // if (assets) {
+  //   const idd = assets[1].item_id;
+  //   const [idc, setidc] = useState(iid);
+  //   console.log(idc, 'opop');
+  // }
+
+  // console.log('price::', logprice);
+  // console.log('time::', logtime);
+  useEffect(() => {
+    if (logprice.length > 0 && logtime.length > 0) {
+      // Step 1: Get the last 100 prices (or less if there are fewer than 100)
+      const last1HrPrices = logprice.slice(-3600);
+      const last1HrTimes = logtime.slice(-3600);
+
+      // Step 2: Pick prices at 0, 5, 10, 15, etc.
+      const tempPrices = last1HrPrices.filter((_, index) => index % 300 === 0);
+      const tempTimess = last1HrTimes.filter((_, index) => index % 300 === 0);
+
+      // Store the result
+      setTemp(last1HrPrices); // Optional: storing the last 100 prices
+      setTimeTemp(last1HrTimes);
+      setSelectedPrices(tempPrices); // Store the filtered prices
+      setSelectedTimes(tempTimess);
+    }
+  }, [logprice, logtime, idc, setidc]); // Run this effect when the prices array changes
+  // console.log(':::::::', selectedPrices);
+  // console.log('selected times', selectedTimes);
   return (
     <Flex
       w={'100%'}
@@ -272,7 +118,6 @@ function LineChartCompo() {
       overflow={'hidden'}
       mt={'-20px'}
     >
-      {/* Sidebar with asset details */}
       <Flex
         flexDirection={'column'}
         h={'100%'}
@@ -296,11 +141,12 @@ function LineChartCompo() {
             id={asset.item_id}
             unit={asset.unit}
             price={asset.price}
+            // idc={idc}
+            // setidc={setidc}
           />
         ))}
       </Flex>
 
-      {/* Main content with charts */}
       <Flex
         width={{ base: '100%', md: '65%' }}
         flexDirection={'column'}
@@ -312,7 +158,6 @@ function LineChartCompo() {
           'scrollbar-width': 'none', // Firefox
         }}
       >
-        {/* Charts and data visualizations */}
         <Flex justifyContent={'space-evenly'}>
           <TotalAsset />
           <Flex
@@ -343,58 +188,76 @@ function LineChartCompo() {
               }}
             />
           </Flex>
+          <FormControl id='item' isRequired w={'100%'}>
+            <FormLabel>Select Item/Asset</FormLabel>
+            <Select onChange={(e) => setidc(e.target.value)}>
+              {assets?.map((data, index) => (
+                <option key={index} value={data.item_id}>
+                  {`${data.name}${data.item_id}`}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
         </Flex>
 
-        {/* Line Chart */}
         <Flex>
           <Line
             data={{
-              labels: revenuedata?.map((data) => data.label),
+              labels: selectedTimes, // Using selected times from the last hour
               datasets: [
                 {
-                  label: 'Revenue',
-                  data: revenuedata?.map((data) => data.revenue),
+                  label: 'Price (Last Hour)',
+                  data: selectedPrices, // Using selected prices from the last hour
                   backgroundColor: '#ff3030',
                   borderColor: '#ff3030',
-                },
-                {
-                  label: 'Cost',
-                  data: revenuedata?.map((data) => data.cost),
-                  backgroundColor: '#064ff0',
-                  borderColor: '#064ff0',
+                  fill: false,
                 },
               ],
             }}
             options={{
-              tooltips: { mode: 'index', intersect: false },
-              hover: { mode: 'index', intersect: false },
-              plugins: { title: { text: 'Monthly Revenue and Cost' } },
+              scales: {
+                x: { title: { display: true, text: 'Time (5 min intervals)' } },
+                y: { title: { display: true, text: 'Price' } },
+              },
+              plugins: {
+                title: {
+                  text: 'Price Movement (Last Hour)',
+                  display: true,
+                },
+                tooltip: { mode: 'index', intersect: false },
+                hover: { mode: 'index', intersect: false },
+              },
             }}
           />
         </Flex>
 
-        {/* Bar Chart */}
         <Flex>
           <Bar
             data={{
-              labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+              labels: selectedTimes, // Using selected times from the last hour
               datasets: [
                 {
-                  label: 'Profit',
-                  data: [200, 300, 400, 350, 382, 550],
-                  borderRadius: 5,
-                },
-                {
-                  label: 'Loss',
-                  data: [80, 90, 70, 100, 131, 95],
+                  label: 'Price (Last Hour)',
+                  data: selectedPrices, // Using selected prices from the last hour
+                  backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
                   borderRadius: 5,
                 },
               ],
             }}
             options={{
-              tooltips: { mode: 'index', intersect: false },
-              hover: { mode: 'index', intersect: false },
-              plugins: { title: { text: 'Profit and Loss' } },
+              scales: {
+                x: { title: { display: true, text: 'Time (5 min intervals)' } },
+                y: { title: { display: true, text: 'Price' } },
+              },
+              plugins: {
+                title: {
+                  text: 'Price Distribution (Last Hour)',
+                  display: true,
+                },
+                tooltip: { mode: 'index', intersect: false },
+                hover: { mode: 'index', intersect: false },
+              },
             }}
           />
         </Flex>

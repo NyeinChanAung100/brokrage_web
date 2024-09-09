@@ -15,6 +15,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
 import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
 import { useState } from 'react';
+import assetIdsAtom from '../atoms/assetIdsAtom.js';
 
 function Propertylist(props) {
   const tran = 'up';
@@ -25,17 +26,21 @@ function Propertylist(props) {
   const itemvalue = useRecoilValue(userItem);
   const setTrade = useSetRecoilState(buyorsellAtom);
   const [priceLogs, setPriceLogs] = useState({});
+  // console.log('props.price', props.price);
+  const parsedPrice = parseInt(props.price, 10);
+  const ide = useRecoilValue(assetIdsAtom);
 
+  // console.log('props.existing', props.existing);
   const handleClick = () => {
     setItemInfo({
       name: props.name,
-      price: props.price,
-      total: props.unit * props.existing,
+      price: parsedPrice,
+      total: parsedPrice * props.existing,
       unit: props.unit,
     });
     setTrade('sell');
   };
-  console.log('itemvalue', itemvalue);
+  // console.log('itemvalue', itemvalue);
   return (
     <Flex
       width='100%'
@@ -46,12 +51,13 @@ function Propertylist(props) {
       marginTop='10px'
       justifyContent='space-between'
       borderBottom={colorMode === 'dark' ? '2px solid #444' : '2px solid #ccc'}
+      // onClick={() => props.setidc(props.id)}
     >
       <Flex alignItems='center'>
         <Stat>
           <StatLabel>{props.name}</StatLabel>
           <StatNumber fontSize='20px' color={textColor}>
-            {itemvalue.total}
+            {parsedPrice * props.existing}
           </StatNumber>
           <StatHelpText>
             <StatArrow type={upordown} />

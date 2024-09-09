@@ -21,6 +21,8 @@ import { useRecoilValue } from 'recoil';
 // import LogoutButton from './components/logoutButton';
 import userAtom from './atoms/userAtom.js';
 import TradePage from './components/TradePage.jsx';
+import DepositAssets from './components/DepositAssets.jsx';
+import DepositMoney from './components/DepositMoney.jsx';
 // import LoginCard from './components/LoginCard';
 
 function App() {
@@ -49,7 +51,6 @@ function App() {
         <Route path='/test' element={<MyComponent />} />
 
         {/* Purchase and Sell Routes */}
-        <Route path='/trade' element={<TradePage />} />
         <Route path='/voucher' element={<Voucher />} />
 
         {/* Dashboard Route */}
@@ -57,10 +58,13 @@ function App() {
           path='/dashboard/*'
           element={user ? <Dashboard /> : <Navigate to='/auth' />}
         >
+          <Route path='trade' element={<TradePage />} />
           <Route path='portfolio' element={<Portfolio />} />
           <Route path='detailedanalysis/:id' element={<Detailed />} />
           <Route path='marketoverview' element={<MarketOverview />} />
           <Route path='watchlist' element={<WatchList />} />
+          <Route path='depositassets' element={<DepositAssets />} />
+          <Route path='depositmoney' element={<DepositMoney />} />
           <Route path='*' element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}

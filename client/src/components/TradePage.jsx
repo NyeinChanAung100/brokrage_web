@@ -21,6 +21,7 @@ import useShowToast from '../hooks/useShowToast.js';
 import Buyorsell from './buyorsell.jsx';
 import { buyorsellAtom } from '../atoms/buyorsellAtom.js';
 import userAtom from '../atoms/userAtom.js';
+import { userItem } from '../atoms/userItem.js';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -49,14 +50,16 @@ class ErrorBoundary extends React.Component {
 const TradePage = () => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.800', 'white');
-  const [itemInfo, setItemInfo] = useRecoilState(allItemAtom);
+  const tradeType = useRecoilValue(buyorsellAtom);
+  const [itemInfo, setItemInfo] = useRecoilState(
+    tradeType == 'buy' ? allItemAtom : userItem,
+  );
   const [selectedItem, setSelectedItem] = useState(itemInfo.name);
   const [marketData, setMarketData] = useState([]);
   const [quantity, setQuantity] = useState('');
   const [afterPrice, setAfterPrice] = useState(0);
   const [total, setTotal] = useState('');
   const { isOpen, onOpen, onClose } = useModal();
-  const tradeType = useRecoilValue(buyorsellAtom);
   const parseid = parseInt(itemInfo?.id ? itemInfo.id : itemInfo.item_id, 10);
   const [itemId, setItemId] = useState(parseid);
   const currentUser = useRecoilValue(userAtom);
@@ -180,12 +183,11 @@ const TradePage = () => {
       if (tradeType.trim() == 'sell') {
         const userAssest = await viewUserAssets(currentUser.id);
         const userAssestItemsId = userAssest.map((item) => item.item_id);
-        console.log('userAssestItemsId', userAssestItemsId);
-        console.log('userAssest', userAssest);
+
         data = data.filter((item) =>
-          userAssestItemsId.includes(parseInt(item.id))
+          userAssestItemsId.includes(parseInt(item.id)),
         );
-        console.log('filtered', data);
+
         data = data.map((item) => {
           return {
             ...item,
@@ -196,6 +198,9 @@ const TradePage = () => {
       }
       console.log(data);
       setMarketData(data);
+      if (data[0]?.quantity) {
+        setUserQuantity(data[0].quantity);
+      }
     } catch (error) {
       console.log(error);
       //   showToast('Error', error, 'error');

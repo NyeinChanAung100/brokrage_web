@@ -35,6 +35,9 @@ const LinkItems = [
   // { name: 'Detailed Analysis', icon: FiTrendingUp },
 
   { name: 'Market Overview', icon: FaBoxesStacked },
+  { name: 'Deposit Assets', icon: FaBoxesStacked },
+  { name: 'Deposit money', icon: FaBoxesStacked },
+
   { name: 'Watchlist', icon: FiUsers },
   { name: 'Settings', icon: FiSettings },
 

@@ -84,47 +84,6 @@ function StockChart() {
     setDataPoints(candles);
     setIsLoaded(true);
   };
-  // const options = {
-  //   theme: colorMode === 'dark' ? 'dark1' : 'light2',
-  //   backgroundColor: colorMode === 'dark' ? '#171923' : '#FFFFFF',
-  //   charts: [
-  //     {
-  //       axisX: {
-  //         lineThickness: 5,
-  //         tickLength: 0,
-  //         labelFormatter: () => '',
-  //         crosshair: {
-  //           enabled: true,
-  //           snapToDataPoint: true,
-  //           labelFormatter: () => '',
-  //         },
-  //       },
-  //       axisY: {
-  //         title: 'Price',
-  //         prefix: '$',
-  //         tickLength: 0,
-  //       },
-  //       toolTip: {
-  //         shared: true,
-  //       },
-  //       data: [
-  //         {
-  //           name: 'Price (in USD)',
-  //           yValueFormatString: '$#,###.##',
-  //           type: 'candlestick',
-  //           dataPoints: dataPoints,
-  //           risingColor: colorMode === 'dark' ? '#00FF00' : '#008000', // Green for rising candles
-  //           fallingColor: colorMode === 'dark' ? '#FF0000' : '#FF6347', // Red for falling candles
-  //           risingBorderColor: colorMode === 'dark' ? '#00FF00' : '#008000', // Border color same as rising candle color
-  //           fallingBorderColor: colorMode === 'dark' ? '#FF0000' : '#FF6347', // Border color same as falling candle color
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   rangeSelector: {
-  //     enabled: false, // Disable the range selector
-  //   },
-  // };
 
   const options = {
     theme: colorMode === 'dark' ? 'dark1' : 'light2',

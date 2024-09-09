@@ -24,17 +24,24 @@ const DepositAssets = () => {
   const [item_id, setItem_id] = useState('');
   const [amount, setAmount] = useState('');
   const currentUser = useRecoilValue(userAtom);
+  const [userItems, setUserItems] = useState([]);
+  const [currentItemAmount, setCurrentItemAmount] = useState('');
+
+  const fetchUserItems = async () => {
+    try {
+      const data = await viewUserAssets(currentUser.id);
+      console.log('Fetched User Assets:', data);
+      setUserItems(data);
+    } catch (error) {}
+  };
   useEffect(() => {
     fetchData();
+    fetchUserItems();
   }, []);
-
-  console.log('first', marketData);
-  console.log('first', amount);
 
   const fetchData = async () => {
     try {
       const data = await viewAssets();
-      console.log('Fetched Assets:', data);
       setMarketData(data);
     } catch (error) {
       console.error('Failed to fetch assets:', error);
@@ -59,8 +66,20 @@ const DepositAssets = () => {
 
       if (data.success) {
         alert(amount + ' ' + data.message);
+        setCurrentItemAmount(currentItemAmount + parseInt(amount));
       }
     }
+  };
+
+  const handleItemChange = (e) => {
+    setItem_id(e.target.value);
+    console.log(userItems);
+    const item = userItems.find((item) => item.item_id == e.target.value);
+    console.log(item);
+    setCurrentItemAmount(item?.quantity ?? 0);
+    // const item = marketData.find((item) => item.id === e.target.value);
+    // setCurrentItemAmount(item.quantity);
+    setItem_id(e.target.value);
   };
 
   return (
@@ -82,14 +101,12 @@ const DepositAssets = () => {
       >
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align='stretch'>
+            <Box>
+              <p>Current item balance: {currentItemAmount}</p>
+            </Box>
             <FormControl id='asset' isRequired>
               <FormLabel>Select Asset</FormLabel>
-              <Select
-                placeholder='Select Asset'
-                onChange={(e) => {
-                  setItem_id(e.target?.value);
-                }}
-              >
+              <Select placeholder='Select Asset' onChange={handleItemChange}>
                 {marketData.map((data) => (
                   <option key={data.id} value={data.id}>
                     {data.name}

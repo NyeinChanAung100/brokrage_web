@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->commit();
 
         // Success
-        echo json_encode(["success" => "Deposit successful"]);
+        echo json_encode(["success" => true, "message" => "Deposit successful"]);
     
     } catch (Exception $e) {
         // Rollback the transaction on error

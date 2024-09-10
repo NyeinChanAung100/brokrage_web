@@ -68,7 +68,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "success" => "User registered successfully",
                 "id" => $userId,
                 "username" => $username,
-                "email" => $email
+                "email" => $email,
+                "isAdmin" => false
             ]);
         } else {
             throw new Exception("Error inserting user: " . $stmt->error);

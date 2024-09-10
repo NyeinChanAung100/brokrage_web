@@ -1,4 +1,15 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+
+// Handle OPTIONS request (preflight)
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+    // Just send the headers for preflight, no further processing needed
+    http_response_code(200);
+    exit();
+}
 include './../dbconnect/config.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -84,7 +95,7 @@ if ($conn->query($sql) === TRUE) {
             ];
         }
     }
-    echo json_encode($items);
+    echo json_encode(["success" => "Item is listed successfully"]);
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $input = json_decode(file_get_contents('php://input'), true);
     $item_id = $conn->real_escape_string($input['id']);

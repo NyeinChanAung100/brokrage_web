@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "success" => "Login successful",
                 "user_id" => $user['id'],
                 "username" => $username,
-                "email" => $email
+                "email" => $email,
             ]);
         } else {
             // Failure: Password is incorrect

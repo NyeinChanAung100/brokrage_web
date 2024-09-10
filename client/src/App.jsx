@@ -17,6 +17,7 @@ import SellPage from './components/SellPage';
 import MyComponent from './OneMoreTest';
 import AuthPage from './pages/authPage';
 import { useRecoilValue } from 'recoil';
+import ListItem from './pages/ListItem.jsx';
 
 // import LogoutButton from './components/logoutButton';
 import userAtom from './atoms/userAtom.js';
@@ -32,41 +33,43 @@ function App() {
     <Container
       maxW={'100vw'}
       padding={0}
-      className='theoneabove'
+      className="theoneabove"
       h={'100vh'}
       // overflow={'visible'}
     >
       <Nav />
       {/* <LogoutButton /> */}
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path="/" element={<Home />} />
 
         {/* Auth Route */}
         <Route
-          path='/auth'
-          element={user ? <Navigate to='/' /> : <AuthPage />}
+          path="/auth"
+          element={user ? <Navigate to="/" /> : <AuthPage />}
         />
 
+        <Route path="list-item" element={<ListItem />} />
+
         {/* Test Route */}
-        <Route path='/test' element={<MyComponent />} />
+        <Route path="/test" element={<MyComponent />} />
 
         {/* Purchase and Sell Routes */}
-        <Route path='/voucher' element={<Voucher />} />
-        <Route path='market' element={<MarketOverview />} />
+        <Route path="/voucher" element={<Voucher />} />
+        <Route path="market" element={<MarketOverview />} />
 
         {/* Dashboard Route */}
         <Route
-          path='/dashboard/*'
-          element={user ? <Dashboard /> : <Navigate to='/auth' />}
+          path="/dashboard/*"
+          element={user ? <Dashboard /> : <Navigate to="/auth" />}
         >
-          <Route path='trade' element={<TradePage />} />
-          <Route path='portfolio' element={<Portfolio />} />
-          <Route path='detailedanalysis/:id' element={<Detailed />} />
-          <Route path='marketoverview' element={<MarketOverview />} />
-          <Route path='watchlist' element={<WatchList />} />
-          <Route path='depositassets' element={<DepositAssets />} />
-          <Route path='depositmoney' element={<DepositMoney />} />
-          <Route path='*' element={<Portfolio />} />
+          <Route path="trade" element={<TradePage />} />
+          <Route path="portfolio" element={<Portfolio />} />
+          <Route path="detailedanalysis/:id" element={<Detailed />} />
+          <Route path="marketoverview" element={<MarketOverview />} />
+          <Route path="watchlist" element={<WatchList />} />
+          <Route path="depositassets" element={<DepositAssets />} />
+          <Route path="depositmoney" element={<DepositMoney />} />
+          <Route path="*" element={<Portfolio />} />
         </Route>
         {/* <Route path='/voucher' element={<Voucher />}></Route> */}
       </Routes>

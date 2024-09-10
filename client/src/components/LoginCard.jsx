@@ -51,6 +51,7 @@ export default function LoginCard() {
       setCookie('user_id', data.user_id);
       setCookie('username', data.username);
       setCookie('email', data.email);
+      setCookie('isAdmin', data.isAdmin);
 
       // Optionally, set user in state
       setUser({ id: data.id, username: data.username, email: data.email });
@@ -97,7 +98,7 @@ export default function LoginCard() {
             <FormControl isRequired>
               <FormLabel>Username</FormLabel>
               <Input
-                type='text'
+                type="text"
                 value={inputs.username}
                 onChange={(e) =>
                   setInputs((prevInputs) => ({
@@ -134,8 +135,8 @@ export default function LoginCard() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText='Logging in'
-                size='lg'
+                loadingText="Logging in"
+                size="lg"
                 bg={useColorModeValue('gray.600', 'gray.700')}
                 color={'white'}
                 _hover={{

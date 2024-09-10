@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result->fetch_assoc();
         $password_hash = $user['password_hash'];
         $email = $user['email'];
+        $isAdmin = $user['isAdmin'];
     
         // Verify password
         if (password_verify($password, $password_hash)) {
@@ -66,7 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "success" => "Login successful",
                 "user_id" => $user['id'],
                 "username" => $username,
-                "email" => $email
+                "email" => $email,
+                "isAdmin" => $isAdmin ? $isAdmin : false
             ]);
         } else {
             // Failure: Password is incorrect

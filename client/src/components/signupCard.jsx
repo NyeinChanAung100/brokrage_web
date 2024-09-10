@@ -154,7 +154,7 @@ export default function SignupCard() {
               <FormControl isRequired>
                 <FormLabel>Username</FormLabel>
                 <Input
-                  type='text'
+                  type="text"
                   onChange={(e) =>
                     setInputs({ ...inputs, username: e.target.value })
                   }
@@ -166,7 +166,7 @@ export default function SignupCard() {
             <FormControl isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
-                type='email'
+                type="email"
                 onChange={(e) =>
                   setInputs({ ...inputs, email: e.target.value })
                 }
@@ -197,8 +197,8 @@ export default function SignupCard() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText='Submitting'
-                size='lg'
+                loadingText="Submitting"
+                size="lg"
                 bg={useColorModeValue('gray.600', 'gray.700')}
                 color={'white'}
                 _hover={{

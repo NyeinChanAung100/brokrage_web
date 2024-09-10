@@ -12,11 +12,12 @@ import Propertylist from './propertylist';
 import TotalAsset from './TotalAsset';
 import './lich.css';
 import { viewUserAssets, viewPriceLog } from '../services/userService';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom';
 import assetIdsAtom from '../atoms/assetIdsAtom';
 import { useEffect, useState } from 'react';
 import { userItem } from '../atoms/userItem';
+import idAtom from '../atoms/idAtom';
 
 function LineChartCompo() {
   // Setting up default chart configuration
@@ -39,6 +40,16 @@ function LineChartCompo() {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const idd = useRecoilValue(assetIdsAtom);
   const [idc, setidc] = useState(idd[0]);
+  const generateRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // const [io, setio] = useRecoilState(idAtom);
 
   // const useritem = useRecoilValue(userItem);
   // console.log('useritemId:', idc);
@@ -69,8 +80,8 @@ function LineChartCompo() {
         setPriceLogs(logsObject);
 
         if (logsObject[idc]) {
-          const p = logsObject[1].data?.map((item) => item.price);
-          const t = logsObject[1].data?.map((item) => item.log_time);
+          const p = logsObject[idc].data?.map((item) => item.price);
+          const t = logsObject[idc].data?.map((item) => item.log_time);
 
           setlogprice(p);
           setlogtime(t);
@@ -109,6 +120,7 @@ function LineChartCompo() {
     }
   }, [logprice, logtime, idc, setidc]); // Run this effect when the prices array changes
   // console.log(':::::::', selectedPrices);
+  // console.log('ioiooio:', idc);
   // console.log('selected times', selectedTimes);
   return (
     <Flex
@@ -158,39 +170,49 @@ function LineChartCompo() {
           'scrollbar-width': 'none', // Firefox
         }}
       >
-        <Flex justifyContent={'space-evenly'}>
+        <Flex justifyContent={'space-between'}>
           <TotalAsset />
           <Flex
-            width={'48%'}
+            width={'49%'}
             bg={useColorModeValue('white', '#475C6C')}
             borderRadius={'15px'}
           >
             <Doughnut
               data={{
-                labels: ['A', 'B', 'C'],
+                labels: assets.map((item) => item.name),
                 datasets: [
                   {
-                    label: 'Revenue',
-                    data: [200, 300, 400],
-                    backgroundColor: ['red', 'blue', 'green'],
-                    borderColor: ['red', 'blue', 'green'],
+                    label: 'Total price',
+                    data: assets.map((item) => item.quantity * item.price),
+                    backgroundColor: assets.map(() => generateRandomColor()), // Generate random colors
+                    borderColor: 'white',
                   },
                   {
-                    label: 'Loss',
-                    data: [80, 90, 70],
+                    label: 'Quantity',
+                    data: assets.map((item) => item.quantity),
+                    backgroundColor: assets.map(() => generateRandomColor()), // Generate random colors
+                    borderColor: 'black',
                   },
                 ],
               }}
               options={{
                 tooltips: { mode: 'index', intersect: false },
                 hover: { mode: 'index', intersect: false },
-                plugins: { title: { text: 'Revenue Breakdown' } },
+                plugins: { title: { text: 'Quantity and Total price' } },
               }}
             />
           </Flex>
-          <FormControl id='item' isRequired w={'100%'}>
-            <FormLabel>Select Item/Asset</FormLabel>
-            <Select onChange={(e) => setidc(e.target.value)}>
+        </Flex>
+        <Flex
+          justifyContent={'flex-end'}
+          marginTop={'10px'}
+          bg={useColorModeValue('white', 'gray.900')}
+          padding={'20px'}
+          borderRadius={'10px'}
+        >
+          <FormControl id='item' isRequired w={'300px'} alignContent={'left'}>
+            <FormLabel>Select to see the chart of</FormLabel>
+            <Select value={idc} onChange={(e) => setidc(e.target.value)}>
               {assets?.map((data, index) => (
                 <option key={index} value={data.item_id}>
                   {`${data.name}${data.item_id}`}
@@ -199,7 +221,6 @@ function LineChartCompo() {
             </Select>
           </FormControl>
         </Flex>
-
         <Flex>
           <Line
             data={{

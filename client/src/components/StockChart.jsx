@@ -28,7 +28,8 @@ function StockChart() {
   const [dataPoints, setDataPoints] = useState([]);
   const [interval, setInterval] = useState(5); // Default interval is 2 minutes
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const itemName = itemDetail.name;
+  // console.log(itemDetail, 'fggf');
   useEffect(() => {
     // Fetch data from your server
     fetch(
@@ -108,6 +109,10 @@ function StockChart() {
         toolTip: {
           shared: true,
         },
+        title: {
+          text: itemName,
+          // more attributes
+        },
         data: [
           {
             name: 'Price (in USD)',
@@ -137,7 +142,6 @@ function StockChart() {
 
   return (
     <div>
-      {/* Buttons to select candle interval */}
       <HStack
         spacing={4}
         marginBottom={4}
@@ -224,7 +228,6 @@ function StockChart() {
         </Button>
       </HStack>
 
-      {/* Render the stock chart */}
       {isLoaded && (
         <CanvasJSStockChart containerProps={containerProps} options={options} />
       )}

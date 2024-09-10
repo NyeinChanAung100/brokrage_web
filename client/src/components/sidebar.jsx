@@ -15,7 +15,7 @@ import {
   useDisclosure,
   Stack,
 } from '@chakra-ui/react';
-import { FaBoxesStacked } from 'react-icons/fa6';
+import { FaBookBookmark, FaBoxesStacked } from 'react-icons/fa6';
 
 import {
   FiHome,
@@ -28,17 +28,15 @@ import {
 
 import { Link } from 'react-router-dom';
 import DetailedAccordion from './DetailedAccordion';
+import { FaChartLine, FaMoneyBillWave, FaRegFolderOpen } from 'react-icons/fa';
 
 const LinkItems = [
-  { name: 'Portfolio', icon: FiHome },
+  { name: 'Portfolio', icon: FaRegFolderOpen },
   { name: 'Trade', icon: FiTrendingUp },
-  // { name: 'Detailed Analysis', icon: FiTrendingUp },
-
-  { name: 'Market Overview', icon: FaBoxesStacked },
+  // { name: 'Market Overview', icon: FaChartLine },
   { name: 'Deposit Assets', icon: FaBoxesStacked },
-  { name: 'Deposit money', icon: FaBoxesStacked },
-
-  { name: 'Watchlist', icon: FiUsers },
+  { name: 'Deposit Money', icon: FaMoneyBillWave },
+  { name: 'Watchlist', icon: FaBookBookmark },
   { name: 'Settings', icon: FiSettings },
 
   // Additional items can be added here

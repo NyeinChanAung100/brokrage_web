@@ -179,7 +179,13 @@ function EachItem({
   };
   console.log('watchlist:', isWatchlist);
   return (
-    <Flex width={'100%'} h={'100%'} justifyContent={'space-between'}>
+    <Flex
+      width={'100%'}
+      h={'100%'}
+      justifyContent={'space-between'}
+      // margin={'auto'}
+      // border={'1px solid black'}
+    >
       <Stat>
         <StatLabel>Unit-{unit}</StatLabel>
         <StatNumber>{name}</StatNumber>
@@ -211,7 +217,7 @@ function EachItem({
           onClick={handleClick}
         >
           <Link
-            to={'/trade'}
+            to={'/dashboard/trade'}
             style={{
               display: 'inline',
               width: '100%',
@@ -249,7 +255,13 @@ function MarketOverview() {
   }, []);
 
   return (
-    <Flex flexDirection={'column'} w={'100%'}>
+    <Flex
+      flexDirection={'column'}
+      w={'100%'}
+      // border={'1px solid black'}
+      pt={'20px'}
+      alignItems={'center'}
+    >
       <UserAssetsValue />
       <VStack
         divider={<StackDivider borderColor='gray.200' />}

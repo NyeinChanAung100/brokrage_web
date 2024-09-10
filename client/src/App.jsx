@@ -52,6 +52,7 @@ function App() {
 
         {/* Purchase and Sell Routes */}
         <Route path='/voucher' element={<Voucher />} />
+        <Route path='market' element={<MarketOverview />} />
 
         {/* Dashboard Route */}
         <Route

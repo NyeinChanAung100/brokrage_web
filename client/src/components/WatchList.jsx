@@ -2,42 +2,64 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
-  Td,
-  TableCaption,
   TableContainer,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import productData from '../data/watchList.json';
+import { viewAssets } from '../services/userService';
+import { useRecoilValue } from 'recoil';
+import userAtom from '../atoms/userAtom';
+import { useEffect, useState } from 'react';
 
 function WatchList() {
+  const user = useRecoilValue(userAtom);
+  const [marketData, setMarketData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = user.id;
+        console.log('ig', userId);
+        const data = await viewAssets(userId);
+        console.log('Fetched Assets:', data);
+        setMarketData(data);
+      } catch (error) {
+        console.error('Failed to fetch assets:', error);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
   return (
-    <TableContainer>
-      <Table size="lg">
+    <TableContainer
+      bg={useColorModeValue('white', 'gray.900')}
+      w={'100%'}
+      borderRadius={'5px'}
+    >
+      <Table size='lg'>
         <Thead>
           <Tr>
             <Th>Name</Th>
             <Th>Price</Th>
-
-            <Th>%Change</Th>
-            <Th>Volume</Th>
+            <Th>Market cap</Th>
+            <Th>Supply</Th>
           </Tr>
         </Thead>
 
         <Tbody>
-          {productData?.map((data) => {
-            return (
-              <>
-                <Tr key={data.productName}>
-                  <Th>{data.productName}</Th>
-                  <Th>{data.lastPrice}</Th>
-                  <Th>{data.percentChangeDay}</Th>
-                  <Th>{data.volume30DayRange}</Th>
-                </Tr>
-              </>
-            );
-          })}
+          {/* Filter the data to display only items where isWatchlist is true */}
+          {marketData
+            ?.filter((data) => data.isWatchlist === true) // Only show watchlist items
+            .map((data) => (
+              <Tr key={data.id}>
+                <Th>{data.name}</Th>
+                <Th>{data.price}</Th>
+                <Th>{data.market_cap}</Th>
+                <Th>{data.supply}</Th>
+              </Tr>
+            ))}
         </Tbody>
       </Table>
     </TableContainer>

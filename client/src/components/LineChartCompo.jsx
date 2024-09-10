@@ -104,24 +104,40 @@ function LineChartCompo() {
   // console.log('time::', logtime);
   useEffect(() => {
     if (logprice.length > 0 && logtime.length > 0) {
-      // Step 1: Get the last 100 prices (or less if there are fewer than 100)
-      const last1HrPrices = logprice.slice(-3600);
-      const last1HrTimes = logtime.slice(-3600);
+      // console.log('Original logprice:', logprice);
+      // console.log('Original logtime:', logtime);
 
-      // Step 2: Pick prices at 0, 5, 10, 15, etc.
-      const tempPrices = last1HrPrices.filter((_, index) => index % 300 === 0);
-      const tempTimess = last1HrTimes.filter((_, index) => index % 300 === 0);
+      // Step 1: Get the last 3600 records
+      const last1HrPrices = logprice.slice(-360); // last 1 hour of prices
+      const last1HrTimes = logtime.slice(-360); // last 1 hour of timestamps
+      console.log(last1HrTimes);
+      // Step 2: Filter data at 5-minute intervals (every 300 seconds)
+      const tempPrices = last1HrPrices.filter(
+        (_, index) => (index + 1) % 20 === 0,
+      );
+      const tempTimes = last1HrTimes
+        .filter((_, index) => (index + 1) % 20 === 0)
+        .map((time) => {
+          // Convert timestamps to HH:MM:SS format dynamically
+          const date = new Date(time);
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const seconds = date.getSeconds().toString().padStart(2, '0');
+          return `${hours}:${minutes}:${seconds}`;
+        });
 
-      // Store the result
-      setTemp(last1HrPrices); // Optional: storing the last 100 prices
-      setTimeTemp(last1HrTimes);
-      setSelectedPrices(tempPrices); // Store the filtered prices
-      setSelectedTimes(tempTimess);
+      // Step 3: Update state with filtered and formatted data
+      setTemp(last1HrPrices); // Optional: store last 3600 prices (1 hour)
+      setTimeTemp(last1HrTimes); // Optional: store last 3600 times (1 hour)
+      setSelectedPrices(tempPrices); // Store filtered prices (at 5-minute intervals)
+      setSelectedTimes(tempTimes); // Store filtered and formatted times (at 5-minute intervals)
     }
-  }, [logprice, logtime, idc, setidc]); // Run this effect when the prices array changes
+  }, [logprice, logtime, idc, setidc]); // Dependencies
+  // Run this effect when the prices array changes
   // console.log(':::::::', selectedPrices);
   // console.log('ioiooio:', idc);
   // console.log('selected times', selectedTimes);
+
   return (
     <Flex
       w={'100%'}
@@ -237,7 +253,7 @@ function LineChartCompo() {
             }}
             options={{
               scales: {
-                x: { title: { display: true, text: 'Time (5 min intervals)' } },
+                x: { title: { display: true, text: 'Time (3 min intervals)' } },
                 y: { title: { display: true, text: 'Price' } },
               },
               plugins: {
@@ -268,7 +284,7 @@ function LineChartCompo() {
             }}
             options={{
               scales: {
-                x: { title: { display: true, text: 'Time (5 min intervals)' } },
+                x: { title: { display: true, text: 'Time (3 min intervals)' } },
                 y: { title: { display: true, text: 'Price' } },
               },
               plugins: {

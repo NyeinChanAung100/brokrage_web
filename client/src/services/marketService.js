@@ -2,9 +2,9 @@
 
 import axiosInstance from '../api/axiosInstance';
 
-export const listItems = async () => {
+export const listItems = async (data) => {
   try {
-    const response = await axiosInstance.get('/market/listItems.php');
+    const response = await axiosInstance.post('/market/listItems.php', data);
     return response.data;
   } catch (error) {
     console.error('Error listing items:', error);

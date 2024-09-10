@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
         // Success: Return updated balance
-        echo json_encode(["success" => "Deposit successful", "new_balance" => $balance['balance']]);
+        echo json_encode(["success" => "Deposit successful", "new_balance" => $balance['balance'], 'message' => 'deposited successfully']);
     
     } catch (Exception $e) {
         // Rollback the transaction on error

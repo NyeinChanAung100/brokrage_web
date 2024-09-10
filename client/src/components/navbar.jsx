@@ -30,10 +30,10 @@ const Links = ['Dashboard', 'Market', 'Help'];
 
 const NavLink = ({ path, children }) => (
   <Box
-    as='a'
+    as="a"
     px={2}
     py={1}
-    rounded='md'
+    rounded="md"
     _hover={{
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
@@ -61,17 +61,17 @@ export default function Nav() {
       boxShadow={'0 4px 6px rgba(0, 0, 0, 0.1)'}
       zIndex={1000}
     >
-      <Flex h={16} alignItems='center' justifyContent='space-between'>
+      <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
-          size='md'
+          size="md"
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          aria-label='Open Menu'
+          aria-label="Open Menu"
           display={{ md: 'none' }}
           onClick={isOpen ? onClose : onOpen}
         />
-        <HStack spacing={8} alignItems='center'>
+        <HStack spacing={8} alignItems="center">
           <Box>Logo</Box>
-          <HStack as='nav' spacing={4} display={{ base: 'none', md: 'flex' }}>
+          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
             <NavLink path={'/'}>Home</NavLink>
             {Links.map((link) => (
               <NavLink key={link} path={`/${link.toLowerCase()}`}>
@@ -80,8 +80,8 @@ export default function Nav() {
             ))}
           </HStack>
         </HStack>
-        <Flex alignItems='center'>
-          <Stack direction='row' spacing={7}>
+        <Flex alignItems="center">
+          <Stack direction="row" spacing={7}>
             <Button onClick={toggleColorMode}>
               {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
@@ -90,31 +90,34 @@ export default function Nav() {
               <Menu>
                 <MenuButton
                   as={Button}
-                  rounded='full'
-                  variant='link'
-                  cursor='pointer'
+                  rounded="full"
+                  variant="link"
+                  cursor="pointer"
                   minW={0}
                 >
                   <Avatar
-                    size='sm'
-                    src='https://avatars.dicebear.com/api/male/username.svg'
+                    size="sm"
+                    src="https://avatars.dicebear.com/api/male/username.svg"
                   />
                 </MenuButton>
-                <MenuList alignItems='center'>
+                <MenuList alignItems="center">
                   <br />
                   <Center>
                     <Avatar
-                      size='2xl'
-                      src='https://avatars.dicebear.com/api/male/username.svg'
+                      size="2xl"
+                      src="https://avatars.dicebear.com/api/male/username.svg"
                     />
                   </Center>
                   <br />
                   <Center>
-                    <Text>Username</Text>
+                    <Text>{user.username}</Text>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
+                  <Link to={'dashboard/portfolio'}>
+                    <MenuItem>Your Servers</MenuItem>
+                  </Link>
+
                   <MenuItem>Account Settings</MenuItem>
                   <LogoutButton />
                   {/* <MenuItem>
@@ -161,7 +164,7 @@ export default function Nav() {
       </Flex>
       {isOpen ? (
         <Box pb={4} display={{ md: 'none' }}>
-          <Stack as='nav' spacing={4}>
+          <Stack as="nav" spacing={4}>
             {Links.map((link) => (
               <NavLink key={link} path={`/${link.toLowerCase()}`}>
                 {link}

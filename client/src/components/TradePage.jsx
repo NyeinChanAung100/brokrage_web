@@ -52,7 +52,7 @@ const TradePage = () => {
   const textColor = useColorModeValue('gray.800', 'white');
   const tradeType = useRecoilValue(buyorsellAtom);
   const [itemInfo, setItemInfo] = useRecoilState(
-    tradeType == 'buy' ? allItemAtom : userItem,
+    tradeType == 'buy' ? allItemAtom : userItem
   );
   const [selectedItem, setSelectedItem] = useState(itemInfo.name);
   const [marketData, setMarketData] = useState([]);
@@ -185,7 +185,7 @@ const TradePage = () => {
         const userAssestItemsId = userAssest.map((item) => item.item_id);
 
         data = data.filter((item) =>
-          userAssestItemsId.includes(parseInt(item.id)),
+          userAssestItemsId.includes(parseInt(item.id))
         );
 
         data = data.map((item) => {
@@ -210,20 +210,20 @@ const TradePage = () => {
   return (
     <ErrorBoundary>
       <Box
-        w='100%'
-        h='100%'
+        w="100%"
+        h="100%"
         p={6}
         bg={bgColor}
         color={textColor}
-        boxShadow='lg'
-        borderRadius='md'
+        boxShadow="lg"
+        borderRadius="md"
         maxW={{ base: '100%', md: '80%', lg: '60%' }}
-        mx='auto'
+        mx="auto"
       >
         <Buyorsell />
 
         <VStack spacing={6}>
-          <FormControl id='item' isRequired>
+          <FormControl id="item" isRequired>
             <FormLabel>Select Item/Asset</FormLabel>
             <Select value={selectedItem} onChange={handleItemChange}>
               {marketData?.map((data, index) => (
@@ -234,18 +234,18 @@ const TradePage = () => {
             </Select>
           </FormControl>
           {tradeType == 'sell' ? <Text>Quantity: {userQuantity}</Text> : null}
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} w='100%'>
-            <FormControl id='quantity' isRequired>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} w="100%">
+            <FormControl id="quantity" isRequired>
               <FormLabel>Quantity</FormLabel>
               <Input
-                type='number'
-                placeholder='Enter quantity'
+                type="number"
+                placeholder="Enter quantity"
                 value={quantity}
                 onChange={handleMinMaxButton}
               />
             </FormControl>
 
-            <FormControl id='price' isReadOnly>
+            <FormControl id="price" isReadOnly>
               <HStack>
                 <Box>
                   <FormLabel>Before Price:</FormLabel>
@@ -267,10 +267,10 @@ const TradePage = () => {
             </FormControl>
           </SimpleGrid>
 
-          <FormControl id='total' isReadOnly>
+          <FormControl id="total" isReadOnly>
             <FormLabel>Total Price</FormLabel>
             <Input
-              type='text'
+              type="text"
               value={`$${
                 !isNaN(total) && total !== '' ? total.toFixed(2) : '0.00'
               }`}
@@ -278,15 +278,15 @@ const TradePage = () => {
             />
           </FormControl>
 
-          <FormControl id='payment-method' isRequired>
+          <FormControl id="payment-method" isRequired>
             <FormLabel>Payment Method</FormLabel>
-            <Select placeholder='Select payment method'>
-              <option value='deposited'>Deposited Money</option>
-              <option value='rewards'>Rewards</option>
+            <Select placeholder="Select payment method">
+              <option value="deposited">Deposited Money</option>
+              <option value="rewards">Rewards</option>
             </Select>
           </FormControl>
 
-          <Button colorScheme='blue' w='100%' size='lg' onClick={onOpen}>
+          <Button colorScheme="blue" w="100%" size="lg" onClick={onOpen}>
             {tradeType}
           </Button>
           <InitialFocus
@@ -304,9 +304,9 @@ const TradePage = () => {
             // refreshPage={refreshPage}
           />
 
-          <Text mt={4} textAlign='center'>
+          <Text mt={4} textAlign="center">
             Current Balance:{' '}
-            <Text as='span' fontWeight='bold'>
+            <Text as="span" fontWeight="bold">
               $500.00
             </Text>
           </Text>

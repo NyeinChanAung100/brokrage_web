@@ -7,6 +7,7 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Text,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -57,8 +58,12 @@ function Propertylist(props) {
         <Stat>
           <StatLabel>{props.name}</StatLabel>
           <StatNumber fontSize='20px' color={textColor}>
-            {parsedPrice * props.existing}
+            {`Total-$${parsedPrice * props.existing}`}
           </StatNumber>
+          <Text fontSize={'14px'} color={textColor}>
+            {`Quantity-${props.existing} ${props.unit}`}
+          </Text>
+
           <StatHelpText>
             <StatArrow type={upordown} />
             23.36%
@@ -79,7 +84,7 @@ function Propertylist(props) {
             onClick={handleClick}
           >
             <Link
-              to='/trade'
+              to='/dashboard/trade'
               style={{
                 display: 'inline',
                 width: '100%',

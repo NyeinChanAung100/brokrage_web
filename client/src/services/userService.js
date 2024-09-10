@@ -50,7 +50,7 @@ export const depositMoney = async (depositData) => {
   try {
     const response = await axiosInstance.post(
       '/user/deposit-money.php',
-      depositData
+      depositData,
     );
     return response.data;
   } catch (error) {
@@ -62,7 +62,7 @@ export const setWatchList = async (watchListData) => {
   try {
     const response = await axiosInstance.post(
       '/user/watch-list-controller.php',
-      watchListData
+      watchListData,
     );
     return response.data;
   } catch (error) {
@@ -94,7 +94,7 @@ export const logoutUser = async () => {
 export const viewAssets = async (userId) => {
   try {
     const response = await axiosInstance.get(
-      `/user/view-assests.php?user_id=${userId}`
+      `/user/view-assests.php?user_id=${userId}`,
     );
     return response.data;
   } catch (error) {
@@ -107,7 +107,7 @@ export const depositAssets = async (depositData) => {
   try {
     const response = await axiosInstance.post(
       '/user/deposit-assest.php',
-      depositData
+      depositData,
     );
     return response.data;
   } catch (error) {
@@ -139,6 +139,19 @@ export const viewPriceLog = async (itemId) => {
     throw error;
   }
 };
+
+export const fetchAllItemsWithDetails = async (userId = null) => {
+  try {
+    const response = await axiosInstance.get('user/view-assests.php', {
+      params: { user_id: userId }, // Passing userId as a query param if it's provided
+    });
+    return response.data; // Return the fetched data
+  } catch (error) {
+    console.error('Error fetching items with details:', error);
+    throw error;
+  }
+};
+
 export const viewItems = async () => {
   try {
     const response = await axiosInstance.get('user/view-assests.php');

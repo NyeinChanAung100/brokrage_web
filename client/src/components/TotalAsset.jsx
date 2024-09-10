@@ -41,7 +41,7 @@ function TotalAsset() {
   return (
     <Card
       align='center'
-      width={'48%'}
+      width={'49%'}
       padding='20px'
       borderRadius='15px'
       boxShadow='lg'

@@ -47,7 +47,7 @@ function TotalAsset() {
       boxShadow='lg'
     >
       <CardHeader width='100%' align='left'>
-        <Heading size='md'>Total Assets</Heading>
+        <Heading size='md'>Remaining Balance</Heading>
       </CardHeader>
       <CardBody>
         <Box display='flex' alignItems='center'>
